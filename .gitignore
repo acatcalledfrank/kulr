@@ -5,5 +5,4 @@
 # libraries
 
 node_modules/
-
-#typings
+typings/
