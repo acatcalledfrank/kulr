@@ -11,7 +11,7 @@ class Css
      * @param element
      * @param className
      */
-    static addClass(element: HTMLElement, className: string)
+    static addClass(element: Element, className: string)
     {
         //  check we have a valid element
 

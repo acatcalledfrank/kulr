@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(8);
+	var Toggle_1 = __webpack_require__(12);
 	var App_1 = __webpack_require__(4);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
 	var HuePane_1 = __webpack_require__(6);
-	var TonePane_1 = __webpack_require__(7);
+	var TonePane_1 = __webpack_require__(11);
 	var Popup = (function () {
 	    function Popup(options) {
 	        this.options = options;
@@ -238,24 +238,47 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
+	var CreateGradientElement_1 = __webpack_require__(7);
+	var FillGradient_1 = __webpack_require__(8);
+	var CreateColourRect_1 = __webpack_require__(9);
+	var UniqueId_1 = __webpack_require__(10);
 	var HuePane = (function () {
 	    function HuePane(options) {
 	        this.options = options;
 	    }
 	    HuePane.prototype.setup = function () {
 	        this.element = this.getElement();
+	        CreateColourRect_1.default(this.element, this.drawGradient());
 	    };
 	    HuePane.prototype.getElement = function () {
 	        return this.createElement();
 	    };
 	    HuePane.prototype.createElement = function () {
 	        var element;
-	        element = document.createElement('svg');
+	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	        Css_1.default.addClass(element, 'picky-hue-pane');
 	        App_1.default.popup.element.appendChild(element);
 	        return element;
 	    };
-	    HuePane.prototype.drawHues = function () {
+	    HuePane.prototype.populateColours = function () {
+	        return this.drawGradient();
+	    };
+	    HuePane.prototype.drawGradient = function () {
+	        var id, stops;
+	        id = UniqueId_1.default('picky-svg-gradient-');
+	        stops =
+	            [
+	                {
+	                    colour: '#ff0000',
+	                    offset: '0%'
+	                },
+	                {
+	                    colour: '#0000ff',
+	                    offset: '100%'
+	                }
+	            ];
+	        FillGradient_1.default(CreateGradientElement_1.default(this.element, id), stops);
+	        return id;
 	    };
 	    return HuePane;
 	}());
@@ -264,6 +287,72 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (svg, id, type) {
+	    if (type === void 0) { type = 'linearGradient'; }
+	    var svg_ns, defs, gradient;
+	    svg_ns = svg.namespaceURI;
+	    defs = (svg.querySelector('defs') || svg.insertBefore(document.createElementNS(svg_ns, 'defs'), svg.firstChild));
+	    gradient = document.createElementNS(svg_ns, type);
+	    gradient.setAttribute('id', id);
+	    defs.appendChild(gradient);
+	    return gradient;
+	};
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (gradient, stops) {
+	    var svg_ns, stop;
+	    svg_ns = gradient.parentElement.namespaceURI;
+	    for (var i = 0; i < stops.length; i++) {
+	        stop = document.createElementNS(svg_ns, 'stop');
+	        stop.setAttribute('offset', stops[i].offset);
+	        stop.setAttribute('stop-color', stops[i].colour);
+	        gradient.appendChild(stop);
+	    }
+	};
+
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (svg, gradient_id) {
+	    var rect;
+	    rect = document.createElementNS(svg.namespaceURI, 'rect');
+	    rect.setAttribute('x', '0');
+	    rect.setAttribute('y', '0');
+	    rect.setAttribute('width', '100%');
+	    rect.setAttribute('height', '100%');
+	    rect.setAttribute('fill', 'url(#' + gradient_id + ')');
+	    svg.appendChild(rect);
+	};
+
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (prefix) {
+	    if (prefix === void 0) { prefix = ''; }
+	    return prefix + new Date().getTime();
+	};
+
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -292,7 +381,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

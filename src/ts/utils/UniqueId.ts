@@ -1,4 +1,4 @@
-export default () =>
+export default (prefix: string = '') =>
 {
-    return Math.random().toString();
+    return prefix + new Date().getTime();
 }

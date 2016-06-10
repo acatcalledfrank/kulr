@@ -26,7 +26,7 @@ declare module 'picky'
     
     export class HuePane
     {
-        element: HTMLElement;
+        element: SVGSVGElement;
 
         setup() : void;
     }
@@ -41,5 +41,11 @@ declare module 'picky'
     export class Swatch
     {
         
+    }
+    
+    export interface IGradientStop
+    {
+        colour: string;
+        offset: string;
     }
 }
