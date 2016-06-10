@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Picky Demo</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+</head>
+<body>
+
+<button id="picky-toggle">colour picker</button>
+
+<script src="../build/bin/picky.js"></script>
+
+<script>
+
+    console.log(Picky)
+
+    var options =
+    {
+        elements:
+        {
+            toggle: '#picky-toggle'
+        }
+    };
+
+    new Picky.ColourPicker(options);
+
+</script>
+
+</body>
+</html>

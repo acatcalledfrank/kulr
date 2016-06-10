@@ -1,0 +1,28 @@
+{
+  "name": "picky",
+  "version": "1.0.0",
+  "description": "A simple colour picker",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acatcalledfrank/picky.git"
+  },
+  "author": "Tom Evans",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/acatcalledfrank/picky/issues"
+  },
+  "homepage": "https://github.com/acatcalledfrank/picky#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^2.13.6",
+    "signals": "^1.0.0",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.1",
+    "webpack-stream": "^3.2.0"
+  }
+}

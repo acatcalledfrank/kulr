@@ -1,0 +1,8 @@
+# project files
+
+.idea/
+
+# libraries
+
+node_modules/
+typings/

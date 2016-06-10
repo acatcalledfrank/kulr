@@ -1,0 +1,7 @@
+{
+  "name": "picky",
+  "dependencies": {},
+  "globalDependencies": {
+    "js-signals": "registry:dt/js-signals#0.0.0+20160316155526"
+  }
+}
