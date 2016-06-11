@@ -29,6 +29,7 @@ declare module 'picky'
         element: SVGSVGElement;
 
         setup() : void;
+        setHue(hue: number) : void;
     }
     
     export class TonePane
@@ -36,6 +37,7 @@ declare module 'picky'
         element: HTMLElement;
 
         setup() : void;
+        setHue(hue: number) : void;
     }
     
     export class Swatch

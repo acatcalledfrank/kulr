@@ -1,11 +1,12 @@
 "use strict";
-var App_1 = require("../App");
-var Css_1 = require("../utils/dom/style/Css");
-var CreateGradientElement_1 = require("./svg/CreateGradientElement");
-var SetGradientDirection_1 = require("./svg/SetGradientDirection");
-var FillGradient_1 = require("./svg/FillGradient");
-var CreateColourRect_1 = require("./svg/CreateColourRect");
-var UniqueId_1 = require('../utils/UniqueId');
+var App_1 = require("../../App");
+var Css_1 = require("../../utils/dom/style/Css");
+var CreateGradientElement_1 = require("../svg/CreateGradientElement");
+var SetGradientDirection_1 = require("../svg/SetGradientDirection");
+var FillGradient_1 = require("../svg/FillGradient");
+var CreateColourRect_1 = require("../svg/CreateColourRect");
+var UniqueId_1 = require('../../utils/UniqueId');
+var AddInteraction_1 = require('./AddInteraction');
 var HuePane = (function () {
     function HuePane(options) {
         this.options = options;
@@ -13,6 +14,7 @@ var HuePane = (function () {
     HuePane.prototype.setup = function () {
         this.element = this.getElement();
         CreateColourRect_1.default(this.element, this.drawGradient());
+        AddInteraction_1.default(this.element);
     };
     HuePane.prototype.getElement = function () {
         return this.createElement();

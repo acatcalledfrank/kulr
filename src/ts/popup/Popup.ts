@@ -2,8 +2,8 @@ import {IOptions} from "picky";
 import {Find} from "../utils/dom/element/Find";
 import App from "../App";
 import Css from "../utils/dom/style/Css";
-import {HuePane} from "./HuePane";
-import {TonePane} from "./TonePane";
+import {HuePane} from "./hue-pane/HuePane";
+import {TonePane} from "./tone-pane/TonePane";
 
 export class Popup
 {

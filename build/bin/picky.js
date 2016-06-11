@@ -56,7 +56,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(12);
+	var Toggle_1 = __webpack_require__(15);
 	var App_1 = __webpack_require__(4);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
 	var HuePane_1 = __webpack_require__(6);
-	var TonePane_1 = __webpack_require__(11);
+	var TonePane_1 = __webpack_require__(14);
 	var Popup = (function () {
 	    function Popup(options) {
 	        this.options = options;
@@ -239,9 +239,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
 	var CreateGradientElement_1 = __webpack_require__(7);
-	var FillGradient_1 = __webpack_require__(8);
-	var CreateColourRect_1 = __webpack_require__(9);
-	var UniqueId_1 = __webpack_require__(10);
+	var SetGradientDirection_1 = __webpack_require__(8);
+	var FillGradient_1 = __webpack_require__(9);
+	var CreateColourRect_1 = __webpack_require__(10);
+	var UniqueId_1 = __webpack_require__(11);
+	var AddInteraction_1 = __webpack_require__(12);
 	var HuePane = (function () {
 	    function HuePane(options) {
 	        this.options = options;
@@ -249,6 +251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    HuePane.prototype.setup = function () {
 	        this.element = this.getElement();
 	        CreateColourRect_1.default(this.element, this.drawGradient());
+	        AddInteraction_1.default(this.element);
 	    };
 	    HuePane.prototype.getElement = function () {
 	        return this.createElement();
@@ -264,7 +267,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return this.drawGradient();
 	    };
 	    HuePane.prototype.drawGradient = function () {
-	        var id, stops;
+	        var id, gradient, stops;
 	        id = UniqueId_1.default('picky-svg-gradient-');
 	        stops =
 	            [
@@ -273,11 +276,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    offset: '0%'
 	                },
 	                {
+	                    colour: '#ff00ff',
+	                    offset: '16%'
+	                },
+	                {
 	                    colour: '#0000ff',
+	                    offset: '33%'
+	                },
+	                {
+	                    colour: '#00ffff',
+	                    offset: '50%'
+	                },
+	                {
+	                    colour: '#00ff00',
+	                    offset: '67%'
+	                },
+	                {
+	                    colour: '#ffff00',
+	                    offset: '84%'
+	                },
+	                {
+	                    colour: '#ff0000',
 	                    offset: '100%'
 	                }
 	            ];
-	        FillGradient_1.default(CreateGradientElement_1.default(this.element, id), stops);
+	        gradient = CreateGradientElement_1.default(this.element, id);
+	        SetGradientDirection_1.default(gradient, ['0', '0', '0', '100%']);
+	        FillGradient_1.default(gradient, stops);
 	        return id;
 	    };
 	    return HuePane;
@@ -298,6 +323,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    defs = (svg.querySelector('defs') || svg.insertBefore(document.createElementNS(svg_ns, 'defs'), svg.firstChild));
 	    gradient = document.createElementNS(svg_ns, type);
 	    gradient.setAttribute('id', id);
+	    gradient.setAttribute('x1', '0%');
+	    gradient.setAttribute('y1', '0%');
+	    gradient.setAttribute('x2', '0%');
+	    gradient.setAttribute('y2', '100%');
 	    defs.appendChild(gradient);
 	    return gradient;
 	};
@@ -305,6 +334,21 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 8 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (gradient, points) {
+	    gradient.setAttribute('x1', points[0]);
+	    gradient.setAttribute('y1', points[1]);
+	    gradient.setAttribute('x2', points[2]);
+	    gradient.setAttribute('y2', points[3]);
+	    return gradient;
+	};
+
+
+/***/ },
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -322,7 +366,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 10 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -340,7 +384,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 11 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -352,7 +396,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var GetColourAtCursor_1 = __webpack_require__(13);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (element) {
+	    element.addEventListener('click', GetColourAtCursor_1.default);
+	};
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (event) {
+	    console.log('getting colour', event);
+	    var client_rect, mouse_offset;
+	    client_rect = event.target.getBoundingClientRect();
+	    mouse_offset = event.pageY - client_rect.top;
+	    console.log(mouse_offset);
+	};
+
+
+/***/ },
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -381,7 +452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

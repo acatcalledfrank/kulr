@@ -2,8 +2,8 @@
 var Find_1 = require("../utils/dom/element/Find");
 var App_1 = require("../App");
 var Css_1 = require("../utils/dom/style/Css");
-var HuePane_1 = require("./HuePane");
-var TonePane_1 = require("./TonePane");
+var HuePane_1 = require("./hue-pane/HuePane");
+var TonePane_1 = require("./tone-pane/TonePane");
 var Popup = (function () {
     function Popup(options) {
         this.options = options;

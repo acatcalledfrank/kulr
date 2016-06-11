@@ -1,12 +1,14 @@
 import {IOptions} from "picky";
 
-import {Find} from "../utils/dom/element/Find";
-import App from "../App";
-import Css from "../utils/dom/style/Css";
-import CreateGradientElement from "./svg/CreateGradientElement";
-import FillGradient from "./svg/FillGradient";
-import CreateColourRect from "./svg/CreateColourRect";
-import UniqueId from '../utils/UniqueId';
+import {Find} from "../../utils/dom/element/Find";
+import App from "../../App";
+import Css from "../../utils/dom/style/Css";
+import CreateGradientElement from "../svg/CreateGradientElement";
+import SetGradientDirection from "../svg/SetGradientDirection";
+import FillGradient from "../svg/FillGradient";
+import CreateColourRect from "../svg/CreateColourRect";
+import UniqueId from '../../utils/UniqueId';
+import AddInteraction from './AddInteraction';
 import {IGradientStop} from "picky";
 
 export class HuePane
@@ -32,6 +34,10 @@ export class HuePane
         //  create rectangle element and fill with the gradient
 
         CreateColourRect(this.element, this.drawGradient());
+        
+        //  add interaction listeners to the element
+        
+        AddInteraction(this.element);
     }
 
 
@@ -88,6 +94,7 @@ export class HuePane
     drawGradient() : string
     {
         var id: string,
+            gradient: SVGGradientElement,
             stops: IGradientStop[];
 
         //  create a unique id for the gradient
@@ -103,18 +110,55 @@ export class HuePane
                     offset: '0%'
                 },
                 {
+                    colour: '#ff00ff',
+                    offset: '16%'
+                },
+                {
                     colour: '#0000ff',
+                    offset: '33%'
+                },
+                {
+                    colour: '#00ffff',
+                    offset: '50%'
+                },
+                {
+                    colour: '#00ff00',
+                    offset: '67%'
+                },
+                {
+                    colour: '#ffff00',
+                    offset: '84%'
+                },
+                {
+                    colour: '#ff0000',
                     offset: '100%'
                 }
             ];
         
         //  create a gradient within the svg element
+
+        gradient = CreateGradientElement(this.element, id);
+
+        //  set the gradient direction
+
+        SetGradientDirection(gradient, ['0', '0', '0', '100%']);
+
         //  populate the gradient with the required colours
 
-        FillGradient( CreateGradientElement(this.element, id), stops);
+        FillGradient(gradient, stops);
 
         //  return the gradient's id
 
         return id;
+    }
+
+
+    /**
+     * set the currently selected hue
+     * @param hue
+     */
+    setHue(hue: number)
+    {
+        //TODO  move the selection indicator to the current hue position
     }
 }

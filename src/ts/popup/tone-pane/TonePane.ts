@@ -1,8 +1,8 @@
 import {IOptions} from "picky";
 
-import {Find} from "../utils/dom/element/Find";
-import App from "../App";
-import Css from "../utils/dom/style/Css";
+import {Find} from "../../utils/dom/element/Find";
+import App from "../../App";
+import Css from "../../utils/dom/style/Css";
 
 export class TonePane
 {
@@ -57,5 +57,15 @@ export class TonePane
         //  return the new element
 
         return element;
+    }
+
+
+    /**
+     * set the currently selected hue
+     * @param hue
+     */
+    setHue(hue: number)
+    {
+
     }
 }
