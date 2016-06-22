@@ -73,9 +73,12 @@ export class Popup
         
         Css.addClass(element, 'picky-popup');
 
-        //  place our new element on the page
+        //  place our new element on the page;
+        //  this code inserts it after the toggle element
 
-        App.toggle.element.appendChild(element);
+        // App.toggle.element.appen(element);
+
+        App.toggle.element.parentNode.insertBefore(element, App.toggle.element.nextSibling);
         
         return element;
     }

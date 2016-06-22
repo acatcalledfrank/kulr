@@ -5,6 +5,7 @@ import {IOptions} from 'picky';
 import {Popup} from "./popup/Popup";
 import {Toggle} from "./toggle/Toggle";
 import App from "./App";
+import {PositionTracker} from "./popup/PositionTracker";
 
 export class ColourPicker
 {
@@ -27,6 +28,7 @@ export class ColourPicker
         
         App.popup = new Popup(options);
         App.toggle = new Toggle(options);
+        App.positionTracker = new PositionTracker(options);
         
         //  initialise instances
         

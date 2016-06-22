@@ -1,4 +1,4 @@
-import {IOptions} from "picky";
+import {IOptions, IGradientStop} from "picky";
 
 import {Find} from "../../utils/dom/element/Find";
 import App from "../../App";
@@ -8,8 +8,7 @@ import SetGradientDirection from "../svg/SetGradientDirection";
 import FillGradient from "../svg/FillGradient";
 import CreateColourRect from "../svg/CreateColourRect";
 import UniqueId from '../../utils/UniqueId';
-import AddInteraction from './AddInteraction';
-import {IGradientStop} from "picky";
+import {Interactions} from './Interactions';
 
 export class HuePane
 {
@@ -37,7 +36,7 @@ export class HuePane
         
         //  add interaction listeners to the element
         
-        AddInteraction(this.element);
+        new Interactions(this.element).listen();
     }
 
 
@@ -72,19 +71,6 @@ export class HuePane
         //  return the new element
         
         return element;
-    }
-
-
-    /**
-     * populate the colour fill within the element
-     */
-    populateColours()
-    {
-        return this.drawGradient();
-
-        //  add gradient fill to element
-
-        //this.element.setAttribute('fill', 'url(#' + gradient_id + ')');
     }
 
 

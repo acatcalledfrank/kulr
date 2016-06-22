@@ -26,7 +26,7 @@ var Popup = (function () {
         var element;
         element = document.createElement('div');
         Css_1.default.addClass(element, 'picky-popup');
-        App_1.default.toggle.element.appendChild(element);
+        App_1.default.toggle.element.parentNode.insertBefore(element, App_1.default.toggle.element.nextSibling);
         return element;
     };
     Popup.prototype.toggleVisibility = function () {

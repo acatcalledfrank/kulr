@@ -56,8 +56,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(15);
+	var Toggle_1 = __webpack_require__(19);
 	var App_1 = __webpack_require__(4);
+	var PositionTracker_1 = __webpack_require__(20);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
 	        console.log('new picky!');
@@ -66,6 +67,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ColourPicker.prototype.setup = function (options) {
 	        App_1.default.popup = new Popup_1.Popup(options);
 	        App_1.default.toggle = new Toggle_1.Toggle(options);
+	        App_1.default.positionTracker = new PositionTracker_1.PositionTracker(options);
 	        App_1.default.toggle.setup();
 	        App_1.default.popup.setup();
 	    };
@@ -85,7 +87,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
 	var HuePane_1 = __webpack_require__(6);
-	var TonePane_1 = __webpack_require__(14);
+	var TonePane_1 = __webpack_require__(16);
 	var Popup = (function () {
 	    function Popup(options) {
 	        this.options = options;
@@ -108,7 +110,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        var element;
 	        element = document.createElement('div');
 	        Css_1.default.addClass(element, 'picky-popup');
-	        App_1.default.toggle.element.appendChild(element);
+	        App_1.default.toggle.element.parentNode.insertBefore(element, App_1.default.toggle.element.nextSibling);
 	        return element;
 	    };
 	    Popup.prototype.toggleVisibility = function () {
@@ -243,7 +245,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var FillGradient_1 = __webpack_require__(9);
 	var CreateColourRect_1 = __webpack_require__(10);
 	var UniqueId_1 = __webpack_require__(11);
-	var AddInteraction_1 = __webpack_require__(12);
+	var Interactions_1 = __webpack_require__(12);
 	var HuePane = (function () {
 	    function HuePane(options) {
 	        this.options = options;
@@ -251,7 +253,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    HuePane.prototype.setup = function () {
 	        this.element = this.getElement();
 	        CreateColourRect_1.default(this.element, this.drawGradient());
-	        AddInteraction_1.default(this.element);
+	        new Interactions_1.Interactions(this.element).listen();
 	    };
 	    HuePane.prototype.getElement = function () {
 	        return this.createElement();
@@ -262,9 +264,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        Css_1.default.addClass(element, 'picky-hue-pane');
 	        App_1.default.popup.element.appendChild(element);
 	        return element;
-	    };
-	    HuePane.prototype.populateColours = function () {
-	        return this.drawGradient();
 	    };
 	    HuePane.prototype.drawGradient = function () {
 	        var id, gradient, stops;
@@ -304,6 +303,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        SetGradientDirection_1.default(gradient, ['0', '0', '0', '100%']);
 	        FillGradient_1.default(gradient, stops);
 	        return id;
+	    };
+	    HuePane.prototype.setHue = function (hue) {
 	    };
 	    return HuePane;
 	}());
@@ -360,6 +361,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        stop = document.createElementNS(svg_ns, 'stop');
 	        stop.setAttribute('offset', stops[i].offset);
 	        stop.setAttribute('stop-color', stops[i].colour);
+	        stop.setAttribute('stop-opacity', stops[i].opacity || '1');
 	        gradient.appendChild(stop);
 	    }
 	};
@@ -391,7 +393,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = function (prefix) {
 	    if (prefix === void 0) { prefix = ''; }
-	    return prefix + new Date().getTime();
+	    return prefix + Math.random();
 	};
 
 
@@ -400,51 +402,144 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var GetColourAtCursor_1 = __webpack_require__(13);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (element) {
-	    element.addEventListener('click', GetColourAtCursor_1.default);
-	};
+	var GetHueAtCursor_1 = __webpack_require__(13);
+	var PreventSelections_1 = __webpack_require__(15);
+	var Interactions = (function () {
+	    function Interactions(element) {
+	        var _this = this;
+	        this.element = element;
+	        this.onMouseDown = function () {
+	            PreventSelections_1.default();
+	            document.addEventListener('mousemove', _this.onMouseMove);
+	            document.addEventListener('mouseup', _this.onMouseUp);
+	        };
+	        this.onMouseMove = function (event) {
+	            GetHueAtCursor_1.default(_this.element, event);
+	        };
+	        this.onMouseUp = function () {
+	            PreventSelections_1.default(false);
+	            document.removeEventListener('mousemove', _this.onMouseMove);
+	            document.removeEventListener('mouseup', _this.onMouseUp);
+	        };
+	    }
+	    Interactions.prototype.listen = function () {
+	        this.element.addEventListener('mousedown', this.onMouseDown);
+	    };
+	    return Interactions;
+	}());
+	exports.Interactions = Interactions;
 
 
 /***/ },
 /* 13 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var App_1 = __webpack_require__(4);
+	var Clamp_1 = __webpack_require__(14);
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (event) {
-	    console.log('getting colour', event);
-	    var client_rect, mouse_offset;
-	    client_rect = event.target.getBoundingClientRect();
+	exports.default = function (target, event) {
+	    var client_rect, mouse_offset, hue;
+	    client_rect = target.getBoundingClientRect();
 	    mouse_offset = event.pageY - client_rect.top;
-	    console.log(mouse_offset);
+	    mouse_offset = Clamp_1.default(mouse_offset, 0, client_rect.height);
+	    hue = 360 - (mouse_offset / client_rect.height) * 360;
+	    App_1.default.huePane.setHue(hue);
+	    App_1.default.tonePane.setHue(hue);
 	};
 
 
 /***/ },
 /* 14 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (n, min, max) {
+	    return Math.max(min, Math.min(n, max));
+	};
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (preventSelections) {
+	    if (preventSelections === void 0) { preventSelections = true; }
+	    var styles, value;
+	    styles =
+	        [
+	            'webkitTouchCallout',
+	            'webkitUserSelect',
+	            'mozUserSelect',
+	            'msUserSelect',
+	            'userSelect'
+	        ];
+	    value = preventSelections === true ? 'none' : '';
+	    for (var i = 0; i < styles.length; i++) {
+	        document.body.style[styles[i]] = value;
+	    }
+	};
+
+
+/***/ },
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
+	var CreateGradientElement_1 = __webpack_require__(7);
+	var SetGradientDirection_1 = __webpack_require__(8);
+	var FillGradient_1 = __webpack_require__(9);
+	var CreateColourRect_1 = __webpack_require__(10);
+	var UniqueId_1 = __webpack_require__(11);
+	var AddInteraction_1 = __webpack_require__(17);
 	var TonePane = (function () {
 	    function TonePane(options) {
 	        this.options = options;
 	    }
 	    TonePane.prototype.setup = function () {
 	        this.element = this.getElement();
+	        CreateColourRect_1.default(this.element, this.drawGradient('#ffffff', ['0', '0', '100%', '0']));
+	        CreateColourRect_1.default(this.element, this.drawGradient('#000000', ['0', '100%', '0', '0']));
+	        AddInteraction_1.default(this.element);
 	    };
 	    TonePane.prototype.getElement = function () {
 	        return this.createElement();
 	    };
 	    TonePane.prototype.createElement = function () {
 	        var element;
-	        element = document.createElement('svg');
+	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	        Css_1.default.addClass(element, 'picky-tone-pane');
 	        App_1.default.popup.element.appendChild(element);
 	        return element;
+	    };
+	    TonePane.prototype.drawGradient = function (fill, direction) {
+	        var id, gradient, stops;
+	        id = UniqueId_1.default('picky-svg-gradient-');
+	        stops =
+	            [
+	                {
+	                    colour: fill,
+	                    offset: '0%'
+	                },
+	                {
+	                    colour: fill,
+	                    opacity: '0',
+	                    offset: '100%'
+	                }
+	            ];
+	        gradient = CreateGradientElement_1.default(this.element, id);
+	        SetGradientDirection_1.default(gradient, direction);
+	        FillGradient_1.default(gradient, stops);
+	        return id;
+	    };
+	    TonePane.prototype.setHue = function (hue) {
+	        console.log('settin hude');
+	        this.element.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
 	    };
 	    return TonePane;
 	}());
@@ -452,7 +547,30 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var GetColourAtCursor_1 = __webpack_require__(18);
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (element) {
+	    element.addEventListener('click', GetColourAtCursor_1.default);
+	};
+
+
+/***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = function (event) {
+	    console.log('getting colour', event);
+	};
+
+
+/***/ },
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -475,6 +593,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return Toggle;
 	}());
 	exports.Toggle = Toggle;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var PositionTracker = (function () {
+	    function PositionTracker(options) {
+	        var _this = this;
+	        this.trackPosition = function (event) {
+	        };
+	        this.stopTracking = function () {
+	            console.log('mouse up');
+	            document.addEventListener('mousemove', _this.trackFunc);
+	            document.removeEventListener('mouseup', _this.stopTracking);
+	        };
+	    }
+	    PositionTracker.prototype.startTracking = function (event, trackFunc) {
+	        this.target = event.target;
+	        this.trackFunc = trackFunc;
+	        document.addEventListener('mousemove', this.trackFunc);
+	        document.addEventListener('mouseup', this.stopTracking);
+	    };
+	    return PositionTracker;
+	}());
+	exports.PositionTracker = PositionTracker;
 
 
 /***/ }

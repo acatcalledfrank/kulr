@@ -34,7 +34,7 @@ declare module 'picky'
     
     export class TonePane
     {
-        element: HTMLElement;
+        element: SVGSVGElement;
 
         setup() : void;
         setHue(hue: number) : void;
@@ -49,5 +49,12 @@ declare module 'picky'
     {
         colour: string;
         offset: string;
+        opacity?: string;
+    }
+    
+    export class PositionTracker
+    {
+        startTracking(event: MouseEvent, trackFunc: (event: MouseEvent) => void) : void;
+        stopTracking() : void;
     }
 }

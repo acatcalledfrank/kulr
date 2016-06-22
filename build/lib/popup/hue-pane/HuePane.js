@@ -6,7 +6,7 @@ var SetGradientDirection_1 = require("../svg/SetGradientDirection");
 var FillGradient_1 = require("../svg/FillGradient");
 var CreateColourRect_1 = require("../svg/CreateColourRect");
 var UniqueId_1 = require('../../utils/UniqueId');
-var AddInteraction_1 = require('./AddInteraction');
+var Interactions_1 = require('./Interactions');
 var HuePane = (function () {
     function HuePane(options) {
         this.options = options;
@@ -14,7 +14,7 @@ var HuePane = (function () {
     HuePane.prototype.setup = function () {
         this.element = this.getElement();
         CreateColourRect_1.default(this.element, this.drawGradient());
-        AddInteraction_1.default(this.element);
+        new Interactions_1.Interactions(this.element).listen();
     };
     HuePane.prototype.getElement = function () {
         return this.createElement();
@@ -25,9 +25,6 @@ var HuePane = (function () {
         Css_1.default.addClass(element, 'picky-hue-pane');
         App_1.default.popup.element.appendChild(element);
         return element;
-    };
-    HuePane.prototype.populateColours = function () {
-        return this.drawGradient();
     };
     HuePane.prototype.drawGradient = function () {
         var id, gradient, stops;
@@ -67,6 +64,8 @@ var HuePane = (function () {
         SetGradientDirection_1.default(gradient, ['0', '0', '0', '100%']);
         FillGradient_1.default(gradient, stops);
         return id;
+    };
+    HuePane.prototype.setHue = function (hue) {
     };
     return HuePane;
 }());

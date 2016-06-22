@@ -7,6 +7,7 @@ export default class App
     static swatch: picky.Swatch;
     static huePane: picky.HuePane;
     static tonePane: picky.TonePane;
+    static positionTracker: picky.PositionTracker;
     
     constructor()
     {
