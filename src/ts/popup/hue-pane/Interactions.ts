@@ -1,7 +1,6 @@
-import GetHueAtCursor from './GetHueAtCursor';
-import PreventSelections from '../../utils/dom/style/PreventSelections';
-
 import App from "../../App";
+import {getHueAtCursor} from "./GetHueAtCursor";
+import {preventSelections} from "../../utils/dom/style/PreventSelections";
 
 export class Interactions
 {
@@ -27,11 +26,11 @@ export class Interactions
      */
     onMouseDown = () =>
     {
-        PreventSelections();
+        preventSelections();
 
         document.addEventListener('mousemove', this.onMouseMove);
         document.addEventListener('mouseup', this.onMouseUp);
-    }
+    };
 
 
     /**
@@ -40,11 +39,21 @@ export class Interactions
      */
     onMouseMove = (event: MouseEvent) =>
     {
+        var hue: number;
+        
         //  get the current hue,
         //  based on the user's mouse position
         
-        GetHueAtCursor(this.element, event);
-    }
+        hue = getHueAtCursor(this.element, event);
+
+        //  set the new hue
+
+        App.palette.setHue(hue);
+
+        //  dispatch a colour update event
+
+        App.events.updateColour.dispatch();
+    };
 
 
     /**
@@ -53,24 +62,9 @@ export class Interactions
      */
     onMouseUp = () =>
     {
-        PreventSelections(false);
+        preventSelections(false);
 
         document.removeEventListener('mousemove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);
-    }
+    };
 }
-    
-
-
-
-// export default (element: SVGSVGElement) =>
-// {
-//     //  on click, select the colour under the cursor
-//
-//     // element.addEventListener('click', GetHueAtCursor);
-//
-//     element.addEventListener('mousedown', (event: MouseEvent) => 
-//     {
-//         //App.positionTracker.startTracking(event, GetHueAtCursor)
-//     });
-// }

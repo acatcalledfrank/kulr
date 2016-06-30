@@ -1,20 +1,24 @@
 import {IOptions, IGradientStop} from "picky";
 
-import {Find} from "../../utils/dom/element/Find";
+import {} from "../../utils/dom/element/Find";
 import App from "../../App";
 import Css from "../../utils/dom/style/Css";
 import CreateGradientElement from "../svg/CreateGradientElement";
 import SetGradientDirection from "../svg/SetGradientDirection";
 import FillGradient from "../svg/FillGradient";
 import CreateColourRect from "../svg/CreateColourRect";
-import UniqueId from '../../utils/UniqueId';
 import {Interactions} from './Interactions';
+import {getUniqueId} from "../../utils/UniqueId";
+import {IHSL} from "picky";
+import {ColourPalette} from "picky";
+import {findOne} from "../../utils/dom/element/Find";
+import {fillContainer} from "../../utils/dom/style/FillContainer";
 
 export class TonePane
 {
     element: SVGSVGElement;
 
-    constructor(private options: IOptions)
+    constructor(private iid:string, private options: IOptions)
     {
 
     }
@@ -28,7 +32,7 @@ export class TonePane
     {
         //  get the specified element for the toggle button
 
-        this.element = this.getElement();
+        this.element = this.createGradientElement();
 
         //  create rectangle element and fill with the gradient
 
@@ -37,23 +41,18 @@ export class TonePane
 
         //  add interaction listeners to the element
 
-        new Interactions(this.element).listen();
+        new Interactions(this.iid, this.element).listen();
+
+        //  listen for signals
+
+        App.events.updateColour.add(this.onColourSet);
     }
 
 
     /**
-     * get the element for the toggle
+     * create the element for the tone pane
      */
-    getElement()
-    {
-        return this.createElement();
-    }
-
-
-    /**
-     * create the element for the hue pane
-     */
-    createElement() : SVGSVGElement
+    createGradientElement() : SVGSVGElement
     {
         var element: SVGSVGElement;
 
@@ -63,15 +62,28 @@ export class TonePane
 
         //  add the relevant class
 
-        Css.addClass(element, 'picky-tone-pane');
+        Css.addClass(element, 'picky-tone-pane__palette');
+        
+        //  make the element fill its container
+
+        fillContainer(element);
 
         //  append the new element to the popup element
 
-        App.popup.element.appendChild(element);
+        this.getContainer().appendChild(element);
 
         //  return the new element
 
         return element;
+    }
+
+
+    /**
+     * find the container element for the gradient
+     */
+    getContainer() : HTMLElement
+    {
+        return findOne(this.options.elements.tone_pane);
     }
 
 
@@ -86,7 +98,7 @@ export class TonePane
 
         //  create a unique id for the gradient
 
-        id = UniqueId('picky-svg-gradient-');
+        id = getUniqueId('picky-svg-gradient-');
 
         //  set the colours we're going to use in the gradient
 
@@ -122,13 +134,57 @@ export class TonePane
 
 
     /**
-     * set the currently selected hue
+     * when the active colour is changed,
+     * reflect that colour in the UI
+     */
+    onColourSet = () =>
+    {
+        //  the hue is provided
+
+        this.setHue(App.palette.hsl.hue * 360);
+        
+        //if (colour.hue) this.setHue(colour.hue);
+        // if (colour.saturation) this.setSaturation(colour.saturation);
+        // if (colour.lightness) this.setLightness(colour.lightness);
+    };
+
+
+    /**
+     * set the visible hue in the tone pane element
      * @param hue
      */
     setHue(hue: number)
     {
-        console.log('settin hude')
-
         this.element.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
+    }
+
+
+    /**
+     * set the current saturation
+     * @param saturation
+     * @param lightness
+     */
+    setSaturation(saturation: number)
+    {
+        
+    }
+
+
+    /**
+     * set the current lightness
+     * @param lightness
+     */
+    setLightness(lightness: number)
+    {
+        
+    }
+
+
+    /**
+     * combine H, S and L into a single colour
+     */
+    getCombinedHSLColour()
+    {
+        
     }
 }

@@ -4,20 +4,27 @@ var App_1 = require("../App");
 var Css_1 = require("../utils/dom/style/Css");
 var HuePane_1 = require("./hue-pane/HuePane");
 var TonePane_1 = require("./tone-pane/TonePane");
+var Swatch_1 = require("./swatch/Swatch");
+var TextInput_1 = require("./text-input/TextInput");
 var Popup = (function () {
-    function Popup(options) {
+    function Popup(iid, options) {
+        this.iid = iid;
         this.options = options;
     }
     Popup.prototype.setup = function () {
         this.element = this.getElement();
-        App_1.default.tonePane = new TonePane_1.TonePane(this.options);
-        App_1.default.huePane = new HuePane_1.HuePane(this.options);
+        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
+        App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
+        App_1.default.tonePane = new TonePane_1.TonePane(this.iid, this.options);
+        App_1.default.huePane = new HuePane_1.HuePane(this.iid, this.options);
+        App_1.default.swatch.setup();
+        App_1.default.textInput.setup();
         App_1.default.tonePane.setup();
         App_1.default.huePane.setup();
     };
     Popup.prototype.getElement = function () {
         var element;
-        element = Find_1.Find.one(this.options.elements.popup);
+        element = Find_1.findOne(this.options.elements.popup);
         if (element)
             return element;
         return this.createElement();

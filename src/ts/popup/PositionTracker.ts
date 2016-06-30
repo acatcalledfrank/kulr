@@ -5,7 +5,7 @@ export class PositionTracker
     target: HTMLElement;
     trackFunc: (event: MouseEvent) => void;
     
-    constructor(options: IOptions)
+    constructor(private iid:string, options: IOptions)
     {
 
     }

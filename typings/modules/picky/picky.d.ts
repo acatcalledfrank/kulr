@@ -6,7 +6,18 @@ declare module 'picky'
             {
                 toggle: HTMLElement | string;
                 popup: HTMLElement | string;
+                tone_pane: HTMLElement | string;
+                hue_pane: HTMLElement | string;
+                swatch: HTMLElement | string;
+                text_input: HTMLElement | string;
             }
+    }
+
+    export class Events
+    {
+        updateColour: Signal;
+
+        setup() : void;
     }
     
     export class Toggle
@@ -38,11 +49,40 @@ declare module 'picky'
 
         setup() : void;
         setHue(hue: number) : void;
+        setSaturation(saturation: number) : void;
+        setLightness(lightness: number) : void;
+    }
+    
+    export class ColourMixer
+    {
+        
     }
     
     export class Swatch
     {
-        
+        setup() : void;
+    }
+    
+    export class TextInput
+    {
+        setup() : void;
+    }
+    
+    export class ColourPalette
+    {
+        hsl: IHSL;
+        rgb: IRGB;
+
+        setup() : void;
+
+        setHue(hue: number) : void;
+        setSaturation(saturation: number) : void;
+        setLightness(lightness: number) : void;
+        setRgb(rgb: IRGB | string) : void;
+        getHsl(): IHSL;
+        getRgb(): IRGB;
+        getHexString(): string;
+        setHexString(hex: string) : void;
     }
     
     export interface IGradientStop
@@ -56,5 +96,27 @@ declare module 'picky'
     {
         startTracking(event: MouseEvent, trackFunc: (event: MouseEvent) => void) : void;
         stopTracking() : void;
+    }
+    
+    // export interface ICombinedColour
+    // {
+    //     hue: number;
+    //     saturation?: number;
+    //     lightness?: number;
+    //     rgb?: string;
+    // }
+    
+    export interface IHSL
+    {
+        hue: number;
+        saturation: number;
+        lightness: number;
+    }
+    
+    export interface IRGB
+    {
+        r: number;
+        g: number;
+        b: number;
     }
 }

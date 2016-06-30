@@ -56,18 +56,24 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(19);
+	var Toggle_1 = __webpack_require__(23);
 	var App_1 = __webpack_require__(4);
-	var PositionTracker_1 = __webpack_require__(20);
+	var UniqueId_1 = __webpack_require__(15);
+	var ColourPalette_1 = __webpack_require__(24);
+	var Events_1 = __webpack_require__(29);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
 	        console.log('new picky!');
 	        this.setup(options);
 	    }
 	    ColourPicker.prototype.setup = function (options) {
-	        App_1.default.popup = new Popup_1.Popup(options);
-	        App_1.default.toggle = new Toggle_1.Toggle(options);
-	        App_1.default.positionTracker = new PositionTracker_1.PositionTracker(options);
+	        this.iid = UniqueId_1.getUniqueId('picky-');
+	        App_1.default.events = new Events_1.Events(this.iid, options);
+	        App_1.default.palette = new ColourPalette_1.ColourPalette(this.iid, options);
+	        App_1.default.popup = new Popup_1.Popup(this.iid, options);
+	        App_1.default.toggle = new Toggle_1.Toggle(this.iid, options);
+	        App_1.default.events.setup();
+	        App_1.default.palette.setup();
 	        App_1.default.toggle.setup();
 	        App_1.default.popup.setup();
 	    };
@@ -87,21 +93,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(5);
 	var HuePane_1 = __webpack_require__(6);
-	var TonePane_1 = __webpack_require__(16);
+	var TonePane_1 = __webpack_require__(17);
+	var Swatch_1 = __webpack_require__(20);
+	var TextInput_1 = __webpack_require__(21);
 	var Popup = (function () {
-	    function Popup(options) {
+	    function Popup(iid, options) {
+	        this.iid = iid;
 	        this.options = options;
 	    }
 	    Popup.prototype.setup = function () {
 	        this.element = this.getElement();
-	        App_1.default.tonePane = new TonePane_1.TonePane(this.options);
-	        App_1.default.huePane = new HuePane_1.HuePane(this.options);
+	        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
+	        App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
+	        App_1.default.tonePane = new TonePane_1.TonePane(this.iid, this.options);
+	        App_1.default.huePane = new HuePane_1.HuePane(this.iid, this.options);
+	        App_1.default.swatch.setup();
+	        App_1.default.textInput.setup();
 	        App_1.default.tonePane.setup();
 	        App_1.default.huePane.setup();
 	    };
 	    Popup.prototype.getElement = function () {
 	        var element;
-	        element = Find_1.Find.one(this.options.elements.popup);
+	        element = Find_1.findOne(this.options.elements.popup);
 	        if (element)
 	            return element;
 	        return this.createElement();
@@ -127,36 +140,34 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var StringUtils_1 = __webpack_require__(3);
-	var Find = (function () {
-	    function Find() {
-	    }
-	    Find.any = function (selector) {
-	        if (!selector)
-	            return null;
-	        if (~selector.indexOf('#'))
-	            return Find.byId(selector);
-	        if (~selector.indexOf('.'))
-	            return Find.byClass(selector);
+	function findAny(selector) {
+	    if (!selector)
 	        return null;
-	    };
-	    Find.one = function (selector) {
-	        var result;
-	        result = Find.any(selector);
-	        if (!result)
-	            return null;
-	        if (result instanceof HTMLElement)
-	            return result;
-	        return result.item(0);
-	    };
-	    Find.byClass = function (className) {
-	        return document.getElementsByClassName(StringUtils_1.StringUtils.trim(className, 1));
-	    };
-	    Find.byId = function (id) {
-	        return document.getElementById(StringUtils_1.StringUtils.trim(id, 1));
-	    };
-	    return Find;
-	}());
-	exports.Find = Find;
+	    if (~selector.indexOf('#'))
+	        return findById(selector);
+	    if (~selector.indexOf('.'))
+	        return findByClass(selector);
+	    return null;
+	}
+	exports.findAny = findAny;
+	function findOne(selector) {
+	    var result;
+	    result = findAny(selector);
+	    if (!result)
+	        return null;
+	    if (result instanceof HTMLElement)
+	        return result;
+	    return result.item(0);
+	}
+	exports.findOne = findOne;
+	function findByClass(className) {
+	    return document.getElementsByClassName(StringUtils_1.trimString(className, 1));
+	}
+	exports.findByClass = findByClass;
+	function findById(id) {
+	    return document.getElementById(StringUtils_1.trimString(id, 1));
+	}
+	exports.findById = findById;
 
 
 /***/ },
@@ -164,22 +175,27 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-	var StringUtils = (function () {
-	    function StringUtils() {
+	function trimString(input, start, end) {
+	    var output, split;
+	    output = input.trim();
+	    if (!start && !end)
+	        return output;
+	    split = output.split('');
+	    split.splice(0, start);
+	    split.splice(-1, end);
+	    return split.join('');
+	}
+	exports.trimString = trimString;
+	function prefixString(input, prefix, length) {
+	    if (length === void 0) { length = input.length + 1; }
+	    var characters;
+	    characters = input.split('');
+	    while (characters.length < length) {
+	        characters.unshift(prefix);
 	    }
-	    StringUtils.trim = function (input, start, end) {
-	        var output, split;
-	        output = input.trim();
-	        if (!start && !end)
-	            return output;
-	        split = output.split('');
-	        split.splice(0, start);
-	        split.splice(-1, end);
-	        return split.join('');
-	    };
-	    return StringUtils;
-	}());
-	exports.StringUtils = StringUtils;
+	    return characters.join('');
+	}
+	exports.prefixString = prefixString;
 
 
 /***/ },
@@ -238,36 +254,39 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var App_1 = __webpack_require__(4);
+	var Find_1 = __webpack_require__(2);
 	var Css_1 = __webpack_require__(5);
 	var CreateGradientElement_1 = __webpack_require__(7);
 	var SetGradientDirection_1 = __webpack_require__(8);
 	var FillGradient_1 = __webpack_require__(9);
 	var CreateColourRect_1 = __webpack_require__(10);
-	var UniqueId_1 = __webpack_require__(11);
-	var Interactions_1 = __webpack_require__(12);
+	var Interactions_1 = __webpack_require__(11);
+	var UniqueId_1 = __webpack_require__(15);
+	var FillContainer_1 = __webpack_require__(16);
 	var HuePane = (function () {
-	    function HuePane(options) {
+	    function HuePane(iid, options) {
+	        this.iid = iid;
 	        this.options = options;
 	    }
 	    HuePane.prototype.setup = function () {
-	        this.element = this.getElement();
+	        this.element = this.createGradientElement();
 	        CreateColourRect_1.default(this.element, this.drawGradient());
 	        new Interactions_1.Interactions(this.element).listen();
 	    };
-	    HuePane.prototype.getElement = function () {
-	        return this.createElement();
-	    };
-	    HuePane.prototype.createElement = function () {
+	    HuePane.prototype.createGradientElement = function () {
 	        var element;
 	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        Css_1.default.addClass(element, 'picky-hue-pane');
-	        App_1.default.popup.element.appendChild(element);
+	        Css_1.default.addClass(element, 'picky-hue-pane__palette');
+	        FillContainer_1.fillContainer(element);
+	        this.getContainer().appendChild(element);
 	        return element;
+	    };
+	    HuePane.prototype.getContainer = function () {
+	        return Find_1.findOne(this.options.elements.hue_pane);
 	    };
 	    HuePane.prototype.drawGradient = function () {
 	        var id, gradient, stops;
-	        id = UniqueId_1.default('picky-svg-gradient-');
+	        id = UniqueId_1.getUniqueId('picky-svg-gradient-');
 	        stops =
 	            [
 	                {
@@ -387,37 +406,29 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 11 */
-/***/ function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (prefix) {
-	    if (prefix === void 0) { prefix = ''; }
-	    return prefix + Math.random();
-	};
-
-
-/***/ },
-/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var GetHueAtCursor_1 = __webpack_require__(13);
-	var PreventSelections_1 = __webpack_require__(15);
+	var App_1 = __webpack_require__(4);
+	var GetHueAtCursor_1 = __webpack_require__(12);
+	var PreventSelections_1 = __webpack_require__(14);
 	var Interactions = (function () {
 	    function Interactions(element) {
 	        var _this = this;
 	        this.element = element;
 	        this.onMouseDown = function () {
-	            PreventSelections_1.default();
+	            PreventSelections_1.preventSelections();
 	            document.addEventListener('mousemove', _this.onMouseMove);
 	            document.addEventListener('mouseup', _this.onMouseUp);
 	        };
 	        this.onMouseMove = function (event) {
-	            GetHueAtCursor_1.default(_this.element, event);
+	            var hue;
+	            hue = GetHueAtCursor_1.getHueAtCursor(_this.element, event);
+	            App_1.default.palette.setHue(hue);
+	            App_1.default.events.updateColour.dispatch();
 	        };
 	        this.onMouseUp = function () {
-	            PreventSelections_1.default(false);
+	            PreventSelections_1.preventSelections(false);
 	            document.removeEventListener('mousemove', _this.onMouseMove);
 	            document.removeEventListener('mouseup', _this.onMouseUp);
 	        };
@@ -431,22 +442,31 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var App_1 = __webpack_require__(4);
-	var Clamp_1 = __webpack_require__(14);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (target, event) {
+	var Clamp_1 = __webpack_require__(13);
+	function getHueAtCursor(target, event) {
 	    var client_rect, mouse_offset, hue;
 	    client_rect = target.getBoundingClientRect();
 	    mouse_offset = event.pageY - client_rect.top;
-	    mouse_offset = Clamp_1.default(mouse_offset, 0, client_rect.height);
-	    hue = 360 - (mouse_offset / client_rect.height) * 360;
-	    App_1.default.huePane.setHue(hue);
-	    App_1.default.tonePane.setHue(hue);
-	};
+	    mouse_offset = Clamp_1.clamp(mouse_offset, 0, client_rect.height);
+	    hue = 1 - (mouse_offset / client_rect.height);
+	    return hue;
+	}
+	exports.getHueAtCursor = getHueAtCursor;
+
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function clamp(n, min, max) {
+	    return Math.max(min, Math.min(n, max));
+	}
+	exports.clamp = clamp;
 
 
 /***/ },
@@ -454,19 +474,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (n, min, max) {
-	    return Math.max(min, Math.min(n, max));
-	};
-
-
-/***/ },
-/* 15 */
-/***/ function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (preventSelections) {
+	function preventSelections(preventSelections) {
 	    if (preventSelections === void 0) { preventSelections = true; }
 	    var styles, value;
 	    styles =
@@ -481,11 +489,39 @@ return /******/ (function(modules) { // webpackBootstrap
 	    for (var i = 0; i < styles.length; i++) {
 	        document.body.style[styles[i]] = value;
 	    }
-	};
+	}
+	exports.preventSelections = preventSelections;
+
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function getUniqueId(prefix) {
+	    if (prefix === void 0) { prefix = ''; }
+	    return prefix + Math.random() * 10;
+	}
+	exports.getUniqueId = getUniqueId;
 
 
 /***/ },
 /* 16 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function fillContainer(element) {
+	    element.style.position = 'absolute';
+	    element.style.top = '0px';
+	    element.style.left = '0px';
+	    element.style.width = '100%';
+	    element.style.height = '100%';
+	}
+	exports.fillContainer = fillContainer;
+
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -495,31 +531,40 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SetGradientDirection_1 = __webpack_require__(8);
 	var FillGradient_1 = __webpack_require__(9);
 	var CreateColourRect_1 = __webpack_require__(10);
-	var UniqueId_1 = __webpack_require__(11);
-	var AddInteraction_1 = __webpack_require__(17);
+	var Interactions_1 = __webpack_require__(18);
+	var UniqueId_1 = __webpack_require__(15);
+	var Find_1 = __webpack_require__(2);
+	var FillContainer_1 = __webpack_require__(16);
 	var TonePane = (function () {
-	    function TonePane(options) {
+	    function TonePane(iid, options) {
+	        var _this = this;
+	        this.iid = iid;
 	        this.options = options;
+	        this.onColourSet = function () {
+	            _this.setHue(App_1.default.palette.hsl.hue * 360);
+	        };
 	    }
 	    TonePane.prototype.setup = function () {
-	        this.element = this.getElement();
+	        this.element = this.createGradientElement();
 	        CreateColourRect_1.default(this.element, this.drawGradient('#ffffff', ['0', '0', '100%', '0']));
 	        CreateColourRect_1.default(this.element, this.drawGradient('#000000', ['0', '100%', '0', '0']));
-	        AddInteraction_1.default(this.element);
+	        new Interactions_1.Interactions(this.iid, this.element).listen();
+	        App_1.default.events.updateColour.add(this.onColourSet);
 	    };
-	    TonePane.prototype.getElement = function () {
-	        return this.createElement();
-	    };
-	    TonePane.prototype.createElement = function () {
+	    TonePane.prototype.createGradientElement = function () {
 	        var element;
 	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        Css_1.default.addClass(element, 'picky-tone-pane');
-	        App_1.default.popup.element.appendChild(element);
+	        Css_1.default.addClass(element, 'picky-tone-pane__palette');
+	        FillContainer_1.fillContainer(element);
+	        this.getContainer().appendChild(element);
 	        return element;
+	    };
+	    TonePane.prototype.getContainer = function () {
+	        return Find_1.findOne(this.options.elements.tone_pane);
 	    };
 	    TonePane.prototype.drawGradient = function (fill, direction) {
 	        var id, gradient, stops;
-	        id = UniqueId_1.default('picky-svg-gradient-');
+	        id = UniqueId_1.getUniqueId('picky-svg-gradient-');
 	        stops =
 	            [
 	                {
@@ -538,8 +583,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return id;
 	    };
 	    TonePane.prototype.setHue = function (hue) {
-	        console.log('settin hude');
 	        this.element.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
+	    };
+	    TonePane.prototype.setSaturation = function (saturation) {
+	    };
+	    TonePane.prototype.setLightness = function (lightness) {
+	    };
+	    TonePane.prototype.getCombinedHSLColour = function () {
 	    };
 	    return TonePane;
 	}());
@@ -547,26 +597,42 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var GetColourAtCursor_1 = __webpack_require__(18);
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (element) {
-	    element.addEventListener('click', GetColourAtCursor_1.default);
-	};
-
-
-/***/ },
-/* 18 */
-/***/ function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = function (event) {
-	    console.log('getting colour', event);
-	};
+	var App_1 = __webpack_require__(4);
+	var PreventSelections_1 = __webpack_require__(14);
+	var GetColourAtCursor_1 = __webpack_require__(19);
+	var Interactions = (function () {
+	    function Interactions(iid, element) {
+	        var _this = this;
+	        this.iid = iid;
+	        this.element = element;
+	        this.onMouseDown = function () {
+	            PreventSelections_1.preventSelections();
+	            document.addEventListener('mousemove', _this.onMouseMove);
+	            document.addEventListener('mouseup', _this.onMouseUp);
+	        };
+	        this.onMouseMove = function (event) {
+	            var hsl;
+	            hsl = GetColourAtCursor_1.getSaturationAndLightnessAtCursor(_this.element, event);
+	            App_1.default.palette.setSaturation(hsl.saturation);
+	            App_1.default.palette.setLightness(hsl.lightness);
+	            App_1.default.events.updateColour.dispatch();
+	        };
+	        this.onMouseUp = function () {
+	            PreventSelections_1.preventSelections(false);
+	            document.removeEventListener('mousemove', _this.onMouseMove);
+	            document.removeEventListener('mouseup', _this.onMouseUp);
+	        };
+	    }
+	    Interactions.prototype.listen = function () {
+	        this.element.addEventListener('mousedown', this.onMouseDown);
+	    };
+	    return Interactions;
+	}());
+	exports.Interactions = Interactions;
 
 
 /***/ },
@@ -574,10 +640,114 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var Clamp_1 = __webpack_require__(13);
+	function getSaturationAndLightnessAtCursor(target, event) {
+	    var client_rect, mouse_offset_x, mouse_offset_y, saturation, lightness;
+	    client_rect = target.getBoundingClientRect();
+	    mouse_offset_x = (event.pageX - client_rect.left) / client_rect.width;
+	    mouse_offset_y = (event.pageY - client_rect.top) / client_rect.height;
+	    saturation = Clamp_1.clamp(mouse_offset_x, 0, 1);
+	    lightness = 0.5 - Clamp_1.clamp(mouse_offset_y, 0, 1) * 0.5 + (0.5 - saturation * 0.5);
+	    return { hue: null, saturation: saturation, lightness: lightness };
+	}
+	exports.getSaturationAndLightnessAtCursor = getSaturationAndLightnessAtCursor;
+
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Find_1 = __webpack_require__(2);
+	var App_1 = __webpack_require__(4);
+	var Swatch = (function () {
+	    function Swatch(iid, options) {
+	        var _this = this;
+	        this.iid = iid;
+	        this.options = options;
+	        this.onColourSet = function () {
+	            _this.element.style.backgroundColor = App_1.default.palette.getHexString();
+	        };
+	    }
+	    Swatch.prototype.setup = function () {
+	        this.element = this.getElement();
+	        if (!this.element)
+	            return;
+	        App_1.default.events.updateColour.add(this.onColourSet);
+	    };
+	    Swatch.prototype.getElement = function () {
+	        return Find_1.findOne(this.options.elements.swatch);
+	    };
+	    return Swatch;
+	}());
+	exports.Swatch = Swatch;
+
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Find_1 = __webpack_require__(2);
+	var App_1 = __webpack_require__(4);
+	var Interaction_1 = __webpack_require__(22);
+	var TextInput = (function () {
+	    function TextInput(iid, options) {
+	        var _this = this;
+	        this.iid = iid;
+	        this.options = options;
+	        this.onColourSet = function () {
+	            _this.element.value = App_1.default.palette.getHexString();
+	        };
+	    }
+	    TextInput.prototype.setup = function () {
+	        this.element = this.getElement();
+	        if (!this.element)
+	            return;
+	        new Interaction_1.Interactions(this.element).listen();
+	        App_1.default.events.updateColour.add(this.onColourSet);
+	    };
+	    TextInput.prototype.getElement = function () {
+	        return Find_1.findOne(this.options.elements.text_input);
+	    };
+	    return TextInput;
+	}());
+	exports.TextInput = TextInput;
+
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var App_1 = __webpack_require__(4);
+	var Interactions = (function () {
+	    function Interactions(element) {
+	        var _this = this;
+	        this.element = element;
+	        this.onContentInput = function () {
+	            App_1.default.palette.setHexString(_this.element.value);
+	            App_1.default.events.updateColour.dispatch();
+	        };
+	    }
+	    Interactions.prototype.listen = function () {
+	        this.element.addEventListener('input', this.onContentInput);
+	    };
+	    return Interactions;
+	}());
+	exports.Interactions = Interactions;
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
 	var Toggle = (function () {
-	    function Toggle(options) {
+	    function Toggle(iid, options) {
+	        this.iid = iid;
 	        this.options = options;
 	    }
 	    Toggle.prototype.setup = function () {
@@ -585,7 +755,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.listen();
 	    };
 	    Toggle.prototype.getElement = function () {
-	        return Find_1.Find.one(this.options.elements.toggle);
+	        return Find_1.findOne(this.options.elements.toggle);
 	    };
 	    Toggle.prototype.listen = function () {
 	        this.element.addEventListener('click', function (event) { return App_1.default.popup.toggleVisibility(); });
@@ -596,30 +766,659 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var App_1 = __webpack_require__(4);
+	var HslToRgb_1 = __webpack_require__(25);
+	var RgbToString_1 = __webpack_require__(26);
+	var RgbToHsl_1 = __webpack_require__(28);
+	var ColourPalette = (function () {
+	    function ColourPalette(iid, options) {
+	        this.iid = iid;
+	        this.options = options;
+	    }
+	    ColourPalette.prototype.setup = function () {
+	        this.hsl = { hue: 0, saturation: 0, lightness: 0 };
+	        this.rgb = { r: 0, g: 0, b: 0 };
+	    };
+	    ColourPalette.prototype.setHue = function (hue) {
+	        this.hsl.hue = hue;
+	    };
+	    ColourPalette.prototype.setSaturation = function (saturation) {
+	        this.hsl.saturation = saturation;
+	    };
+	    ColourPalette.prototype.setLightness = function (lightness) {
+	        this.hsl.lightness = lightness;
+	    };
+	    ColourPalette.prototype.setRgb = function (rgb) {
+	    };
+	    ColourPalette.prototype.getHsl = function () {
+	        return this.hsl;
+	    };
+	    ColourPalette.prototype.getRgb = function () {
+	        return HslToRgb_1.hslToRgb(this.hsl.hue, this.hsl.saturation, this.hsl.lightness);
+	    };
+	    ColourPalette.prototype.getHexString = function () {
+	        return RgbToString_1.rgbToHex(this.getRgb());
+	    };
+	    ColourPalette.prototype.setHexString = function (hex) {
+	        var hsl;
+	        this.hsl = RgbToHsl_1.rgbToHsl(RgbToString_1.hexToRgb(hex));
+	        App_1.default.events.updateColour.dispatch();
+	    };
+	    return ColourPalette;
+	}());
+	exports.ColourPalette = ColourPalette;
+
+
+/***/ },
+/* 25 */
 /***/ function(module, exports) {
 
 	"use strict";
-	var PositionTracker = (function () {
-	    function PositionTracker(options) {
-	        var _this = this;
-	        this.trackPosition = function (event) {
-	        };
-	        this.stopTracking = function () {
-	            console.log('mouse up');
-	            document.addEventListener('mousemove', _this.trackFunc);
-	            document.removeEventListener('mouseup', _this.stopTracking);
+	function hslToRgb(h, s, l) {
+	    var r, g, b;
+	    if (s === 0) {
+	        r = g = b = l;
+	    }
+	    else {
+	        var q, p;
+	        q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+	        p = 2 * l - q;
+	        r = hueToRgb(p, q, h + 1 / 3);
+	        g = hueToRgb(p, q, h);
+	        b = hueToRgb(p, q, h - 1 / 3);
+	    }
+	    r = Math.round(r * 255);
+	    g = Math.round(g * 255);
+	    b = Math.round(b * 255);
+	    return { r: r, g: g, b: b };
+	}
+	exports.hslToRgb = hslToRgb;
+	function hueToRgb(p, q, t) {
+	    if (t < 0)
+	        t += 1;
+	    if (t > 1)
+	        t -= 1;
+	    if (t < 1 / 6)
+	        return p + (q - p) * 6 * t;
+	    if (t < 1 / 2)
+	        return q;
+	    if (t < 2 / 3)
+	        return p + (q - p) * (2 / 3 - t) * 6;
+	    return p;
+	}
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Validator_1 = __webpack_require__(27);
+	function rgbToHex(rgb) {
+	    var hex;
+	    hex = ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
+	    return '#' + hex;
+	}
+	exports.rgbToHex = rgbToHex;
+	function hexToRgb(hex) {
+	    var bigint, r, g, b;
+	    hex = Validator_1.dehashString(expandShortHexCode(hex));
+	    bigint = parseInt(hex, 16);
+	    r = (bigint >> 16) & 255;
+	    g = (bigint >> 8) & 255;
+	    b = bigint & 255;
+	    return { r: r, g: g, b: b };
+	}
+	exports.hexToRgb = hexToRgb;
+	function expandShortHexCode(hex) {
+	    var regexp;
+	    regexp = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+	    return hex.replace(regexp, function (m, r, g, b) {
+	        return r + r + g + g + b + b;
+	    });
+	}
+	exports.expandShortHexCode = expandShortHexCode;
+
+
+/***/ },
+/* 27 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function hashString(hex) {
+	    var characters;
+	    if (isHashed(hex))
+	        return hex;
+	    characters = hex.split('');
+	    characters.unshift('#');
+	    return characters.join('');
+	}
+	exports.hashString = hashString;
+	function dehashString(hex) {
+	    var characters;
+	    if (isHashed(hex) === false)
+	        return hex;
+	    characters = hex.split('');
+	    characters.shift();
+	    return characters.join('');
+	}
+	exports.dehashString = dehashString;
+	function isHashed(hex) {
+	    var characters;
+	    characters = hex.split('');
+	    return characters[0] === '#';
+	}
+
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function rgbToHsl(rgb) {
+	    var max, min, r, g, b, h, s, l, d;
+	    r = rgb.r / 255;
+	    g = rgb.g / 255;
+	    b = rgb.b / 255;
+	    max = Math.max(r, g, b);
+	    min = Math.min(r, g, b);
+	    h = s = l = (max + min) / 2;
+	    if (max == min) {
+	        h = s = 0;
+	    }
+	    else {
+	        d = max - min;
+	        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+	        switch (max) {
+	            case r:
+	                h = (g - b) / d + (g < b ? 6 : 0);
+	                break;
+	            case g:
+	                h = (b - r) / d + 2;
+	                break;
+	            case b:
+	                h = (r - g) / d + 4;
+	                break;
+	        }
+	        h /= 6;
+	    }
+	    return { hue: h, saturation: s, lightness: l };
+	}
+	exports.rgbToHsl = rgbToHsl;
+
+
+/***/ },
+/* 29 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var signals = __webpack_require__(30);
+	var Events = (function () {
+	    function Events(iid, options) {
+	        this.iid = iid;
+	        this.options = options;
+	    }
+	    Events.prototype.setup = function () {
+	        this.updateColour = new signals.Signal();
+	    };
+	    return Events;
+	}());
+	exports.Events = Events;
+
+
+/***/ },
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
+	/*global define:false, require:false, exports:false, module:false, signals:false */
+	
+	/** @license
+	 * JS Signals <http://millermedeiros.github.com/js-signals/>
+	 * Released under the MIT license
+	 * Author: Miller Medeiros
+	 * Version: 1.0.0 - Build: 268 (2012/11/29 05:48 PM)
+	 */
+	
+	(function(global){
+	
+	    // SignalBinding -------------------------------------------------
+	    //================================================================
+	
+	    /**
+	     * Object that represents a binding between a Signal and a listener function.
+	     * <br />- <strong>This is an internal constructor and shouldn't be called by regular users.</strong>
+	     * <br />- inspired by Joa Ebert AS3 SignalBinding and Robert Penner's Slot classes.
+	     * @author Miller Medeiros
+	     * @constructor
+	     * @internal
+	     * @name SignalBinding
+	     * @param {Signal} signal Reference to Signal object that listener is currently bound to.
+	     * @param {Function} listener Handler function bound to the signal.
+	     * @param {boolean} isOnce If binding should be executed just once.
+	     * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
+	     * @param {Number} [priority] The priority level of the event listener. (default = 0).
+	     */
+	    function SignalBinding(signal, listener, isOnce, listenerContext, priority) {
+	
+	        /**
+	         * Handler function bound to the signal.
+	         * @type Function
+	         * @private
+	         */
+	        this._listener = listener;
+	
+	        /**
+	         * If binding should be executed just once.
+	         * @type boolean
+	         * @private
+	         */
+	        this._isOnce = isOnce;
+	
+	        /**
+	         * Context on which listener will be executed (object that should represent the `this` variable inside listener function).
+	         * @memberOf SignalBinding.prototype
+	         * @name context
+	         * @type Object|undefined|null
+	         */
+	        this.context = listenerContext;
+	
+	        /**
+	         * Reference to Signal object that listener is currently bound to.
+	         * @type Signal
+	         * @private
+	         */
+	        this._signal = signal;
+	
+	        /**
+	         * Listener priority
+	         * @type Number
+	         * @private
+	         */
+	        this._priority = priority || 0;
+	    }
+	
+	    SignalBinding.prototype = {
+	
+	        /**
+	         * If binding is active and should be executed.
+	         * @type boolean
+	         */
+	        active : true,
+	
+	        /**
+	         * Default parameters passed to listener during `Signal.dispatch` and `SignalBinding.execute`. (curried parameters)
+	         * @type Array|null
+	         */
+	        params : null,
+	
+	        /**
+	         * Call listener passing arbitrary parameters.
+	         * <p>If binding was added using `Signal.addOnce()` it will be automatically removed from signal dispatch queue, this method is used internally for the signal dispatch.</p>
+	         * @param {Array} [paramsArr] Array of parameters that should be passed to the listener
+	         * @return {*} Value returned by the listener.
+	         */
+	        execute : function (paramsArr) {
+	            var handlerReturn, params;
+	            if (this.active && !!this._listener) {
+	                params = this.params? this.params.concat(paramsArr) : paramsArr;
+	                handlerReturn = this._listener.apply(this.context, params);
+	                if (this._isOnce) {
+	                    this.detach();
+	                }
+	            }
+	            return handlerReturn;
+	        },
+	
+	        /**
+	         * Detach binding from signal.
+	         * - alias to: mySignal.remove(myBinding.getListener());
+	         * @return {Function|null} Handler function bound to the signal or `null` if binding was previously detached.
+	         */
+	        detach : function () {
+	            return this.isBound()? this._signal.remove(this._listener, this.context) : null;
+	        },
+	
+	        /**
+	         * @return {Boolean} `true` if binding is still bound to the signal and have a listener.
+	         */
+	        isBound : function () {
+	            return (!!this._signal && !!this._listener);
+	        },
+	
+	        /**
+	         * @return {boolean} If SignalBinding will only be executed once.
+	         */
+	        isOnce : function () {
+	            return this._isOnce;
+	        },
+	
+	        /**
+	         * @return {Function} Handler function bound to the signal.
+	         */
+	        getListener : function () {
+	            return this._listener;
+	        },
+	
+	        /**
+	         * @return {Signal} Signal that listener is currently bound to.
+	         */
+	        getSignal : function () {
+	            return this._signal;
+	        },
+	
+	        /**
+	         * Delete instance properties
+	         * @private
+	         */
+	        _destroy : function () {
+	            delete this._signal;
+	            delete this._listener;
+	            delete this.context;
+	        },
+	
+	        /**
+	         * @return {string} String representation of the object.
+	         */
+	        toString : function () {
+	            return '[SignalBinding isOnce:' + this._isOnce +', isBound:'+ this.isBound() +', active:' + this.active + ']';
+	        }
+	
+	    };
+	
+	
+	/*global SignalBinding:false*/
+	
+	    // Signal --------------------------------------------------------
+	    //================================================================
+	
+	    function validateListener(listener, fnName) {
+	        if (typeof listener !== 'function') {
+	            throw new Error( 'listener is a required param of {fn}() and should be a Function.'.replace('{fn}', fnName) );
+	        }
+	    }
+	
+	    /**
+	     * Custom event broadcaster
+	     * <br />- inspired by Robert Penner's AS3 Signals.
+	     * @name Signal
+	     * @author Miller Medeiros
+	     * @constructor
+	     */
+	    function Signal() {
+	        /**
+	         * @type Array.<SignalBinding>
+	         * @private
+	         */
+	        this._bindings = [];
+	        this._prevParams = null;
+	
+	        // enforce dispatch to aways work on same context (#47)
+	        var self = this;
+	        this.dispatch = function(){
+	            Signal.prototype.dispatch.apply(self, arguments);
 	        };
 	    }
-	    PositionTracker.prototype.startTracking = function (event, trackFunc) {
-	        this.target = event.target;
-	        this.trackFunc = trackFunc;
-	        document.addEventListener('mousemove', this.trackFunc);
-	        document.addEventListener('mouseup', this.stopTracking);
+	
+	    Signal.prototype = {
+	
+	        /**
+	         * Signals Version Number
+	         * @type String
+	         * @const
+	         */
+	        VERSION : '1.0.0',
+	
+	        /**
+	         * If Signal should keep record of previously dispatched parameters and
+	         * automatically execute listener during `add()`/`addOnce()` if Signal was
+	         * already dispatched before.
+	         * @type boolean
+	         */
+	        memorize : false,
+	
+	        /**
+	         * @type boolean
+	         * @private
+	         */
+	        _shouldPropagate : true,
+	
+	        /**
+	         * If Signal is active and should broadcast events.
+	         * <p><strong>IMPORTANT:</strong> Setting this property during a dispatch will only affect the next dispatch, if you want to stop the propagation of a signal use `halt()` instead.</p>
+	         * @type boolean
+	         */
+	        active : true,
+	
+	        /**
+	         * @param {Function} listener
+	         * @param {boolean} isOnce
+	         * @param {Object} [listenerContext]
+	         * @param {Number} [priority]
+	         * @return {SignalBinding}
+	         * @private
+	         */
+	        _registerListener : function (listener, isOnce, listenerContext, priority) {
+	
+	            var prevIndex = this._indexOfListener(listener, listenerContext),
+	                binding;
+	
+	            if (prevIndex !== -1) {
+	                binding = this._bindings[prevIndex];
+	                if (binding.isOnce() !== isOnce) {
+	                    throw new Error('You cannot add'+ (isOnce? '' : 'Once') +'() then add'+ (!isOnce? '' : 'Once') +'() the same listener without removing the relationship first.');
+	                }
+	            } else {
+	                binding = new SignalBinding(this, listener, isOnce, listenerContext, priority);
+	                this._addBinding(binding);
+	            }
+	
+	            if(this.memorize && this._prevParams){
+	                binding.execute(this._prevParams);
+	            }
+	
+	            return binding;
+	        },
+	
+	        /**
+	         * @param {SignalBinding} binding
+	         * @private
+	         */
+	        _addBinding : function (binding) {
+	            //simplified insertion sort
+	            var n = this._bindings.length;
+	            do { --n; } while (this._bindings[n] && binding._priority <= this._bindings[n]._priority);
+	            this._bindings.splice(n + 1, 0, binding);
+	        },
+	
+	        /**
+	         * @param {Function} listener
+	         * @return {number}
+	         * @private
+	         */
+	        _indexOfListener : function (listener, context) {
+	            var n = this._bindings.length,
+	                cur;
+	            while (n--) {
+	                cur = this._bindings[n];
+	                if (cur._listener === listener && cur.context === context) {
+	                    return n;
+	                }
+	            }
+	            return -1;
+	        },
+	
+	        /**
+	         * Check if listener was attached to Signal.
+	         * @param {Function} listener
+	         * @param {Object} [context]
+	         * @return {boolean} if Signal has the specified listener.
+	         */
+	        has : function (listener, context) {
+	            return this._indexOfListener(listener, context) !== -1;
+	        },
+	
+	        /**
+	         * Add a listener to the signal.
+	         * @param {Function} listener Signal handler function.
+	         * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
+	         * @param {Number} [priority] The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)
+	         * @return {SignalBinding} An Object representing the binding between the Signal and listener.
+	         */
+	        add : function (listener, listenerContext, priority) {
+	            validateListener(listener, 'add');
+	            return this._registerListener(listener, false, listenerContext, priority);
+	        },
+	
+	        /**
+	         * Add listener to the signal that should be removed after first execution (will be executed only once).
+	         * @param {Function} listener Signal handler function.
+	         * @param {Object} [listenerContext] Context on which listener will be executed (object that should represent the `this` variable inside listener function).
+	         * @param {Number} [priority] The priority level of the event listener. Listeners with higher priority will be executed before listeners with lower priority. Listeners with same priority level will be executed at the same order as they were added. (default = 0)
+	         * @return {SignalBinding} An Object representing the binding between the Signal and listener.
+	         */
+	        addOnce : function (listener, listenerContext, priority) {
+	            validateListener(listener, 'addOnce');
+	            return this._registerListener(listener, true, listenerContext, priority);
+	        },
+	
+	        /**
+	         * Remove a single listener from the dispatch queue.
+	         * @param {Function} listener Handler function that should be removed.
+	         * @param {Object} [context] Execution context (since you can add the same handler multiple times if executing in a different context).
+	         * @return {Function} Listener handler function.
+	         */
+	        remove : function (listener, context) {
+	            validateListener(listener, 'remove');
+	
+	            var i = this._indexOfListener(listener, context);
+	            if (i !== -1) {
+	                this._bindings[i]._destroy(); //no reason to a SignalBinding exist if it isn't attached to a signal
+	                this._bindings.splice(i, 1);
+	            }
+	            return listener;
+	        },
+	
+	        /**
+	         * Remove all listeners from the Signal.
+	         */
+	        removeAll : function () {
+	            var n = this._bindings.length;
+	            while (n--) {
+	                this._bindings[n]._destroy();
+	            }
+	            this._bindings.length = 0;
+	        },
+	
+	        /**
+	         * @return {number} Number of listeners attached to the Signal.
+	         */
+	        getNumListeners : function () {
+	            return this._bindings.length;
+	        },
+	
+	        /**
+	         * Stop propagation of the event, blocking the dispatch to next listeners on the queue.
+	         * <p><strong>IMPORTANT:</strong> should be called only during signal dispatch, calling it before/after dispatch won't affect signal broadcast.</p>
+	         * @see Signal.prototype.disable
+	         */
+	        halt : function () {
+	            this._shouldPropagate = false;
+	        },
+	
+	        /**
+	         * Dispatch/Broadcast Signal to all listeners added to the queue.
+	         * @param {...*} [params] Parameters that should be passed to each handler.
+	         */
+	        dispatch : function (params) {
+	            if (! this.active) {
+	                return;
+	            }
+	
+	            var paramsArr = Array.prototype.slice.call(arguments),
+	                n = this._bindings.length,
+	                bindings;
+	
+	            if (this.memorize) {
+	                this._prevParams = paramsArr;
+	            }
+	
+	            if (! n) {
+	                //should come after memorize
+	                return;
+	            }
+	
+	            bindings = this._bindings.slice(); //clone array in case add/remove items during dispatch
+	            this._shouldPropagate = true; //in case `halt` was called before dispatch or during the previous dispatch.
+	
+	            //execute all callbacks until end of the list or until a callback returns `false` or stops propagation
+	            //reverse loop since listeners with higher priority will be added at the end of the list
+	            do { n--; } while (bindings[n] && this._shouldPropagate && bindings[n].execute(paramsArr) !== false);
+	        },
+	
+	        /**
+	         * Forget memorized arguments.
+	         * @see Signal.memorize
+	         */
+	        forget : function(){
+	            this._prevParams = null;
+	        },
+	
+	        /**
+	         * Remove all bindings from signal and destroy any reference to external objects (destroy Signal object).
+	         * <p><strong>IMPORTANT:</strong> calling any method on the signal instance after calling dispose will throw errors.</p>
+	         */
+	        dispose : function () {
+	            this.removeAll();
+	            delete this._bindings;
+	            delete this._prevParams;
+	        },
+	
+	        /**
+	         * @return {string} String representation of the object.
+	         */
+	        toString : function () {
+	            return '[Signal active:'+ this.active +' numListeners:'+ this.getNumListeners() +']';
+	        }
+	
 	    };
-	    return PositionTracker;
-	}());
-	exports.PositionTracker = PositionTracker;
+	
+	
+	    // Namespace -----------------------------------------------------
+	    //================================================================
+	
+	    /**
+	     * Signals namespace
+	     * @namespace
+	     * @name signals
+	     */
+	    var signals = Signal;
+	
+	    /**
+	     * Custom event broadcaster
+	     * @see Signal
+	     */
+	    // alias for backwards compatibility (see #gh-44)
+	    signals.Signal = Signal;
+	
+	
+	
+	    //exports to multiple environments
+	    if(true){ //AMD
+	        !(__WEBPACK_AMD_DEFINE_RESULT__ = function () { return signals; }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    } else if (typeof module !== 'undefined' && module.exports){ //node
+	        module.exports = signals;
+	    } else { //browser
+	        //use string because of Google closure compiler ADVANCED_MODE
+	        /*jslint sub:true */
+	        global['signals'] = signals;
+	    }
+	
+	}(this));
 
 
 /***/ }

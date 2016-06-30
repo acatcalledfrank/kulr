@@ -1,20 +1,21 @@
 import {IOptions, IGradientStop} from "picky";
 
-import {Find} from "../../utils/dom/element/Find";
+import {findOne} from "../../utils/dom/element/Find";
 import App from "../../App";
 import Css from "../../utils/dom/style/Css";
 import CreateGradientElement from "../svg/CreateGradientElement";
 import SetGradientDirection from "../svg/SetGradientDirection";
 import FillGradient from "../svg/FillGradient";
 import CreateColourRect from "../svg/CreateColourRect";
-import UniqueId from '../../utils/UniqueId';
 import {Interactions} from './Interactions';
+import {getUniqueId} from "../../utils/UniqueId";
+import {fillContainer} from "../../utils/dom/style/FillContainer";
 
 export class HuePane
 {
     element: SVGSVGElement;
 
-    constructor(private options: IOptions)
+    constructor(private iid:string, private options: IOptions)
     {
 
     }
@@ -28,7 +29,7 @@ export class HuePane
     {
         //  get the specified element for the toggle button
 
-        this.element = this.getElement();
+        this.element = this.createGradientElement();
 
         //  create rectangle element and fill with the gradient
 
@@ -38,21 +39,12 @@ export class HuePane
         
         new Interactions(this.element).listen();
     }
-
-
-    /**
-     * get the element for the toggle
-     */
-    getElement()
-    {
-        return this.createElement();
-    }
-
-
+    
+    
     /**
      * create the element for the hue pane
      */
-    createElement() : SVGSVGElement
+    createGradientElement() : SVGSVGElement
     {
         var element: SVGSVGElement;
 
@@ -62,15 +54,28 @@ export class HuePane
 
         //  add the relevant class
         
-        Css.addClass(element, 'picky-hue-pane');
+        Css.addClass(element, 'picky-hue-pane__palette');
+        
+        //  make the element fill its container
+
+        fillContainer(element);
         
         //  append the new element to the popup element
         
-        App.popup.element.appendChild(element);
+        this.getContainer().appendChild(element);
         
         //  return the new element
         
         return element;
+    }
+
+
+    /**
+     * find the container element for the gradient
+     */
+    getContainer() : HTMLElement
+    {
+        return findOne(this.options.elements.hue_pane);
     }
 
 
@@ -85,7 +90,7 @@ export class HuePane
 
         //  create a unique id for the gradient
 
-        id = UniqueId('picky-svg-gradient-');
+        id = getUniqueId('picky-svg-gradient-');
         
         //  set the colours we're going to use in the gradient
 

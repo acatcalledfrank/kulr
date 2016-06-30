@@ -1,6 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = function (preventSelections) {
+function preventSelections(preventSelections) {
     if (preventSelections === void 0) { preventSelections = true; }
     var styles, value;
     styles =
@@ -15,4 +14,5 @@ exports.default = function (preventSelections) {
     for (var i = 0; i < styles.length; i++) {
         document.body.style[styles[i]] = value;
     }
-};
+}
+exports.preventSelections = preventSelections;

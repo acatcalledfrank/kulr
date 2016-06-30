@@ -1,6 +1,6 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = function (prefix) {
+function getUniqueId(prefix) {
     if (prefix === void 0) { prefix = ''; }
-    return prefix + Math.random();
-};
+    return prefix + Math.random() * 10;
+}
+exports.getUniqueId = getUniqueId;

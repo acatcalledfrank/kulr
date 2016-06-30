@@ -7,15 +7,20 @@
 {
     position: absolute;
     display: none;
-    padding: 10px;
-    width: 250px;
-    height: 150px;
     background-color: white;
     border: 1px solid #cccccc;
+    padding: 5px;
 }
 .picky-popup.active
 {
     display: block;
+}
+
+.row
+{
+    width: 100%;
+    overflow: hidden;
+    padding: 5px;
 }
 
 .picky-tone-pane
@@ -37,4 +42,16 @@
     float: left;
     margin: 0 0 0 10px;
     background-color: blue;
+}
+
+.picky-swatch
+{
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.picky-text-input
+{
+    float: left;
 }

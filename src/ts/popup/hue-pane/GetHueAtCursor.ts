@@ -1,11 +1,11 @@
 import App from "../../App";
-import Clamp from "../../utils/math/Clamp";
+import {clamp} from "../../utils/math/Clamp";
 
 /**
  * get the colour under the user's cursor
  * @param event
  */
-export default (target: Element, event: MouseEvent) =>
+export function getHueAtCursor(target: Element, event: MouseEvent) : number
 {
     var client_rect: ClientRect,
         mouse_offset: number,
@@ -24,14 +24,13 @@ export default (target: Element, event: MouseEvent) =>
 
     //  limit off set to between zero - rect height
 
-    mouse_offset = Clamp(mouse_offset, 0, client_rect.height);
+    mouse_offset = clamp(mouse_offset, 0, client_rect.height);
     
     //  and translate to hue
     
-    hue = 360 - (mouse_offset / client_rect.height) * 360;
+    hue = 1 - (mouse_offset / client_rect.height);
     
-    //  set the hue value 
+    //  return the hue
     
-    App.huePane.setHue(hue);
-    App.tonePane.setHue(hue);
+    return hue;
 }

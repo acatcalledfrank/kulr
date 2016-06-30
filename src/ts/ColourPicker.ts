@@ -5,18 +5,24 @@ import {IOptions} from 'picky';
 import {Popup} from "./popup/Popup";
 import {Toggle} from "./toggle/Toggle";
 import App from "./App";
-import {PositionTracker} from "./popup/PositionTracker";
+import {getUniqueId} from "./utils/UniqueId";
+import {ColourPalette} from "./utils/colour/ColourPalette";
+import {Events} from "./events/Events";
 
 export class ColourPicker
 {
+    iid: string;
     element: HTMLElement;
 
     constructor(options: IOptions)
     {
         console.log('new picky!');
 
+        //  set up this instance
+
         this.setup(options);
     }
+
     
     
     /**
@@ -24,14 +30,21 @@ export class ColourPicker
      */
     setup(options: IOptions)
     {
+        //  generate a unique ID for this instance
+
+        this.iid = getUniqueId('picky-');
+
         //  create class instances for our various colour picker components
         
-        App.popup = new Popup(options);
-        App.toggle = new Toggle(options);
-        App.positionTracker = new PositionTracker(options);
+        App.events = new Events(this.iid, options);
+        App.palette = new ColourPalette(this.iid, options);
+        App.popup = new Popup(this.iid, options);
+        App.toggle = new Toggle(this.iid, options);
         
         //  initialise instances
         
+        App.events.setup();
+        App.palette.setup();
         App.toggle.setup();
         App.popup.setup();
     }

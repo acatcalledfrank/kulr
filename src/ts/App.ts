@@ -3,11 +3,13 @@ import * as picky from 'picky';
 export default class App
 {
     static toggle: picky.Toggle;
+    static events: picky.Events;
     static popup: picky.Popup;
-    static swatch: picky.Swatch;
+    static palette: picky.ColourPalette;
     static huePane: picky.HuePane;
     static tonePane: picky.TonePane;
-    static positionTracker: picky.PositionTracker;
+    static swatch: picky.Swatch;
+    static textInput: picky.TextInput;
     
     constructor()
     {

@@ -1,15 +1,18 @@
 import {IOptions} from "picky";
-import {Find} from "../utils/dom/element/Find";
+import {findOne} from "../utils/dom/element/Find";
 import App from "../App";
 import Css from "../utils/dom/style/Css";
 import {HuePane} from "./hue-pane/HuePane";
 import {TonePane} from "./tone-pane/TonePane";
+import {Swatch} from "./swatch/Swatch";
+import {TextInput} from "./text-input/TextInput";
+
 
 export class Popup
 {
     element: HTMLElement;
     
-    constructor(private options: IOptions)
+    constructor(private iid:string, private options: IOptions)
     {
         
     }
@@ -27,11 +30,15 @@ export class Popup
         
         //  create the hue and tint colour panes class instances
         
-        App.tonePane = new TonePane(this.options);
-        App.huePane = new HuePane(this.options);
+        App.swatch = new Swatch(this.iid, this.options);
+        App.textInput = new TextInput(this.iid, this.options);
+        App.tonePane = new TonePane(this.iid, this.options);
+        App.huePane = new HuePane(this.iid, this.options);
 
         //  setup colour panes
         
+        App.swatch.setup();
+        App.textInput.setup();
         App.tonePane.setup();
         App.huePane.setup();
     }
@@ -48,7 +55,7 @@ export class Popup
         //  let's try to find the element
         //  and use it if we find something
         
-        element = Find.one(this.options.elements.popup);
+        element = findOne(this.options.elements.popup);
         
         if (element) return element;
         
@@ -75,8 +82,6 @@ export class Popup
 
         //  place our new element on the page;
         //  this code inserts it after the toggle element
-
-        // App.toggle.element.appen(element);
 
         App.toggle.element.parentNode.insertBefore(element, App.toggle.element.nextSibling);
         

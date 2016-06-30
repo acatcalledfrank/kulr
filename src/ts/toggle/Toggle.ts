@@ -1,12 +1,12 @@
 import {IOptions} from "picky";
-import {Find} from "../utils/dom/element/Find";
+import {findOne} from "../utils/dom/element/Find";
 import App from "../App";
 
 export class Toggle
 {
     element: HTMLElement;
     
-    constructor(private options: IOptions)
+    constructor(private iid:string, private options: IOptions)
     {
 
     }
@@ -33,7 +33,7 @@ export class Toggle
      */
     getElement()
     {
-        return Find.one(this.options.elements.toggle);
+        return findOne(this.options.elements.toggle);
     }
 
 

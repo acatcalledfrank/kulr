@@ -1,34 +1,37 @@
 "use strict";
-var App_1 = require("../../App");
+var Find_1 = require("../../utils/dom/element/Find");
 var Css_1 = require("../../utils/dom/style/Css");
 var CreateGradientElement_1 = require("../svg/CreateGradientElement");
 var SetGradientDirection_1 = require("../svg/SetGradientDirection");
 var FillGradient_1 = require("../svg/FillGradient");
 var CreateColourRect_1 = require("../svg/CreateColourRect");
-var UniqueId_1 = require('../../utils/UniqueId');
 var Interactions_1 = require('./Interactions');
+var UniqueId_1 = require("../../utils/UniqueId");
+var FillContainer_1 = require("../../utils/dom/style/FillContainer");
 var HuePane = (function () {
-    function HuePane(options) {
+    function HuePane(iid, options) {
+        this.iid = iid;
         this.options = options;
     }
     HuePane.prototype.setup = function () {
-        this.element = this.getElement();
+        this.element = this.createGradientElement();
         CreateColourRect_1.default(this.element, this.drawGradient());
         new Interactions_1.Interactions(this.element).listen();
     };
-    HuePane.prototype.getElement = function () {
-        return this.createElement();
-    };
-    HuePane.prototype.createElement = function () {
+    HuePane.prototype.createGradientElement = function () {
         var element;
         element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        Css_1.default.addClass(element, 'picky-hue-pane');
-        App_1.default.popup.element.appendChild(element);
+        Css_1.default.addClass(element, 'picky-hue-pane__palette');
+        FillContainer_1.fillContainer(element);
+        this.getContainer().appendChild(element);
         return element;
+    };
+    HuePane.prototype.getContainer = function () {
+        return Find_1.findOne(this.options.elements.hue_pane);
     };
     HuePane.prototype.drawGradient = function () {
         var id, gradient, stops;
-        id = UniqueId_1.default('picky-svg-gradient-');
+        id = UniqueId_1.getUniqueId('picky-svg-gradient-');
         stops =
             [
                 {

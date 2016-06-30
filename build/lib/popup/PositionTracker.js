@@ -1,7 +1,8 @@
 "use strict";
 var PositionTracker = (function () {
-    function PositionTracker(options) {
+    function PositionTracker(iid, options) {
         var _this = this;
+        this.iid = iid;
         this.trackPosition = function (event) {
         };
         this.stopTracking = function () {

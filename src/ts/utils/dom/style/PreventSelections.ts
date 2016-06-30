@@ -1,4 +1,4 @@
-export default (preventSelections: boolean = true) =>
+export function preventSelections(preventSelections: boolean = true)
 {
     var styles: string[],
         value: string;

@@ -1,11 +1,13 @@
 // import GetHueAtCursor from './GetHueAtCursor';
-import PreventSelections from '../../utils/dom/style/PreventSelections';
 
 import App from "../../App";
+import {preventSelections} from "../../utils/dom/style/PreventSelections";
+import {getSaturationAndLightnessAtCursor} from "./GetColourAtCursor";
+import {IHSL} from "picky";
 
 export class Interactions
 {
-    constructor(private element: SVGSVGElement)
+    constructor(private iid: string, private element: SVGSVGElement)
     {
         
     }
@@ -27,11 +29,11 @@ export class Interactions
      */
     onMouseDown = () =>
     {
-        PreventSelections();
+        preventSelections();
 
         document.addEventListener('mousemove', this.onMouseMove);
         document.addEventListener('mouseup', this.onMouseUp);
-    }
+    };
 
 
     /**
@@ -40,11 +42,22 @@ export class Interactions
      */
     onMouseMove = (event: MouseEvent) =>
     {
-        //  get the current hue,
-        //  based on the user's mouse position
+        var hsl: IHSL;
         
-        // GetHueAtCursor(this.element, event);
-    }
+        //  get the current saturation and lightness,
+        //  based on the user's mouse position
+
+        hsl = getSaturationAndLightnessAtCursor(this.element, event);
+        
+        //  set saturation and lightness in the colour palette
+
+        App.palette.setSaturation(hsl.saturation);
+        App.palette.setLightness(hsl.lightness);
+        
+        //  dispatch an update event
+        
+        App.events.updateColour.dispatch();
+    };
 
 
     /**
@@ -53,24 +66,9 @@ export class Interactions
      */
     onMouseUp = () =>
     {
-        PreventSelections(false);
+        preventSelections(false);
 
         document.removeEventListener('mousemove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);
     }
 }
-    
-
-
-
-// export default (element: SVGSVGElement) =>
-// {
-//     //  on click, select the colour under the cursor
-//
-//     // element.addEventListener('click', GetHueAtCursor);
-//
-//     element.addEventListener('mousedown', (event: MouseEvent) => 
-//     {
-//         //App.positionTracker.startTracking(event, GetHueAtCursor)
-//     });
-// }

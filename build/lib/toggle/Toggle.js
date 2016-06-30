@@ -2,7 +2,8 @@
 var Find_1 = require("../utils/dom/element/Find");
 var App_1 = require("../App");
 var Toggle = (function () {
-    function Toggle(options) {
+    function Toggle(iid, options) {
+        this.iid = iid;
         this.options = options;
     }
     Toggle.prototype.setup = function () {
@@ -10,7 +11,7 @@ var Toggle = (function () {
         this.listen();
     };
     Toggle.prototype.getElement = function () {
-        return Find_1.Find.one(this.options.elements.toggle);
+        return Find_1.findOne(this.options.elements.toggle);
     };
     Toggle.prototype.listen = function () {
         this.element.addEventListener('click', function (event) { return App_1.default.popup.toggleVisibility(); });
