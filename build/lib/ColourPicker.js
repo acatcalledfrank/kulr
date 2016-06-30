@@ -21,6 +21,20 @@ var ColourPicker = (function () {
         App_1.default.toggle.setup();
         App_1.default.popup.setup();
     };
+    Object.defineProperty(ColourPicker.prototype, "onUpdate", {
+        get: function () {
+            return App_1.default.events.updateColour;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ColourPicker.prototype, "hex", {
+        get: function () {
+            return App_1.default.palette.getHexString();
+        },
+        enumerable: true,
+        configurable: true
+    });
     ColourPicker.prototype.destroy = function () {
     };
     return ColourPicker;

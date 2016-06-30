@@ -1,7 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
 import {IOptions} from 'picky';
-
+import * as picky from 'picky';
 import {Popup} from "./popup/Popup";
 import {Toggle} from "./toggle/Toggle";
 import App from "./App";
@@ -47,6 +47,20 @@ export class ColourPicker
         App.palette.setup();
         App.toggle.setup();
         App.popup.setup();
+    }
+
+
+    /**
+     * shortcut to properties for external access
+     * @returns {picky.Events}
+     */
+    get onUpdate() : Signal
+    {
+        return App.events.updateColour;
+    }
+    get hex() : string
+    {
+        return App.palette.getHexString();
     }
 
 
