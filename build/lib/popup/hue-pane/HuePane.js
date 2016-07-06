@@ -1,6 +1,5 @@
 "use strict";
 var Find_1 = require("../../utils/dom/element/Find");
-var Css_1 = require("../../utils/dom/style/Css");
 var CreateGradientElement_1 = require("../svg/CreateGradientElement");
 var SetGradientDirection_1 = require("../svg/SetGradientDirection");
 var FillGradient_1 = require("../svg/FillGradient");
@@ -8,6 +7,7 @@ var CreateColourRect_1 = require("../svg/CreateColourRect");
 var Interactions_1 = require('./Interactions');
 var UniqueId_1 = require("../../utils/UniqueId");
 var FillContainer_1 = require("../../utils/dom/style/FillContainer");
+var Css_1 = require("../../utils/dom/style/Css");
 var HuePane = (function () {
     function HuePane(iid, options) {
         this.iid = iid;
@@ -21,7 +21,7 @@ var HuePane = (function () {
     HuePane.prototype.createGradientElement = function () {
         var element;
         element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        Css_1.default.addClass(element, 'picky-hue-pane__palette');
+        Css_1.addClass(element, 'picky-hue-pane__palette');
         FillContainer_1.fillContainer(element);
         this.getContainer().appendChild(element);
         return element;

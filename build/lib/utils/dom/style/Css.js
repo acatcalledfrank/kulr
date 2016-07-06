@@ -1,31 +1,35 @@
 "use strict";
-var Css = (function () {
-    function Css() {
+function addClass(element, className) {
+    if (!element)
+        return false;
+    element.classList.add(className);
+}
+exports.addClass = addClass;
+function removeClass(element, className) {
+    if (!element)
+        return false;
+    element.classList.remove(className);
+}
+exports.removeClass = removeClass;
+function toggleClass(element, className, add) {
+    var has_class;
+    if (add !== undefined) {
+        add ? addClass(element, className) : removeClass(element, className);
+        return;
     }
-    Css.addClass = function (element, className) {
-        if (!element)
-            return false;
-        element.classList.add(className);
-    };
-    Css.removeClass = function (element, className) {
-        if (!element)
-            return false;
-        element.classList.remove(className);
-    };
-    Css.toggleClass = function (element, className, toggle) {
-        if (Css.hasClass(element, className) === false) {
-            Css.addClass(element, className);
-        }
-        else {
-            Css.removeClass(element, className);
-        }
-    };
-    Css.hasClass = function (element, className) {
-        if (!element)
-            return false;
-        return element.classList.contains(className);
-    };
-    return Css;
-}());
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = Css;
+    has_class = hasClass(element, className);
+    if (has_class === false) {
+        addClass(element, className);
+    }
+    else {
+        removeClass(element, className);
+    }
+    return !has_class;
+}
+exports.toggleClass = toggleClass;
+function hasClass(element, className) {
+    if (!element)
+        return false;
+    return element.classList.contains(className);
+}
+exports.hasClass = hasClass;

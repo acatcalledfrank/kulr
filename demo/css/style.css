@@ -11,7 +11,7 @@
     border: 1px solid #cccccc;
     padding: 5px;
 }
-.picky-popup.active
+.picky-popup.open
 {
     display: block;
 }

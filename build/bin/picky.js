@@ -58,9 +58,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Popup_1 = __webpack_require__(1);
 	var Toggle_1 = __webpack_require__(23);
 	var App_1 = __webpack_require__(4);
-	var UniqueId_1 = __webpack_require__(15);
-	var ColourPalette_1 = __webpack_require__(24);
-	var Events_1 = __webpack_require__(29);
+	var UniqueId_1 = __webpack_require__(14);
+	var ColourPalette_1 = __webpack_require__(26);
+	var Events_1 = __webpack_require__(31);
+	var State_1 = __webpack_require__(33);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
 	        console.log('new picky!');
@@ -68,6 +69,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    ColourPicker.prototype.setup = function (options) {
 	        this.iid = UniqueId_1.getUniqueId('picky-');
+	        App_1.default.state = new State_1.State(this.iid, options);
 	        App_1.default.events = new Events_1.Events(this.iid, options);
 	        App_1.default.palette = new ColourPalette_1.ColourPalette(this.iid, options);
 	        App_1.default.popup = new Popup_1.Popup(this.iid, options);
@@ -105,18 +107,28 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
-	var Css_1 = __webpack_require__(5);
-	var HuePane_1 = __webpack_require__(6);
+	var HuePane_1 = __webpack_require__(5);
 	var TonePane_1 = __webpack_require__(17);
 	var Swatch_1 = __webpack_require__(20);
 	var TextInput_1 = __webpack_require__(21);
+	var Css_1 = __webpack_require__(16);
+	var Css_2 = __webpack_require__(16);
 	var Popup = (function () {
 	    function Popup(iid, options) {
+	        var _this = this;
 	        this.iid = iid;
 	        this.options = options;
+	        this.onTogglePopup = function (iid) {
+	            if (iid !== _this.iid) {
+	                Css_1.removeClass(_this.element, 'open');
+	                return;
+	            }
+	            Css_1.toggleClass(_this.element, 'open', App_1.default.state.open);
+	        };
 	    }
 	    Popup.prototype.setup = function () {
 	        this.element = this.getElement();
+	        this.element.dataset['iid'] = this.iid;
 	        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
 	        App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
 	        App_1.default.tonePane = new TonePane_1.TonePane(this.iid, this.options);
@@ -125,6 +137,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        App_1.default.textInput.setup();
 	        App_1.default.tonePane.setup();
 	        App_1.default.huePane.setup();
+	        this.listen();
 	    };
 	    Popup.prototype.getElement = function () {
 	        var element;
@@ -136,12 +149,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	    Popup.prototype.createElement = function () {
 	        var element;
 	        element = document.createElement('div');
-	        Css_1.default.addClass(element, 'picky-popup');
+	        Css_2.addClass(element, 'picky-popup');
 	        App_1.default.toggle.element.parentNode.insertBefore(element, App_1.default.toggle.element.nextSibling);
 	        return element;
 	    };
-	    Popup.prototype.toggleVisibility = function () {
-	        Css_1.default.toggleClass(this.element, 'active');
+	    Popup.prototype.listen = function () {
+	        App_1.default.events.togglePopup.add(this.onTogglePopup);
 	    };
 	    return Popup;
 	}());
@@ -228,55 +241,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var Css = (function () {
-	    function Css() {
-	    }
-	    Css.addClass = function (element, className) {
-	        if (!element)
-	            return false;
-	        element.classList.add(className);
-	    };
-	    Css.removeClass = function (element, className) {
-	        if (!element)
-	            return false;
-	        element.classList.remove(className);
-	    };
-	    Css.toggleClass = function (element, className, toggle) {
-	        if (Css.hasClass(element, className) === false) {
-	            Css.addClass(element, className);
-	        }
-	        else {
-	            Css.removeClass(element, className);
-	        }
-	    };
-	    Css.hasClass = function (element, className) {
-	        if (!element)
-	            return false;
-	        return element.classList.contains(className);
-	    };
-	    return Css;
-	}());
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.default = Css;
-
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Find_1 = __webpack_require__(2);
-	var Css_1 = __webpack_require__(5);
-	var CreateGradientElement_1 = __webpack_require__(7);
-	var SetGradientDirection_1 = __webpack_require__(8);
-	var FillGradient_1 = __webpack_require__(9);
-	var CreateColourRect_1 = __webpack_require__(10);
-	var Interactions_1 = __webpack_require__(11);
-	var UniqueId_1 = __webpack_require__(15);
-	var FillContainer_1 = __webpack_require__(16);
+	var CreateGradientElement_1 = __webpack_require__(6);
+	var SetGradientDirection_1 = __webpack_require__(7);
+	var FillGradient_1 = __webpack_require__(8);
+	var CreateColourRect_1 = __webpack_require__(9);
+	var Interactions_1 = __webpack_require__(10);
+	var UniqueId_1 = __webpack_require__(14);
+	var FillContainer_1 = __webpack_require__(15);
+	var Css_1 = __webpack_require__(16);
 	var HuePane = (function () {
 	    function HuePane(iid, options) {
 	        this.iid = iid;
@@ -290,7 +266,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    HuePane.prototype.createGradientElement = function () {
 	        var element;
 	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        Css_1.default.addClass(element, 'picky-hue-pane__palette');
+	        Css_1.addClass(element, 'picky-hue-pane__palette');
 	        FillContainer_1.fillContainer(element);
 	        this.getContainer().appendChild(element);
 	        return element;
@@ -345,7 +321,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -367,7 +343,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -382,7 +358,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -401,7 +377,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -419,19 +395,20 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var GetHueAtCursor_1 = __webpack_require__(12);
-	var PreventSelections_1 = __webpack_require__(14);
+	var GetHueAtCursor_1 = __webpack_require__(11);
+	var PreventSelections_1 = __webpack_require__(13);
 	var Interactions = (function () {
 	    function Interactions(element) {
 	        var _this = this;
 	        this.element = element;
 	        this.onMouseDown = function () {
 	            PreventSelections_1.preventSelections();
+	            App_1.default.state.dragging = true;
 	            document.addEventListener('mousemove', _this.onMouseMove);
 	            document.addEventListener('mouseup', _this.onMouseUp);
 	        };
@@ -441,8 +418,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            App_1.default.palette.setHue(hue);
 	            App_1.default.events.updateColour.dispatch();
 	        };
-	        this.onMouseUp = function () {
+	        this.onMouseUp = function (event) {
 	            PreventSelections_1.preventSelections(false);
+	            _this.onMouseMove(event);
+	            App_1.default.state.dragging = false;
 	            document.removeEventListener('mousemove', _this.onMouseMove);
 	            document.removeEventListener('mouseup', _this.onMouseUp);
 	        };
@@ -456,11 +435,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Clamp_1 = __webpack_require__(13);
+	var Clamp_1 = __webpack_require__(12);
 	function getHueAtCursor(target, event) {
 	    var client_rect, mouse_offset, hue;
 	    client_rect = target.getBoundingClientRect();
@@ -473,7 +452,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -484,7 +463,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -508,7 +487,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -520,7 +499,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -535,20 +514,61 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function addClass(element, className) {
+	    if (!element)
+	        return false;
+	    element.classList.add(className);
+	}
+	exports.addClass = addClass;
+	function removeClass(element, className) {
+	    if (!element)
+	        return false;
+	    element.classList.remove(className);
+	}
+	exports.removeClass = removeClass;
+	function toggleClass(element, className, add) {
+	    var has_class;
+	    if (add !== undefined) {
+	        add ? addClass(element, className) : removeClass(element, className);
+	        return;
+	    }
+	    has_class = hasClass(element, className);
+	    if (has_class === false) {
+	        addClass(element, className);
+	    }
+	    else {
+	        removeClass(element, className);
+	    }
+	    return !has_class;
+	}
+	exports.toggleClass = toggleClass;
+	function hasClass(element, className) {
+	    if (!element)
+	        return false;
+	    return element.classList.contains(className);
+	}
+	exports.hasClass = hasClass;
+
+
+/***/ },
 /* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var Css_1 = __webpack_require__(5);
-	var CreateGradientElement_1 = __webpack_require__(7);
-	var SetGradientDirection_1 = __webpack_require__(8);
-	var FillGradient_1 = __webpack_require__(9);
-	var CreateColourRect_1 = __webpack_require__(10);
+	var CreateGradientElement_1 = __webpack_require__(6);
+	var SetGradientDirection_1 = __webpack_require__(7);
+	var FillGradient_1 = __webpack_require__(8);
+	var CreateColourRect_1 = __webpack_require__(9);
 	var Interactions_1 = __webpack_require__(18);
-	var UniqueId_1 = __webpack_require__(15);
+	var UniqueId_1 = __webpack_require__(14);
 	var Find_1 = __webpack_require__(2);
-	var FillContainer_1 = __webpack_require__(16);
+	var FillContainer_1 = __webpack_require__(15);
+	var Css_1 = __webpack_require__(16);
 	var TonePane = (function () {
 	    function TonePane(iid, options) {
 	        var _this = this;
@@ -568,7 +588,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    TonePane.prototype.createGradientElement = function () {
 	        var element;
 	        element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        Css_1.default.addClass(element, 'picky-tone-pane__palette');
+	        Css_1.addClass(element, 'picky-tone-pane__palette');
 	        FillContainer_1.fillContainer(element);
 	        this.getContainer().appendChild(element);
 	        return element;
@@ -616,7 +636,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var PreventSelections_1 = __webpack_require__(14);
+	var PreventSelections_1 = __webpack_require__(13);
 	var GetColourAtCursor_1 = __webpack_require__(19);
 	var Interactions = (function () {
 	    function Interactions(iid, element) {
@@ -625,6 +645,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element = element;
 	        this.onMouseDown = function () {
 	            PreventSelections_1.preventSelections();
+	            App_1.default.state.dragging = true;
 	            document.addEventListener('mousemove', _this.onMouseMove);
 	            document.addEventListener('mouseup', _this.onMouseUp);
 	        };
@@ -635,8 +656,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	            App_1.default.palette.setLightness(hsl.lightness);
 	            App_1.default.events.updateColour.dispatch();
 	        };
-	        this.onMouseUp = function () {
+	        this.onMouseUp = function (event) {
 	            PreventSelections_1.preventSelections(false);
+	            _this.onMouseMove(event);
+	            App_1.default.state.dragging = false;
 	            document.removeEventListener('mousemove', _this.onMouseMove);
 	            document.removeEventListener('mouseup', _this.onMouseUp);
 	        };
@@ -654,7 +677,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Clamp_1 = __webpack_require__(13);
+	var Clamp_1 = __webpack_require__(12);
 	function getSaturationAndLightnessAtCursor(target, event) {
 	    var client_rect, mouse_offset_x, mouse_offset_y, saturation, lightness;
 	    client_rect = target.getBoundingClientRect();
@@ -759,20 +782,33 @@ return /******/ (function(modules) { // webpackBootstrap
 	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
+	var Css_1 = __webpack_require__(16);
+	var Interactions_1 = __webpack_require__(24);
 	var Toggle = (function () {
 	    function Toggle(iid, options) {
+	        var _this = this;
 	        this.iid = iid;
 	        this.options = options;
+	        this.onClick = function (event) {
+	            App_1.default.state.open = !App_1.default.state.open;
+	            App_1.default.events.togglePopup.dispatch(_this.iid);
+	        };
+	        this.onTogglePopup = function (iid) {
+	            Css_1.toggleClass(_this.element, 'open', App_1.default.state.open);
+	        };
 	    }
 	    Toggle.prototype.setup = function () {
 	        this.element = this.getElement();
+	        this.element.dataset['iid'] = this.iid;
 	        this.listen();
+	        new Interactions_1.Interactions(this.iid, this.options).listen();
 	    };
 	    Toggle.prototype.getElement = function () {
 	        return Find_1.findOne(this.options.elements.toggle);
 	    };
 	    Toggle.prototype.listen = function () {
-	        this.element.addEventListener('click', function (event) { return App_1.default.popup.toggleVisibility(); });
+	        this.element.addEventListener('click', this.onClick);
+	        App_1.default.events.togglePopup.add(this.onTogglePopup);
 	    };
 	    return Toggle;
 	}());
@@ -785,9 +821,62 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var HslToRgb_1 = __webpack_require__(25);
-	var RgbToString_1 = __webpack_require__(26);
-	var RgbToHsl_1 = __webpack_require__(28);
+	var ClickOutside_1 = __webpack_require__(25);
+	var Interactions = (function () {
+	    function Interactions(iid, options) {
+	        var _this = this;
+	        this.iid = iid;
+	        this.options = options;
+	        this.onTogglePopup = function (iid) {
+	            if (iid === _this.iid && App_1.default.state.open) {
+	                document.addEventListener('mouseup', _this.onDocumentClick);
+	                return;
+	            }
+	            document.removeEventListener('mouseup', _this.onDocumentClick);
+	        };
+	        this.onDocumentClick = function (event) {
+	            console.log(App_1.default.state.dragging);
+	            if (ClickOutside_1.clickWasOutside(event, _this.iid) && !App_1.default.state.dragging) {
+	                App_1.default.state.open = false;
+	                App_1.default.events.togglePopup.dispatch(_this.iid);
+	            }
+	        };
+	    }
+	    Interactions.prototype.listen = function () {
+	        App_1.default.events.togglePopup.add(this.onTogglePopup);
+	    };
+	    return Interactions;
+	}());
+	exports.Interactions = Interactions;
+
+
+/***/ },
+/* 25 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function clickWasOutside(event, iid) {
+	    var parent;
+	    parent = event.target;
+	    while (parent) {
+	        if (parent.dataset['iid'] === iid)
+	            return false;
+	        parent = parent.parentElement;
+	    }
+	    return true;
+	}
+	exports.clickWasOutside = clickWasOutside;
+
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var App_1 = __webpack_require__(4);
+	var HslToRgb_1 = __webpack_require__(27);
+	var RgbToString_1 = __webpack_require__(28);
+	var RgbToHsl_1 = __webpack_require__(30);
 	var ColourPalette = (function () {
 	    function ColourPalette(iid, options) {
 	        this.iid = iid;
@@ -828,7 +917,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -867,11 +956,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Validator_1 = __webpack_require__(27);
+	var Validator_1 = __webpack_require__(29);
 	function rgbToHex(rgb) {
 	    var hex;
 	    hex = ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
@@ -899,7 +988,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -929,7 +1018,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -966,11 +1055,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var signals = __webpack_require__(30);
+	var signals = __webpack_require__(32);
 	var Events = (function () {
 	    function Events(iid, options) {
 	        this.iid = iid;
@@ -978,6 +1067,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Events.prototype.setup = function () {
 	        this.updateColour = new signals.Signal();
+	        this.togglePopup = new signals.Signal();
 	    };
 	    return Events;
 	}());
@@ -985,7 +1075,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
@@ -1433,6 +1523,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	
 	}(this));
+
+
+/***/ },
+/* 33 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var State = (function () {
+	    function State(iid, options) {
+	        this.iid = iid;
+	        this.options = options;
+	    }
+	    return State;
+	}());
+	exports.State = State;
 
 
 /***/ }

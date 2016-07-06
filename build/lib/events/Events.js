@@ -7,6 +7,7 @@ var Events = (function () {
     }
     Events.prototype.setup = function () {
         this.updateColour = new signals.Signal();
+        this.togglePopup = new signals.Signal();
     };
     return Events;
 }());

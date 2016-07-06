@@ -2,7 +2,6 @@ import {IOptions, IGradientStop} from "picky";
 
 import {} from "../../utils/dom/element/Find";
 import App from "../../App";
-import Css from "../../utils/dom/style/Css";
 import CreateGradientElement from "../svg/CreateGradientElement";
 import SetGradientDirection from "../svg/SetGradientDirection";
 import FillGradient from "../svg/FillGradient";
@@ -13,6 +12,7 @@ import {IHSL} from "picky";
 import {ColourPalette} from "picky";
 import {findOne} from "../../utils/dom/element/Find";
 import {fillContainer} from "../../utils/dom/style/FillContainer";
+import {addClass} from "../../utils/dom/style/Css";
 
 export class TonePane
 {
@@ -62,7 +62,7 @@ export class TonePane
 
         //  add the relevant class
 
-        Css.addClass(element, 'picky-tone-pane__palette');
+        addClass(element, 'picky-tone-pane__palette');
         
         //  make the element fill its container
 

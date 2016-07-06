@@ -29,7 +29,16 @@ export class Interactions
      */
     onMouseDown = () =>
     {
+        //  prevent any dragging selections elsewhere on the page
+
         preventSelections();
+
+        //  flag that we're dragging
+
+        App.state.dragging = true;
+
+        //  add mouse move and mouse-up listeners to let us select colours
+        //  as the user moves their mouse
 
         document.addEventListener('mousemove', this.onMouseMove);
         document.addEventListener('mouseup', this.onMouseUp);
@@ -64,9 +73,21 @@ export class Interactions
      * when the user releases the mouse,
      * stop tracking the hue under the cursor
      */
-    onMouseUp = () =>
+    onMouseUp = (event: MouseEvent) =>
     {
+        //  allow selections
+
         preventSelections(false);
+
+        //  trigger the mouse move event to get the colour under the cursor
+
+        this.onMouseMove(event);
+
+        //  flag that we've stopped dragging
+
+        App.state.dragging = false;
+
+        //  remove event listeners
 
         document.removeEventListener('mousemove', this.onMouseMove);
         document.removeEventListener('mouseup', this.onMouseUp);

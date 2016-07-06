@@ -4,6 +4,7 @@ import * as signals from 'signals';
 export class Events
 {
     updateColour: Signal;
+    togglePopup: Signal;
 
     constructor(private iid: string, private options: IOptions)
     {
@@ -18,5 +19,6 @@ export class Events
     setup()
     {
         this.updateColour = new signals.Signal();
+        this.togglePopup = new signals.Signal();
     }
 }

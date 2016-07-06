@@ -13,9 +13,16 @@ declare module 'picky'
             }
     }
 
+    export class State
+    {
+        open: boolean;
+        dragging: boolean;
+    }
+
     export class Events
     {
         updateColour: Signal;
+        togglePopup: Signal;
 
         setup() : void;
     }
@@ -32,7 +39,6 @@ declare module 'picky'
         element: HTMLElement;
 
         setup() : void;
-        toggleVisibility() : void;
     }
     
     export class HuePane

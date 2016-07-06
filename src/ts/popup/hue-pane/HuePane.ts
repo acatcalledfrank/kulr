@@ -2,7 +2,6 @@ import {IOptions, IGradientStop} from "picky";
 
 import {findOne} from "../../utils/dom/element/Find";
 import App from "../../App";
-import Css from "../../utils/dom/style/Css";
 import CreateGradientElement from "../svg/CreateGradientElement";
 import SetGradientDirection from "../svg/SetGradientDirection";
 import FillGradient from "../svg/FillGradient";
@@ -10,6 +9,7 @@ import CreateColourRect from "../svg/CreateColourRect";
 import {Interactions} from './Interactions';
 import {getUniqueId} from "../../utils/UniqueId";
 import {fillContainer} from "../../utils/dom/style/FillContainer";
+import {addClass} from "../../utils/dom/style/Css";
 
 export class HuePane
 {
@@ -54,7 +54,7 @@ export class HuePane
 
         //  add the relevant class
         
-        Css.addClass(element, 'picky-hue-pane__palette');
+        addClass(element, 'picky-hue-pane__palette');
         
         //  make the element fill its container
 

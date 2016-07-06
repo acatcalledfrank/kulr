@@ -1,11 +1,12 @@
 import {IOptions} from "picky";
 import {findOne} from "../utils/dom/element/Find";
 import App from "../App";
-import Css from "../utils/dom/style/Css";
 import {HuePane} from "./hue-pane/HuePane";
 import {TonePane} from "./tone-pane/TonePane";
 import {Swatch} from "./swatch/Swatch";
 import {TextInput} from "./text-input/TextInput";
+import {toggleClass, removeClass} from "../utils/dom/style/Css";
+import {addClass} from "../utils/dom/style/Css";
 
 
 export class Popup
@@ -28,6 +29,10 @@ export class Popup
         
         this.element = this.getElement();
         
+        //  set iid property on element
+
+        this.element.dataset['iid'] = this.iid;
+        
         //  create the hue and tint colour panes class instances
         
         App.swatch = new Swatch(this.iid, this.options);
@@ -41,6 +46,10 @@ export class Popup
         App.textInput.setup();
         App.tonePane.setup();
         App.huePane.setup();
+
+        //  add interaction listeners to the element
+
+        this.listen();
     }
 
 
@@ -78,7 +87,7 @@ export class Popup
         
         //  add class to the popup
         
-        Css.addClass(element, 'picky-popup');
+        addClass(element, 'picky-popup');
 
         //  place our new element on the page;
         //  this code inserts it after the toggle element
@@ -90,12 +99,33 @@ export class Popup
 
 
     /**
+     * listen for open-popup events
+     */
+    listen()
+    {
+        App.events.togglePopup.add(this.onTogglePopup);
+    }
+
+
+    /**
      * toggle popup visibility
      */
-    toggleVisibility()
+    onTogglePopup = (iid: string) =>
     {
-        //  toggle the 'active' class on the element
-        
-        Css.toggleClass(this.element, 'active');
+        //  if the iids of the event doesn't match this popup,
+        //  the user has opened a different instance -
+        //  let's close this instance's popup
+
+        if (iid !== this.iid)
+        {
+            removeClass(this.element, 'open');
+
+            return;
+        }
+
+        //  if they do match, check the app's "open" status
+        //  and set the class accordingly
+
+        toggleClass(this.element, 'open', App.state.open);
     }
 }

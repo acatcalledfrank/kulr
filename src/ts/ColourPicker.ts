@@ -8,6 +8,7 @@ import App from "./App";
 import {getUniqueId} from "./utils/UniqueId";
 import {ColourPalette} from "./utils/colour/ColourPalette";
 import {Events} from "./events/Events";
+import {State} from "./state/State";
 
 export class ColourPicker
 {
@@ -36,6 +37,7 @@ export class ColourPicker
 
         //  create class instances for our various colour picker components
         
+        App.state = new State(this.iid, options);
         App.events = new Events(this.iid, options);
         App.palette = new ColourPalette(this.iid, options);
         App.popup = new Popup(this.iid, options);

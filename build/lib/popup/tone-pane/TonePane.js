@@ -1,6 +1,5 @@
 "use strict";
 var App_1 = require("../../App");
-var Css_1 = require("../../utils/dom/style/Css");
 var CreateGradientElement_1 = require("../svg/CreateGradientElement");
 var SetGradientDirection_1 = require("../svg/SetGradientDirection");
 var FillGradient_1 = require("../svg/FillGradient");
@@ -9,6 +8,7 @@ var Interactions_1 = require('./Interactions');
 var UniqueId_1 = require("../../utils/UniqueId");
 var Find_1 = require("../../utils/dom/element/Find");
 var FillContainer_1 = require("../../utils/dom/style/FillContainer");
+var Css_1 = require("../../utils/dom/style/Css");
 var TonePane = (function () {
     function TonePane(iid, options) {
         var _this = this;
@@ -28,7 +28,7 @@ var TonePane = (function () {
     TonePane.prototype.createGradientElement = function () {
         var element;
         element = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        Css_1.default.addClass(element, 'picky-tone-pane__palette');
+        Css_1.addClass(element, 'picky-tone-pane__palette');
         FillContainer_1.fillContainer(element);
         this.getContainer().appendChild(element);
         return element;
