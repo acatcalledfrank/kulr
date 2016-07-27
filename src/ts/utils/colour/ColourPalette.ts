@@ -118,6 +118,6 @@ export class ColourPalette
 
         //  dispatch a colour update event
 
-        App.events.updateColour.dispatch();
+        App.events.updateColour.dispatch( App.palette.getHexString());
     }
 }

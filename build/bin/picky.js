@@ -64,7 +64,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	var State_1 = __webpack_require__(33);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
-	        console.log('new picky!');
 	        this.setup(options);
 	    }
 	    ColourPicker.prototype.setup = function (options) {
@@ -416,7 +415,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            var hue;
 	            hue = GetHueAtCursor_1.getHueAtCursor(_this.element, event);
 	            App_1.default.palette.setHue(hue);
-	            App_1.default.events.updateColour.dispatch();
+	            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	        };
 	        this.onMouseUp = function (event) {
 	            PreventSelections_1.preventSelections(false);
@@ -654,7 +653,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            hsl = GetColourAtCursor_1.getSaturationAndLightnessAtCursor(_this.element, event);
 	            App_1.default.palette.setSaturation(hsl.saturation);
 	            App_1.default.palette.setLightness(hsl.lightness);
-	            App_1.default.events.updateColour.dispatch();
+	            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	        };
 	        this.onMouseUp = function (event) {
 	            PreventSelections_1.preventSelections(false);
@@ -764,7 +763,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element = element;
 	        this.onContentInput = function () {
 	            App_1.default.palette.setHexString(_this.element.value);
-	            App_1.default.events.updateColour.dispatch();
+	            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	        };
 	    }
 	    Interactions.prototype.listen = function () {
@@ -835,7 +834,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	            document.removeEventListener('mouseup', _this.onDocumentClick);
 	        };
 	        this.onDocumentClick = function (event) {
-	            console.log(App_1.default.state.dragging);
 	            if (ClickOutside_1.clickWasOutside(event, _this.iid) && !App_1.default.state.dragging) {
 	                App_1.default.state.open = false;
 	                App_1.default.events.togglePopup.dispatch(_this.iid);
@@ -859,7 +857,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var parent;
 	    parent = event.target;
 	    while (parent) {
-	        if (parent.dataset['iid'] === iid)
+	        if (parent.dataset && parent.dataset['iid'] === iid)
 	            return false;
 	        parent = parent.parentElement;
 	    }
@@ -909,7 +907,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    ColourPalette.prototype.setHexString = function (hex) {
 	        var hsl;
 	        this.hsl = RgbToHsl_1.rgbToHsl(RgbToString_1.hexToRgb(hex));
-	        App_1.default.events.updateColour.dispatch();
+	        App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	    };
 	    return ColourPalette;
 	}());

@@ -16,7 +16,7 @@ var Interactions = (function () {
             var hue;
             hue = GetHueAtCursor_1.getHueAtCursor(_this.element, event);
             App_1.default.palette.setHue(hue);
-            App_1.default.events.updateColour.dispatch();
+            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
         };
         this.onMouseUp = function (event) {
             PreventSelections_1.preventSelections(false);

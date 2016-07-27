@@ -18,7 +18,7 @@ var Interactions = (function () {
             hsl = GetColourAtCursor_1.getSaturationAndLightnessAtCursor(_this.element, event);
             App_1.default.palette.setSaturation(hsl.saturation);
             App_1.default.palette.setLightness(hsl.lightness);
-            App_1.default.events.updateColour.dispatch();
+            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
         };
         this.onMouseUp = function (event) {
             PreventSelections_1.preventSelections(false);

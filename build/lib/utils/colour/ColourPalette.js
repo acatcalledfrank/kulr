@@ -35,7 +35,7 @@ var ColourPalette = (function () {
     ColourPalette.prototype.setHexString = function (hex) {
         var hsl;
         this.hsl = RgbToHsl_1.rgbToHsl(RgbToString_1.hexToRgb(hex));
-        App_1.default.events.updateColour.dispatch();
+        App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
     };
     return ColourPalette;
 }());

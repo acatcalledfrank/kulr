@@ -53,9 +53,6 @@ export class Interactions
         //  test whether the click was outside the colour picker;
         //  if so, and the user hasn't been selecting a colour,
         //  let's close the popup;
-        //  (
-
-        console.log(App.state.dragging);
 
         if (clickWasOutside(event, this.iid) && ! App.state.dragging)
         {

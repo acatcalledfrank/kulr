@@ -8,7 +8,6 @@ var Events_1 = require("./events/Events");
 var State_1 = require("./state/State");
 var ColourPicker = (function () {
     function ColourPicker(options) {
-        console.log('new picky!');
         this.setup(options);
     }
     ColourPicker.prototype.setup = function (options) {

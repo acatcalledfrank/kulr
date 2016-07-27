@@ -17,7 +17,7 @@ export class ColourPicker
 
     constructor(options: IOptions)
     {
-        console.log('new picky!');
+        //console.log('new picky!');
 
         //  set up this instance
 

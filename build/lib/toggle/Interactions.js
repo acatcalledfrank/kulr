@@ -14,7 +14,6 @@ var Interactions = (function () {
             document.removeEventListener('mouseup', _this.onDocumentClick);
         };
         this.onDocumentClick = function (event) {
-            console.log(App_1.default.state.dragging);
             if (ClickOutside_1.clickWasOutside(event, _this.iid) && !App_1.default.state.dragging) {
                 App_1.default.state.open = false;
                 App_1.default.events.togglePopup.dispatch(_this.iid);

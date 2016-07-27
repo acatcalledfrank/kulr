@@ -1,5 +1,13 @@
 declare module 'picky'
 {
+    export class ColourPicker
+    {
+        constructor(options: IOptions);
+
+        onUpdate: Signal;
+        hex: string;
+    }
+
     export interface IOptions
     {
         elements:

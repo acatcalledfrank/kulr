@@ -1,6 +1,7 @@
 import {IOptions} from "picky";
 import * as signals from 'signals';
 
+
 export class Events
 {
     updateColour: Signal;

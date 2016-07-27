@@ -46,7 +46,12 @@
         }
     };
 
-    new Picky.ColourPicker(options);
+    var picky = new Picky.ColourPicker(options);
+
+    picky.onUpdate.add(function(colour)
+    {
+        console.log(colour)
+    })
 
 </script>
 
