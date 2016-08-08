@@ -7,6 +7,7 @@ import {Swatch} from "./swatch/Swatch";
 import {TextInput} from "./text-input/TextInput";
 import {toggleClass, removeClass} from "../utils/dom/style/Css";
 import {addClass} from "../utils/dom/style/Css";
+import {hideElement} from '../utils/dom/style/ShowElement';
 
 
 export class Popup
@@ -28,6 +29,10 @@ export class Popup
         //  create the popup element
         
         this.element = this.getElement();
+
+        //  hide the popup element; sometimes it gets created before the CSS kicks in, and this will prevent a flicker of colour
+
+        hideElement(this.element);
         
         //  set iid property on element
 

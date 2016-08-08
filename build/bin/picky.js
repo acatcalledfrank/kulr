@@ -56,12 +56,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(23);
+	var Toggle_1 = __webpack_require__(24);
 	var App_1 = __webpack_require__(4);
 	var UniqueId_1 = __webpack_require__(14);
-	var ColourPalette_1 = __webpack_require__(26);
-	var Events_1 = __webpack_require__(31);
-	var State_1 = __webpack_require__(33);
+	var ColourPalette_1 = __webpack_require__(27);
+	var Events_1 = __webpack_require__(32);
+	var State_1 = __webpack_require__(34);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
 	        this.setup(options);
@@ -112,6 +112,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var TextInput_1 = __webpack_require__(21);
 	var Css_1 = __webpack_require__(16);
 	var Css_2 = __webpack_require__(16);
+	var ShowElement_1 = __webpack_require__(23);
 	var Popup = (function () {
 	    function Popup(iid, options) {
 	        var _this = this;
@@ -127,6 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    }
 	    Popup.prototype.setup = function () {
 	        this.element = this.getElement();
+	        ShowElement_1.hideElement(this.element);
 	        this.element.dataset['iid'] = this.iid;
 	        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
 	        App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
@@ -776,13 +778,27 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 23 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function showElement() {
+	}
+	exports.showElement = showElement;
+	function hideElement(element) {
+	    element.style.display = 'none';
+	}
+	exports.hideElement = hideElement;
+
+
+/***/ },
+/* 24 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
 	var Css_1 = __webpack_require__(16);
-	var Interactions_1 = __webpack_require__(24);
+	var Interactions_1 = __webpack_require__(25);
 	var Toggle = (function () {
 	    function Toggle(iid, options) {
 	        var _this = this;
@@ -815,12 +831,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var ClickOutside_1 = __webpack_require__(25);
+	var ClickOutside_1 = __webpack_require__(26);
 	var Interactions = (function () {
 	    function Interactions(iid, options) {
 	        var _this = this;
@@ -849,7 +865,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -867,14 +883,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var HslToRgb_1 = __webpack_require__(27);
-	var RgbToString_1 = __webpack_require__(28);
-	var RgbToHsl_1 = __webpack_require__(30);
+	var HslToRgb_1 = __webpack_require__(28);
+	var RgbToString_1 = __webpack_require__(29);
+	var RgbToHsl_1 = __webpack_require__(31);
 	var ColourPalette = (function () {
 	    function ColourPalette(iid, options) {
 	        this.iid = iid;
@@ -915,7 +931,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -954,11 +970,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Validator_1 = __webpack_require__(29);
+	var Validator_1 = __webpack_require__(30);
 	function rgbToHex(rgb) {
 	    var hex;
 	    hex = ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
@@ -986,7 +1002,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1016,7 +1032,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1053,11 +1069,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var signals = __webpack_require__(32);
+	var signals = __webpack_require__(33);
 	var Events = (function () {
 	    function Events(iid, options) {
 	        this.iid = iid;
@@ -1073,7 +1089,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
@@ -1524,7 +1540,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
 	"use strict";

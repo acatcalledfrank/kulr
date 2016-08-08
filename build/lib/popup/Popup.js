@@ -7,6 +7,7 @@ var Swatch_1 = require("./swatch/Swatch");
 var TextInput_1 = require("./text-input/TextInput");
 var Css_1 = require("../utils/dom/style/Css");
 var Css_2 = require("../utils/dom/style/Css");
+var ShowElement_1 = require('../utils/dom/style/ShowElement');
 var Popup = (function () {
     function Popup(iid, options) {
         var _this = this;
@@ -22,6 +23,7 @@ var Popup = (function () {
     }
     Popup.prototype.setup = function () {
         this.element = this.getElement();
+        ShowElement_1.hideElement(this.element);
         this.element.dataset['iid'] = this.iid;
         App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
         App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
