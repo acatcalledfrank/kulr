@@ -77,6 +77,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        App_1.default.palette.setup();
 	        App_1.default.toggle.setup();
 	        App_1.default.popup.setup();
+	        App_1.default.palette.setHexString(options.defaultColour || '000000');
 	    };
 	    Object.defineProperty(ColourPicker.prototype, "onUpdate", {
 	        get: function () {
@@ -938,7 +939,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        return RgbToString_1.rgbToHex(this.getRgb());
 	    };
 	    ColourPalette.prototype.setHexString = function (hex) {
-	        var hsl;
 	        this.hsl = RgbToHsl_1.rgbToHsl(RgbToString_1.hexToRgb(hex));
 	        App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	    };

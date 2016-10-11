@@ -49,6 +49,10 @@ export class ColourPicker
         App.palette.setup();
         App.toggle.setup();
         App.popup.setup();
+
+        //  set the default colour
+
+        App.palette.setHexString(options.defaultColour || '000000');
     }
 
 

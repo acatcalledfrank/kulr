@@ -19,7 +19,7 @@ declare module 'picky'
                 swatches: (HTMLElement | string)[];
                 text_input: HTMLElement | string;
             },
-        defaultColour: 'aaaaaa'
+        defaultColour: string;
     }
 
     export class State

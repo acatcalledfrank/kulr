@@ -21,6 +21,7 @@ var ColourPicker = (function () {
         App_1.default.palette.setup();
         App_1.default.toggle.setup();
         App_1.default.popup.setup();
+        App_1.default.palette.setHexString(options.defaultColour || '000000');
     };
     Object.defineProperty(ColourPicker.prototype, "onUpdate", {
         get: function () {

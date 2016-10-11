@@ -110,8 +110,6 @@ export class ColourPalette
      */
     setHexString(hex: string)
     {
-        var hsl: IHSL;
-
         //  convert hex string to HSL
 
         this.hsl = rgbToHsl( hexToRgb(hex));
