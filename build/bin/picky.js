@@ -56,12 +56,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	"use strict";
 	var Popup_1 = __webpack_require__(1);
-	var Toggle_1 = __webpack_require__(24);
+	var Toggle_1 = __webpack_require__(25);
 	var App_1 = __webpack_require__(4);
-	var UniqueId_1 = __webpack_require__(14);
-	var ColourPalette_1 = __webpack_require__(27);
-	var Events_1 = __webpack_require__(32);
-	var State_1 = __webpack_require__(34);
+	var UniqueId_1 = __webpack_require__(15);
+	var ColourPalette_1 = __webpack_require__(28);
+	var Events_1 = __webpack_require__(33);
+	var State_1 = __webpack_require__(35);
 	var ColourPicker = (function () {
 	    function ColourPicker(options) {
 	        this.setup(options);
@@ -108,12 +108,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
 	var HuePane_1 = __webpack_require__(5);
-	var TonePane_1 = __webpack_require__(17);
-	var Swatch_1 = __webpack_require__(20);
-	var TextInput_1 = __webpack_require__(21);
-	var Css_1 = __webpack_require__(16);
-	var Css_2 = __webpack_require__(16);
-	var ShowElement_1 = __webpack_require__(23);
+	var TonePane_1 = __webpack_require__(18);
+	var Swatch_1 = __webpack_require__(21);
+	var TextInput_1 = __webpack_require__(22);
+	var Css_1 = __webpack_require__(17);
+	var Css_2 = __webpack_require__(17);
+	var ShowElement_1 = __webpack_require__(24);
 	var Popup = (function () {
 	    function Popup(iid, options) {
 	        var _this = this;
@@ -252,10 +252,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SetGradientDirection_1 = __webpack_require__(7);
 	var FillGradient_1 = __webpack_require__(8);
 	var CreateColourRect_1 = __webpack_require__(9);
-	var Interactions_1 = __webpack_require__(10);
-	var UniqueId_1 = __webpack_require__(14);
-	var FillContainer_1 = __webpack_require__(15);
-	var Css_1 = __webpack_require__(16);
+	var Interactions_1 = __webpack_require__(11);
+	var UniqueId_1 = __webpack_require__(15);
+	var FillContainer_1 = __webpack_require__(16);
+	var Css_1 = __webpack_require__(17);
 	var HuePane = (function () {
 	    function HuePane(iid, options) {
 	        this.iid = iid;
@@ -381,9 +381,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 9 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
+	var UrlUtils_1 = __webpack_require__(10);
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.default = function (svg, gradient_id) {
 	    var rect;
@@ -392,19 +393,30 @@ return /******/ (function(modules) { // webpackBootstrap
 	    rect.setAttribute('y', '0');
 	    rect.setAttribute('width', '100%');
 	    rect.setAttribute('height', '100%');
-	    rect.setAttribute('fill', 'url(#' + gradient_id + ')');
+	    rect.setAttribute('fill', 'url(' + UrlUtils_1.getCurrentUrl() + '#' + gradient_id + ')');
 	    svg.appendChild(rect);
 	};
 
 
 /***/ },
 /* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function getCurrentUrl() {
+	    return window.location.href;
+	}
+	exports.getCurrentUrl = getCurrentUrl;
+
+
+/***/ },
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var GetHueAtCursor_1 = __webpack_require__(11);
-	var PreventSelections_1 = __webpack_require__(13);
+	var GetHueAtCursor_1 = __webpack_require__(12);
+	var PreventSelections_1 = __webpack_require__(14);
 	var Interactions = (function () {
 	    function Interactions(element) {
 	        var _this = this;
@@ -438,11 +450,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Clamp_1 = __webpack_require__(12);
+	var Clamp_1 = __webpack_require__(13);
 	function getHueAtCursor(target, event) {
 	    var client_rect, mouse_offset, hue;
 	    client_rect = target.getBoundingClientRect();
@@ -455,7 +467,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 12 */
+/* 13 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -466,7 +478,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 13 */
+/* 14 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -490,7 +502,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 14 */
+/* 15 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -502,7 +514,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 15 */
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -517,7 +529,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -558,7 +570,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -567,11 +579,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	var SetGradientDirection_1 = __webpack_require__(7);
 	var FillGradient_1 = __webpack_require__(8);
 	var CreateColourRect_1 = __webpack_require__(9);
-	var Interactions_1 = __webpack_require__(18);
-	var UniqueId_1 = __webpack_require__(14);
+	var Interactions_1 = __webpack_require__(19);
+	var UniqueId_1 = __webpack_require__(15);
 	var Find_1 = __webpack_require__(2);
-	var FillContainer_1 = __webpack_require__(15);
-	var Css_1 = __webpack_require__(16);
+	var FillContainer_1 = __webpack_require__(16);
+	var Css_1 = __webpack_require__(17);
 	var TonePane = (function () {
 	    function TonePane(iid, options) {
 	        var _this = this;
@@ -634,13 +646,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var PreventSelections_1 = __webpack_require__(13);
-	var GetColourAtCursor_1 = __webpack_require__(19);
+	var PreventSelections_1 = __webpack_require__(14);
+	var GetColourAtCursor_1 = __webpack_require__(20);
 	var Interactions = (function () {
 	    function Interactions(iid, element) {
 	        var _this = this;
@@ -676,11 +688,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 19 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Clamp_1 = __webpack_require__(12);
+	var Clamp_1 = __webpack_require__(13);
 	function getSaturationAndLightnessAtCursor(target, event) {
 	    var client_rect, mouse_offset_x, mouse_offset_y, saturation, lightness;
 	    client_rect = target.getBoundingClientRect();
@@ -694,7 +706,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 20 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -739,13 +751,13 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 21 */
+/* 22 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
-	var Interaction_1 = __webpack_require__(22);
+	var Interaction_1 = __webpack_require__(23);
 	var TextInput = (function () {
 	    function TextInput(iid, options) {
 	        var _this = this;
@@ -771,7 +783,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 22 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -794,7 +806,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -809,14 +821,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
-	var Css_1 = __webpack_require__(16);
-	var Interactions_1 = __webpack_require__(25);
+	var Css_1 = __webpack_require__(17);
+	var Interactions_1 = __webpack_require__(26);
 	var Toggle = (function () {
 	    function Toggle(iid, options) {
 	        var _this = this;
@@ -849,12 +861,12 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var ClickOutside_1 = __webpack_require__(26);
+	var ClickOutside_1 = __webpack_require__(27);
 	var Interactions = (function () {
 	    function Interactions(iid, options) {
 	        var _this = this;
@@ -883,7 +895,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -901,14 +913,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var App_1 = __webpack_require__(4);
-	var HslToRgb_1 = __webpack_require__(28);
-	var RgbToString_1 = __webpack_require__(29);
-	var RgbToHsl_1 = __webpack_require__(31);
+	var HslToRgb_1 = __webpack_require__(29);
+	var RgbToString_1 = __webpack_require__(30);
+	var RgbToHsl_1 = __webpack_require__(32);
 	var ColourPalette = (function () {
 	    function ColourPalette(iid, options) {
 	        this.iid = iid;
@@ -948,7 +960,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -987,11 +999,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Validator_1 = __webpack_require__(30);
+	var Validator_1 = __webpack_require__(31);
 	function rgbToHex(rgb) {
 	    var hex;
 	    hex = ((1 << 24) + (rgb.r << 16) + (rgb.g << 8) + rgb.b).toString(16).slice(1);
@@ -1019,7 +1031,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1049,7 +1061,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1086,11 +1098,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var signals = __webpack_require__(33);
+	var signals = __webpack_require__(34);
 	var Events = (function () {
 	    function Events(iid, options) {
 	        this.iid = iid;
@@ -1106,7 +1118,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*jslint onevar:true, undef:true, newcap:true, regexp:true, bitwise:true, maxerr:50, indent:4, white:false, nomen:false, plusplus:false */
@@ -1557,7 +1569,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 	"use strict";

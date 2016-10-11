@@ -32,20 +32,20 @@
 .picky-tone-pane
 {
     position: relative;
-    display: block;
+    display: inline-block;
     width: 150px;
     height: 150px;
-    float: left;
+    /*float: left;*/
     background-color: red;
 }
 
 .picky-hue-pane
 {
     position: relative;
-    display: block;
+    display: inline-block;
     width: 50px;
     height: 150px;
-    float: left;
+    /*float: left;*/
     margin: 0 0 0 10px;
     background-color: blue;
 }

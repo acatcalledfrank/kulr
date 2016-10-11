@@ -1,3 +1,4 @@
+import {getCurrentUrl} from '../../utils/url/UrlUtils';
 /**
  * create and append an SVG gradient
  * @param svg
@@ -19,7 +20,7 @@ export default (svg: SVGSVGElement, gradient_id: string) =>
 
     //  fill it with the gradient
 
-    rect.setAttribute('fill', 'url(#' + gradient_id + ')');
+    rect.setAttribute('fill', 'url(' + getCurrentUrl() + '#' + gradient_id + ')');
 
     //  add the rect to the page
 
