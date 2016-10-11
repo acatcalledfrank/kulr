@@ -1,11 +1,11 @@
 /**
  * show an element
+ * @param element
  */
-export function showElement()
+export function showElement(element: HTMLElement)
 {
-
+    element.style.display = null;
 }
-
 
 /**
  * hide an element

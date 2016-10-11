@@ -16,9 +16,10 @@ declare module 'picky'
                 popup: HTMLElement | string;
                 tone_pane: HTMLElement | string;
                 hue_pane: HTMLElement | string;
-                swatch: HTMLElement | string;
+                swatches: (HTMLElement | string)[];
                 text_input: HTMLElement | string;
-            }
+            },
+        defaultColour: 'aaaaaa'
     }
 
     export class State
@@ -72,8 +73,11 @@ declare module 'picky'
         
     }
     
-    export class Swatch
+    export interface ISwatch
     {
+        iid: string;
+        element: HTMLElement;
+
         setup() : void;
     }
     

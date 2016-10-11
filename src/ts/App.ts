@@ -1,4 +1,5 @@
 import * as picky from 'picky';
+import {Swatch} from './popup/swatch/Swatch';
 
 export default class App
 {
@@ -9,7 +10,7 @@ export default class App
     static palette: picky.ColourPalette;
     static huePane: picky.HuePane;
     static tonePane: picky.TonePane;
-    static swatch: picky.Swatch;
+    static swatches: Swatch[];
     static textInput: picky.TextInput;
     
     constructor()

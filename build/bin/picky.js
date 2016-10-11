@@ -130,15 +130,16 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element = this.getElement();
 	        ShowElement_1.hideElement(this.element);
 	        this.element.dataset['iid'] = this.iid;
-	        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
+	        Swatch_1.createSwatches(this.options.elements.swatches);
 	        App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
 	        App_1.default.tonePane = new TonePane_1.TonePane(this.iid, this.options);
 	        App_1.default.huePane = new HuePane_1.HuePane(this.iid, this.options);
-	        App_1.default.swatch.setup();
+	        Swatch_1.setupSwatches();
 	        App_1.default.textInput.setup();
 	        App_1.default.tonePane.setup();
 	        App_1.default.huePane.setup();
 	        this.listen();
+	        ShowElement_1.showElement(this.element);
 	    };
 	    Popup.prototype.getElement = function () {
 	        var element;
@@ -699,26 +700,41 @@ return /******/ (function(modules) { // webpackBootstrap
 	var Find_1 = __webpack_require__(2);
 	var App_1 = __webpack_require__(4);
 	var Swatch = (function () {
-	    function Swatch(iid, options) {
+	    function Swatch(iid, element) {
 	        var _this = this;
 	        this.iid = iid;
-	        this.options = options;
+	        this.element = element;
 	        this.onColourSet = function () {
 	            _this.element.style.backgroundColor = App_1.default.palette.getHexString();
 	        };
 	    }
 	    Swatch.prototype.setup = function () {
-	        this.element = this.getElement();
 	        if (!this.element)
 	            return;
 	        App_1.default.events.updateColour.add(this.onColourSet);
 	    };
-	    Swatch.prototype.getElement = function () {
-	        return Find_1.findOne(this.options.elements.swatch);
-	    };
 	    return Swatch;
 	}());
 	exports.Swatch = Swatch;
+	function createSwatches(selectors) {
+	    var _this = this;
+	    selectors.map(function (selector) {
+	        saveSwatch(new Swatch(_this.iid, Find_1.findOne(selector)));
+	    });
+	}
+	exports.createSwatches = createSwatches;
+	function setupSwatches() {
+	    getAppSwatchList().map(function (swatch) {
+	        swatch.setup();
+	    });
+	}
+	exports.setupSwatches = setupSwatches;
+	function getAppSwatchList() {
+	    return App_1.default.swatches || (App_1.default.swatches = []);
+	}
+	function saveSwatch(swatch) {
+	    return getAppSwatchList().push(swatch);
+	}
 
 
 /***/ },
@@ -781,7 +797,8 @@ return /******/ (function(modules) { // webpackBootstrap
 /***/ function(module, exports) {
 
 	"use strict";
-	function showElement() {
+	function showElement(element) {
+	    element.style.display = null;
 	}
 	exports.showElement = showElement;
 	function hideElement(element) {

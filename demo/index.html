@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<button id="picky-toggle">colour picker</button>
+<button id="picky-toggle"><div class="button-swatch"></div>colour picker</button>
 
 <div class="picky-popup">
 
@@ -41,7 +41,7 @@
             popup: '.picky-popup',
             tone_pane: '.picky-tone-pane',
             hue_pane: '.picky-hue-pane',
-            swatch: '.picky-swatch',
+            swatches: ['.picky-swatch', '.button-swatch'],
             text_input: '.picky-text-input'
         }
     };

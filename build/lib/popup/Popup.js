@@ -25,15 +25,16 @@ var Popup = (function () {
         this.element = this.getElement();
         ShowElement_1.hideElement(this.element);
         this.element.dataset['iid'] = this.iid;
-        App_1.default.swatch = new Swatch_1.Swatch(this.iid, this.options);
+        Swatch_1.createSwatches(this.options.elements.swatches);
         App_1.default.textInput = new TextInput_1.TextInput(this.iid, this.options);
         App_1.default.tonePane = new TonePane_1.TonePane(this.iid, this.options);
         App_1.default.huePane = new HuePane_1.HuePane(this.iid, this.options);
-        App_1.default.swatch.setup();
+        Swatch_1.setupSwatches();
         App_1.default.textInput.setup();
         App_1.default.tonePane.setup();
         App_1.default.huePane.setup();
         this.listen();
+        ShowElement_1.showElement(this.element);
     };
     Popup.prototype.getElement = function () {
         var element;

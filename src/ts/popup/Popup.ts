@@ -3,11 +3,11 @@ import {findOne} from "../utils/dom/element/Find";
 import App from "../App";
 import {HuePane} from "./hue-pane/HuePane";
 import {TonePane} from "./tone-pane/TonePane";
-import {Swatch} from "./swatch/Swatch";
+import {Swatch, createSwatches, setupSwatches} from "./swatch/Swatch";
 import {TextInput} from "./text-input/TextInput";
 import {toggleClass, removeClass} from "../utils/dom/style/Css";
 import {addClass} from "../utils/dom/style/Css";
-import {hideElement} from '../utils/dom/style/ShowElement';
+import {hideElement, showElement} from '../utils/dom/style/ShowElement';
 
 
 export class Popup
@@ -37,17 +37,21 @@ export class Popup
         //  set iid property on element
 
         this.element.dataset['iid'] = this.iid;
-        
+
+        //  create all colour swatches to display the chosen colour
+
+        createSwatches(this.options.elements.swatches);
+
         //  create the hue and tint colour panes class instances
-        
-        App.swatch = new Swatch(this.iid, this.options);
+
         App.textInput = new TextInput(this.iid, this.options);
         App.tonePane = new TonePane(this.iid, this.options);
         App.huePane = new HuePane(this.iid, this.options);
 
         //  setup colour panes
-        
-        App.swatch.setup();
+
+        setupSwatches();
+
         App.textInput.setup();
         App.tonePane.setup();
         App.huePane.setup();
@@ -55,7 +59,14 @@ export class Popup
         //  add interaction listeners to the element
 
         this.listen();
+
+        //  hide the popup element; sometimes it gets created before the CSS kicks in, and this will prevent a flicker of colour
+
+        showElement(this.element);
     }
+
+
+
 
 
     /**
