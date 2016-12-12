@@ -26,11 +26,21 @@ export function getSaturationAndLightnessAtCursor(target: Element, event: MouseE
     mouse_offset_x = (event.pageX - client_rect.left) / client_rect.width;
     mouse_offset_y = (event.pageY - client_rect.top) / client_rect.height;
 
-    //  clamp offsets between 0-1
-    //  lightness is a bit tricky because it's affected by both the X and Y axes;
+    //  clamp offsets between 0-1;
+    //  saturation is pretty easy and just goes from 0-1 as we go left-right
 
     saturation = clamp(mouse_offset_x, 0, 1);
-    lightness = 0.5 - clamp(mouse_offset_y, 0, 1) * 0.5 + (0.5 - saturation * 0.5);
+
+    //  lightness is a bit tricky because it's affected by both the X and Y axes;
+
+    //  1 - 0.5
+    //  |   |
+    //  0 - 0
+
+    //  so we want to deduct some of the sat value when in the top-right corner
+
+    lightness = (1 - clamp(mouse_offset_y, 0, 1));
+    lightness -= saturation * 0.5 * lightness;
 
     //  return S and L in an object
     
