@@ -6,7 +6,8 @@ function getSaturationAndLightnessAtCursor(target, event) {
     mouse_offset_x = (event.pageX - client_rect.left) / client_rect.width;
     mouse_offset_y = (event.pageY - client_rect.top) / client_rect.height;
     saturation = Clamp_1.clamp(mouse_offset_x, 0, 1);
-    lightness = 0.5 - Clamp_1.clamp(mouse_offset_y, 0, 1) * 0.5 + (0.5 - saturation * 0.5);
+    lightness = (1 - Clamp_1.clamp(mouse_offset_y, 0, 1));
+    lightness -= saturation * 0.5 * lightness;
     return { hue: null, saturation: saturation, lightness: lightness };
 }
 exports.getSaturationAndLightnessAtCursor = getSaturationAndLightnessAtCursor;

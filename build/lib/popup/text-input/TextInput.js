@@ -8,7 +8,12 @@ var TextInput = (function () {
         this.iid = iid;
         this.options = options;
         this.onColourSet = function () {
-            _this.element.value = App_1.default.palette.getHexString();
+            if (_this.debounce)
+                clearTimeout(_this.debounce);
+            _this.debounce = setTimeout(function () {
+                _this.element.value = App_1.default.palette.getHexString();
+                _this.debounce = null;
+            }, 500);
         };
     }
     TextInput.prototype.setup = function () {

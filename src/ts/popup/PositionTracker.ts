@@ -44,7 +44,7 @@ export class PositionTracker
     trackPosition = (event: MouseEvent) =>
     {
         
-    }
+    };
 
 
     /**

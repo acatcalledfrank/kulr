@@ -6,6 +6,7 @@ import {Interactions} from "./Interaction";
 export class TextInput
 {
     element: HTMLInputElement;
+    debounce: number;
 
     constructor(private iid: string, private options: IOptions)
     {
@@ -49,10 +50,23 @@ export class TextInput
 
     /**
      * when the selected colour changes,
-     * display it in the swatch
+     * display it in the swatch after a short delay
      */
     onColourSet = () =>
     {
-        this.element.value = App.palette.getHexString();
+        //  clear the delay, if there is one
+
+        if (this.debounce) clearTimeout(this.debounce);
+
+        this.debounce = setTimeout(() =>
+        {
+            //  set input text content to reflect the user's chosen colour
+
+            this.element.value = App.palette.getHexString();
+
+            //  clear the debounce value
+
+            this.debounce = null;
+        }, 500);
     }
 }

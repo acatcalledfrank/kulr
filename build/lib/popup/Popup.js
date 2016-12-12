@@ -22,6 +22,7 @@ var Popup = (function () {
         };
     }
     Popup.prototype.setup = function () {
+        var _this = this;
         this.element = this.getElement();
         ShowElement_1.hideElement(this.element);
         this.element.dataset['iid'] = this.iid;
@@ -34,7 +35,7 @@ var Popup = (function () {
         App_1.default.tonePane.setup();
         App_1.default.huePane.setup();
         this.listen();
-        ShowElement_1.showElement(this.element);
+        setTimeout(function () { return ShowElement_1.showElement(_this.element); }, 2000);
     };
     Popup.prototype.getElement = function () {
         var element;

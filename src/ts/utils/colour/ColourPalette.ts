@@ -39,7 +39,6 @@ export class ColourPalette
     setHue(hue: number)
     {
         this.hsl.hue = hue;
-        // this.element.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
     }
 
 

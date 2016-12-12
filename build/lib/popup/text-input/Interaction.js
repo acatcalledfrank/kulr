@@ -6,7 +6,6 @@ var Interactions = (function () {
         this.element = element;
         this.onContentInput = function () {
             App_1.default.palette.setHexString(_this.element.value);
-            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
         };
     }
     Interactions.prototype.listen = function () {

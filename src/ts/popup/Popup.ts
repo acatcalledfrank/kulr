@@ -62,7 +62,7 @@ export class Popup
 
         //  hide the popup element; sometimes it gets created before the CSS kicks in, and this will prevent a flicker of colour
 
-        showElement(this.element);
+        setTimeout(() => showElement(this.element), 2000);
     }
 
 

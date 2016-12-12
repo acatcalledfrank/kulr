@@ -30,6 +30,6 @@ export class Interactions
 
         //  dispatch a colour update event
 
-        App.events.updateColour.dispatch( App.palette.getHexString());
+        //App.events.updateColour.dispatch( App.palette.getHexString());
     };
 }

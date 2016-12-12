@@ -128,6 +128,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        };
 	    }
 	    Popup.prototype.setup = function () {
+	        var _this = this;
 	        this.element = this.getElement();
 	        ShowElement_1.hideElement(this.element);
 	        this.element.dataset['iid'] = this.iid;
@@ -140,7 +141,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        App_1.default.tonePane.setup();
 	        App_1.default.huePane.setup();
 	        this.listen();
-	        ShowElement_1.showElement(this.element);
+	        setTimeout(function () { return ShowElement_1.showElement(_this.element); }, 2000);
 	    };
 	    Popup.prototype.getElement = function () {
 	        var element;
@@ -699,7 +700,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	    mouse_offset_x = (event.pageX - client_rect.left) / client_rect.width;
 	    mouse_offset_y = (event.pageY - client_rect.top) / client_rect.height;
 	    saturation = Clamp_1.clamp(mouse_offset_x, 0, 1);
-	    lightness = 0.5 - Clamp_1.clamp(mouse_offset_y, 0, 1) * 0.5 + (0.5 - saturation * 0.5);
+	    lightness = (1 - Clamp_1.clamp(mouse_offset_y, 0, 1));
+	    lightness -= saturation * 0.5 * lightness;
 	    return { hue: null, saturation: saturation, lightness: lightness };
 	}
 	exports.getSaturationAndLightnessAtCursor = getSaturationAndLightnessAtCursor;
@@ -764,7 +766,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.iid = iid;
 	        this.options = options;
 	        this.onColourSet = function () {
-	            _this.element.value = App_1.default.palette.getHexString();
+	            if (_this.debounce)
+	                clearTimeout(_this.debounce);
+	            _this.debounce = setTimeout(function () {
+	                _this.element.value = App_1.default.palette.getHexString();
+	                _this.debounce = null;
+	            }, 500);
 	        };
 	    }
 	    TextInput.prototype.setup = function () {
@@ -794,7 +801,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        this.element = element;
 	        this.onContentInput = function () {
 	            App_1.default.palette.setHexString(_this.element.value);
-	            App_1.default.events.updateColour.dispatch(App_1.default.palette.getHexString());
 	        };
 	    }
 	    Interactions.prototype.listen = function () {
