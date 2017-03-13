@@ -52,3 +52,12 @@ export function updateColourPicker(id: string, colour: string)
 
     setObservableHSL(hexToHSL(colour));
 }
+
+
+/**
+ * close all colour pickers
+ */
+export function closeAllColourPickers()
+{
+    activeID.next(null);
+}

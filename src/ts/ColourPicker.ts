@@ -79,8 +79,6 @@ export class ColourPicker
         //  reset the observable id
 
         activeID.next(null);
-
-        //this.observableColour.debounce(500)
     }
 
 

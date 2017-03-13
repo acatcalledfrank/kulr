@@ -28,6 +28,7 @@ declare module "pick-me"
     }
 
     export function createColourPicker(colourPickerOptions: IPickMeOptions) : IPickMeInstance;
+    export function closeAllColourPickers() : void;
 
     export interface IGradientStop
     {
