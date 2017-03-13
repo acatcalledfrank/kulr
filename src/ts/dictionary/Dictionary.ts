@@ -1,6 +1,8 @@
-import {IInstanceDictionary, IPickyInstance} from "picky";
+import {IInstanceDictionary, IPickMeInstance} from 'pick-me';
+
 
 var dictionary: IInstanceDictionary;
+
 
 
 /**
@@ -8,7 +10,7 @@ var dictionary: IInstanceDictionary;
  * @param instance
  * @param instanceID
  */
-export function saveInstance(instance: IPickyInstance, instanceID: string)
+export function saveInstance(instance: IPickMeInstance, instanceID: string)
 {
     getDictionary()[instanceID] = instance;
 }
@@ -17,7 +19,7 @@ export function saveInstance(instance: IPickyInstance, instanceID: string)
 /**
  * retrieve an instance by ID
  * @param instanceID
- * @return {IPickyInstance}
+ * @return {IPickMeInstance}
  */
 export function getInstance(instanceID: string)
 {

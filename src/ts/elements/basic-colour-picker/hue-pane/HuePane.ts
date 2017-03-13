@@ -2,14 +2,14 @@ import * as log from 'loglevel';
 import {activeID, observableHue} from "../../../state/Observables";
 import {populateHuePane} from "./Elements";
 import {onHuePaneMouseDown} from "./Interactions";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "pick-me";
 
 
 /**
  * create and populate a hue-pane element
  * @param options
  */
-export function createHuePane(options: IPickyOptions)
+export function createHuePane(options: IPickMeOptions)
 {
     //  create pane elements, returning the svg colour pane
     //  then add interaction listeners to the SVG
@@ -23,7 +23,7 @@ export function createHuePane(options: IPickyOptions)
  * @param svg
  * @param options
  */
-function addListeners(svg: SVGSVGElement, options: IPickyOptions)
+function addListeners(svg: SVGSVGElement, options: IPickMeOptions)
 {
     activeID.subscribe(id => options.id === id ? activatePane(svg) : deactivatePane(svg));
 }

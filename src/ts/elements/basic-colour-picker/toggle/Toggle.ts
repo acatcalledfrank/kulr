@@ -1,20 +1,20 @@
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
 import {activeID} from "../../../state/Observables";
-import {pickyConstants} from "../../../constants/Constants";
-import {IPickyOptions} from "picky";
+import {pickMeConstants} from "../../../constants/Constants";
+import {IPickMeOptions} from "pick-me";
 
 
 /**
  * create and populate the toggle button
  * @param options
  */
-export function createToggle(options: IPickyOptions)
+export function createToggle(options: IPickMeOptions)
 {
     let element: HTMLElement;
 
     //  find the button element
 
-    element = findByRoleWithin(options.elements.selector, pickyConstants.elements.TOGGLE);
+    element = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
 
     //  and add listeners
 
@@ -31,7 +31,7 @@ export function createToggle(options: IPickyOptions)
  * @param event
  * @param options
  */
-let onToggleClick = (event: MouseEvent, options: IPickyOptions) =>
+let onToggleClick = (event: MouseEvent, options: IPickMeOptions) =>
 {
     //  update the observable with the new active ID
 

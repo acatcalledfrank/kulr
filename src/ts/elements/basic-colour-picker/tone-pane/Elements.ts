@@ -1,9 +1,9 @@
-import {IGradientStop, IPickyOptions} from "picky";
+import {IGradientStop, IPickMeOptions} from "pick-me";
 import {createColourPaneSVGElement, createSvg, createSvgGradient, fillGradient, setGradientDirection} from "../../svg/SvgUtils";
 import {getUniqueId} from "../../../utils/UniqueId";
 import {activeID, observableHue} from "../../../state/Observables";
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
-import {pickyConstants} from "../../../constants/Constants";
+import {pickMeConstants} from "../../../constants/Constants";
 
 
 /**
@@ -11,14 +11,14 @@ import {pickyConstants} from "../../../constants/Constants";
  * @param options
  * @return {SVGSVGElement}
  */
-export function populateTonePane(options: IPickyOptions) : SVGSVGElement
+export function populateTonePane(options: IPickMeOptions) : SVGSVGElement
 {
     let pane: HTMLElement,
         svg: SVGSVGElement;
 
     //  find the tone-pane element
 
-    pane = findByRoleWithin(options.elements.selector, pickyConstants.elements.TONE_PANE);
+    pane = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TONE_PANE);
 
     //  create SVG element
 
@@ -54,7 +54,7 @@ function createGradient(svg: SVGSVGElement, fill: string, direction: string[]) :
 
     //  create a unique id for the gradient
 
-    id = getUniqueId('picky-svg-gradient-');
+    id = getUniqueId('pick-me-svg-gradient-');
 
     //  set the colours we're going to use in the gradient
 
@@ -94,7 +94,7 @@ function createGradient(svg: SVGSVGElement, fill: string, direction: string[]) :
  * @param pane
  * @param options
  */
-function addListeners(pane: HTMLElement, options: IPickyOptions)
+function addListeners(pane: HTMLElement, options: IPickMeOptions)
 {
     activeID.subscribe(id =>
     {

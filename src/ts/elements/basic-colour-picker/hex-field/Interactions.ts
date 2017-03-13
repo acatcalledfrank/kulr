@@ -1,4 +1,4 @@
-import {IHSL} from "picky";
+import {IHSL} from "pick-me";
 import {hexToRgb, rgbToHsl} from "../../../colour/ColourMixer";
 import {observableHue, observableSaturation, observableLightness} from "../../../state/Observables";
 /**

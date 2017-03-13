@@ -1,7 +1,7 @@
-import {IGradientStop, IPickyOptions} from "picky";
+import {IGradientStop, IPickMeOptions} from "pick-me";
 import {createColourPaneSVGElement, createSvg, createSvgGradient, fillGradient, setGradientDirection} from "../../svg/SvgUtils";
 import {getUniqueId} from "../../../utils/UniqueId";
-import {pickyConstants} from "../../../constants/Constants";
+import {pickMeConstants} from "../../../constants/Constants";
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
 
 
@@ -9,13 +9,13 @@ import {findByRoleWithin} from "../../../utils/dom/element/Find";
  * create and populate the hue-pane element
  * @param options
  */
-export function populateHuePane(options: IPickyOptions) : SVGSVGElement
+export function populateHuePane(options: IPickMeOptions) : SVGSVGElement
 {
     let svg: SVGSVGElement;
 
     //  create pane elements, returning the svg colour pane
 
-    svg = createSvg(findByRoleWithin(options.elements.selector, pickyConstants.elements.HUE_PANE));
+    svg = createSvg(findByRoleWithin(options.elements.selector, pickMeConstants.elements.HUE_PANE));
 
     //  create an SVG rect and fill with the gradient
 
@@ -40,7 +40,7 @@ function createGradient(svg: SVGSVGElement)
 
     //  create a unique id for the gradient
 
-    id = getUniqueId('picky-svg-gradient-');
+    id = getUniqueId('pick-me-svg-gradient-');
 
     //  set the colours we're going to use in the gradient
 

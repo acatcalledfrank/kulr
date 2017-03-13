@@ -1,4 +1,4 @@
-import {IGradientStop} from "picky";
+import {IGradientStop} from "pick-me";
 
 
 /**

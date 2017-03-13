@@ -1,13 +1,15 @@
-import {IPickyOptions} from 'picky';
+import {IPickMeOptions} from 'pick-me';
 import {createBasicColourPicker} from "./elements/basic-colour-picker/BasicColourPicker";
 import {activeID} from "./state/Observables";
 import {hexToHSL, observableHex, setObservableHSL} from "./colour/ColourMixer";
+import {Observable, Subject} from '@reactivex/rxjs';
 
 export class ColourPicker
 {
     colour: string;
+    observableColour: Observable<string>;
 
-    constructor(public options: IPickyOptions)
+    constructor(public options: IPickMeOptions)
     {
 
     }
@@ -77,6 +79,8 @@ export class ColourPicker
         //  reset the observable id
 
         activeID.next(null);
+
+        //this.observableColour.debounce(500)
     }
 
 
@@ -85,7 +89,14 @@ export class ColourPicker
      */
     addListeners()
     {
+        //  subscribe to the active instance id
+
         activeID.delay(100).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
+
+        //  subscribe to the observable hex and debounce so we're not updating the external watcher every tick
+
+        this.observableColour = observableHex.debounce(() => Observable.interval(500));
+
     }
 
 
@@ -94,7 +105,9 @@ export class ColourPicker
      */
     activatePane()
     {
-        observableHex.takeUntil(activeID).subscribe(hex => this.colour = hex);
+        //  update the picker's current colour, with a short debounce
+
+        observableHex.takeUntil(activeID).debounce(() => Observable.interval(100)).subscribe(hex => this.colour = hex);
 
         //  convert the input to HSL and update observable HSL values
 
@@ -107,9 +120,7 @@ export class ColourPicker
      */
     deactivatePane()
     {
-        //  stop listening for mouse interactions
 
-        // svg.removeEventListener('mousedown', onTonePaneMouseDown);
     }
 
 

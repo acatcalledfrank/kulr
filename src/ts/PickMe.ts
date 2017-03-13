@@ -1,19 +1,21 @@
 /// <reference path="../../typings/index.d.ts" />
 
-import {IPickyOptions} from "picky";
 import {saveInstance} from "./dictionary/Dictionary";
 import {ColourPicker} from "./ColourPicker";
 import {activeID} from "./state/Observables";
 import {hexToHSL, setObservableHSL} from "./colour/ColourMixer";
+import {IPickMeOptions} from 'pick-me';
+import {IPickMeInstance} from 'pick-me';
 
 
 /**
- * create a new instance of picky
+ * create a new instance of pick-me
  * @param options
+ * @return {IPickMeInstance}
  */
-export function createColourPicker(options: IPickyOptions)
+export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
 {
-    let instance: ColourPicker;
+    let instance: IPickMeInstance;
 
     //  create a new instance
 

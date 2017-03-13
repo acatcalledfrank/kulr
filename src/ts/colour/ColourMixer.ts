@@ -1,9 +1,10 @@
 import {Observable} from "@reactivex/rxjs";
 import {observableHue, observableSaturation, observableLightness} from "../state/Observables";
-import {hslToRgb} from "./HslToRgb";
-import {IRGB} from "picky";
 import {dehashString} from "../utils/colour/Validator";
-import {IHSL} from "picky";
+import {IHSL} from 'pick-me';
+import {hslToRgb} from './HslToRgb';
+import {IRGB} from 'pick-me';
+
 
 //  merge h, s and l into a single observable, then when the combined HSL is updated, parse to hex string
 

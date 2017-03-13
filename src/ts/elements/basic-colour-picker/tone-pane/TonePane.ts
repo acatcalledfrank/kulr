@@ -1,5 +1,5 @@
 import {populateTonePane} from "./Elements";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "pick-me";
 import {activeID, observableHue} from "../../../state/Observables";
 import {onTonePaneMouseDown} from "./Interactions";
 
@@ -8,7 +8,7 @@ import {onTonePaneMouseDown} from "./Interactions";
  * create and populate a tone-pane element
  * @param options
  */
-export function createTonePane(options: IPickyOptions)
+export function createTonePane(options: IPickMeOptions)
 {
     //  create pane elements, returning the svg colour pane
     //  then add interaction listeners to the SVG
@@ -22,7 +22,7 @@ export function createTonePane(options: IPickyOptions)
  * @param svg
  * @param options
  */
-function addListeners(svg: SVGSVGElement, options: IPickyOptions)
+function addListeners(svg: SVGSVGElement, options: IPickMeOptions)
 {
     activeID.subscribe(id => options.id === id ? activatePane(svg) : deactivatePane(svg));
 }

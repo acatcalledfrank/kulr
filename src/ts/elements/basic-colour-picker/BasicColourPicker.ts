@@ -1,12 +1,12 @@
 import {createTonePane} from "./tone-pane/TonePane";
 import {createHuePane} from "./hue-pane/HuePane";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "pick-me";
 import {findByRoleWithin} from "../../utils/dom/element/Find";
 import {createHexField} from "./hex-field/HexField";
 import {createColourSwatches} from "../swatch/ColourSwatch";
 import {activeID} from "../../state/Observables";
 import {createToggle} from "./toggle/Toggle";
-import {pickyConstants} from "../../constants/Constants";
+import {pickMeConstants} from "../../constants/Constants";
 
 
 
@@ -14,7 +14,7 @@ import {pickyConstants} from "../../constants/Constants";
  * create a basic colour picker
  * @param options
  */
-export function createBasicColourPicker(options: IPickyOptions)
+export function createBasicColourPicker(options: IPickMeOptions)
 {
     //  populate the toggle button
 
@@ -34,7 +34,7 @@ export function createBasicColourPicker(options: IPickyOptions)
  * create the popup elements
  * @param options
  */
-function createPopup(options: IPickyOptions)
+function createPopup(options: IPickMeOptions)
 {
     //  create popup components
 
@@ -52,7 +52,7 @@ function createPopup(options: IPickyOptions)
  * listen for signals
  * @param options
  */
-function addListeners(options: IPickyOptions)
+function addListeners(options: IPickMeOptions)
 {
     activeID.subscribe(id => toggleDisplay(options, options.id === id));
 }
@@ -63,14 +63,14 @@ function addListeners(options: IPickyOptions)
  * @param options
  * @param active
  */
-function toggleDisplay(options: IPickyOptions, active: boolean)
+function toggleDisplay(options: IPickMeOptions, active: boolean)
 {
     let element: HTMLElement,
         display: string;
 
     //  find the popup element for these options
 
-    element = findByRoleWithin(options.elements.selector, pickyConstants.elements.POPUP);
+    element = findByRoleWithin(options.elements.selector, pickMeConstants.elements.POPUP);
 
     //  if the associated instance is not currently active, hide the popup and stop here
 

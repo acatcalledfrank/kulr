@@ -14,13 +14,13 @@ module.exports =
     {
         cache: true,
         entry: {
-            main: './src/ts/Picky.ts'
+            main: './src/ts/PickMe.ts'
         },
         output: {
-            library: "Picky",
+            library: "PickMe",
             libraryTarget: "umd",
             umdNamedDefine: true,
-            filename: './build/picky.js'
+            filename: './build/pick-me.js'
         },
 
         module: {

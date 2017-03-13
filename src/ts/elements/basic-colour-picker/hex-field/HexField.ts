@@ -1,9 +1,9 @@
 import {activeID} from "../../../state/Observables";
 import {onHexFieldFocus, onHexFieldInput, onHexFieldBlur} from "./Interactions";
 import {observableHex} from "../../../colour/ColourMixer";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "pick-me";
 import {dehashString} from "../../../utils/colour/Validator";
-import {pickyConstants} from "../../../constants/Constants";
+import {pickMeConstants} from "../../../constants/Constants";
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
 
 
@@ -11,11 +11,11 @@ import {findByRoleWithin} from "../../../utils/dom/element/Find";
  * create and populate a hex string input/output field
  * @param options
  */
-export function createHexField(options: IPickyOptions)
+export function createHexField(options: IPickMeOptions)
 {
     //  add listeners to the field
 
-    addListeners(<HTMLInputElement>findByRoleWithin(options.elements.selector, pickyConstants.elements.HEX_FIELD), options);
+    addListeners(<HTMLInputElement>findByRoleWithin(options.elements.selector, pickMeConstants.elements.HEX_FIELD), options);
 }
 
 
@@ -24,7 +24,7 @@ export function createHexField(options: IPickyOptions)
  * @param field
  * @param options
  */
-function addListeners(field: HTMLInputElement, options: IPickyOptions)
+function addListeners(field: HTMLInputElement, options: IPickMeOptions)
 {
     activeID.subscribe(id => options.id === id ? activateField(field) : deactivateField(field));
 }

@@ -1,9 +1,9 @@
 import {toArray} from "lodash";
-import {pickyConstants} from "../../constants/Constants";
+import {pickMeConstants} from "../../constants/Constants";
 import {findByRolesWithin} from "../../utils/dom/element/Find";
 import {activeID} from "../../state/Observables";
 import {observableHex} from "../../colour/ColourMixer";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "pick-me";
 import {elementAt} from "@reactivex/rxjs/dist/cjs/operator/elementAt";
 
 
@@ -11,11 +11,11 @@ import {elementAt} from "@reactivex/rxjs/dist/cjs/operator/elementAt";
  * create and populate one or more colour-swatches to display the current colour
  * @param options
  */
-export function createColourSwatches(options: IPickyOptions)
+export function createColourSwatches(options: IPickMeOptions)
 {
     //  add listeners for each swatch
 
-    toArray(findByRolesWithin(options.elements.selector, pickyConstants.elements.SWATCH))
+    toArray(findByRolesWithin(options.elements.selector, pickMeConstants.elements.SWATCH))
         .forEach(element => addListeners(element, options));
 }
 
@@ -25,7 +25,7 @@ export function createColourSwatches(options: IPickyOptions)
  * @param swatch
  * @param options
  */
-function addListeners(swatch: HTMLElement, options: IPickyOptions)
+function addListeners(swatch: HTMLElement, options: IPickMeOptions)
 {
     activeID.filter(id => options.id === id).subscribe(id => activateSwatch(swatch));
 }

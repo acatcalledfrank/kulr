@@ -1,5 +1,5 @@
 import * as log from "loglevel";
-import {IPickyOptions} from "picky";
+import {IPickMeOptions} from "../PickMe";
 import {getUniqueId} from "../utils/UniqueId";
 
 
@@ -7,11 +7,11 @@ import {getUniqueId} from "../utils/UniqueId";
  * validate the options passed in by the user
  * @param options
  */
-export function validateOptions(options: IPickyOptions) : IPickyOptions
+export function validateOptions(options: IPickMeOptions) : IPickMeOptions
 {
     if ( ! options)
     {
-        log.warn('picky: no options found');
+        log.warn('pick-me: no options found');
 
         return;
     }

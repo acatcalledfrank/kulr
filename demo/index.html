@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Picky Demo</title>
+    <title>PickMe Demo</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -10,7 +10,7 @@
 <body>
 
 
-<div class="colour-picker" id="picky-first">
+<div class="colour-picker" id="pick-me-first">
 
     <button class="colour-picker__button" data-role="toggle">
         <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
@@ -27,7 +27,7 @@
 
 </div>
 
-<div class="colour-picker" id="picky-second">
+<div class="colour-picker" id="pick-me-second">
 
     <button class="colour-picker__button" data-role="toggle">
         <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
@@ -45,24 +45,26 @@
 </div>
 
 
-<script src="../build/picky.js"></script>
+<script src="../build/pick-me.js"></script>
 
 <script>
 
-    var pickyOne = new Picky.createColourPicker({
-        id: 'picky-first',
+    var pickMeFirst = new PickMe.createColourPicker({
+        id: 'pick-me-first',
         elements:
             {
-                selector: '#picky-first'
+                selector: '#pick-me-first'
         },
         defaultColour: 'aaaaaa'
     });
 
-    var pickyTwo = new Picky.createColourPicker({
-        id: 'picky-second',
+    pickMeFirst.observableColour.subscribe(function(colour) { console.log(colour) });
+
+    var pickMeSecond = new PickMe.createColourPicker({
+        id: 'pick-me-second',
         elements:
             {
-                selector: '#picky-second'
+                selector: '#pick-me-second'
         },
         defaultColour: '00ff00'
     });

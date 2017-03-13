@@ -1,5 +1,4 @@
-import {IRGB} from "picky";
-import {IHSL} from "picky";
+import {IRGB, IHSL} from "pick-me";
 
 
 /**

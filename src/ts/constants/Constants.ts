@@ -1,4 +1,4 @@
-export const pickyConstants: any =
+export const pickMeConstants: any =
     {
         elements:
             {
