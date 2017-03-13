@@ -1,8 +1,8 @@
 {
   "name": "pick-me",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A simple colour picker",
-  "main": "build/bin/pick-me.js",
+  "main": "build/pick-me.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
