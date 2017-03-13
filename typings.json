@@ -2,7 +2,6 @@
   "name": "picky",
   "dependencies": {},
   "globalDependencies": {
-    "js-signals": "registry:dt/js-signals#0.0.0+20160316155526",
     "loglevel": "registry:dt/loglevel#1.4.0+20160510002910"
   }
 }
