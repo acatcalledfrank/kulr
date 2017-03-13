@@ -21,8 +21,8 @@ export function onHuePaneMouseDown(event: MouseEvent)
 
     //  add listeners to the document
 
-    document.addEventListener('mousemove', getHueAtCursor);
-    document.addEventListener('mouseup', onMouseUp);
+    huePane.ownerDocument.addEventListener('mousemove', getHueAtCursor);
+    huePane.ownerDocument.addEventListener('mouseup', onMouseUp);
 }
 
 
@@ -70,8 +70,8 @@ let onMouseUp = (event: MouseEvent) =>
 {
     //  remove event listeners from the document
 
-    document.removeEventListener('mousemove', getHueAtCursor);
-    document.removeEventListener('mouseup', onMouseUp);
+    event.currentTarget.removeEventListener('mousemove', getHueAtCursor);
+    event.currentTarget.removeEventListener('mouseup', onMouseUp);
 
     //  allow selections
 

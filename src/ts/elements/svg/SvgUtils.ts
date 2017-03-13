@@ -145,7 +145,7 @@ export function createColourPaneSVGElement(svg: SVGSVGElement, gradient_id: stri
 
     //  fill it with the gradient
 
-    rect.setAttribute('fill', 'url(' + window.location.href + '#' + gradient_id + ')');
+    rect.setAttribute('fill', 'url(' + svg.ownerDocument.defaultView.location.href + '#' + gradient_id + ')');
 
     //  add the rect to the page
 

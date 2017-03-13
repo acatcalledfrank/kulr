@@ -21,8 +21,8 @@ export function onTonePaneMouseDown(event: MouseEvent)
 
     //  add listeners to the document
 
-    document.addEventListener('mousemove', getToneAtCursor);
-    document.addEventListener('mouseup', onMouseUp);
+    tonePane.ownerDocument.addEventListener('mousemove', getToneAtCursor);
+    tonePane.ownerDocument.addEventListener('mouseup', onMouseUp);
 }
 
 
@@ -82,8 +82,8 @@ let onMouseUp = (event: MouseEvent) =>
 {
     //  remove event listeners from the document
 
-    document.removeEventListener('mousemove', getToneAtCursor);
-    document.removeEventListener('mouseup', onMouseUp);
+    event.currentTarget.removeEventListener('mousemove', getToneAtCursor);
+    event.currentTarget.removeEventListener('mouseup', onMouseUp);
 
     //  allow selections
 
