@@ -1,43 +1,56 @@
-var webpack = require('webpack');
+'use strict';
+
+var webpack = require('webpack'),
+    path = require('path');
+
+var babelOptions =
+    {
+        "presets": [
+            ["es2015", { modules: false }]
+        ]
+    };
 
 module.exports =
-{
-    resolve:
     {
-        extensions:
-            [
-                '', '.js', '.ts',
-                '.webpack.js', '.web.js'
-            ]
-    },
+        cache: true,
+        entry: {
+            main: './src/ts/Picky.ts'
+        },
+        output: {
+            library: "Picky",
+            libraryTarget: "umd",
+            umdNamedDefine: true,
+            filename: './build/picky.js'
+        },
 
-    devtool: 'source-map',
-
-    module:
-    {
-        loaders:
-            [
+        module: {
+            rules: [
                 {
-                    test: /\.ts$/,
-                    loader: 'ts-loader'
+                    test: /\.ts(x?)$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: babelOptions
+                        },
+                        {
+                            loader: 'ts-loader'
+                        }
+                    ]
+                },
+                {
+                    test: /\.js$/,
+                    exclude: /node_modules/,
+                    use: [
+                        {
+                            loader: 'babel-loader',
+                            options: babelOptions
+                        }
+                    ]
                 }
             ]
-    },
-
-    plugins:
-        [
-            // new webpack.optimize.UglifyJsPlugin({
-            // 	minimize: true,
-            // 	sourceMap: false,
-            // 	mangle: true
-            // })
-        ],
-
-    output:
-    {
-        library: "Picky",
-        libraryTarget: "umd",
-        umdNamedDefine: true,
-        filename: 'picky.js'
-    }
-};
+        },
+        resolve: {
+            extensions: ['.ts', '.tsx', '.js']
+        }
+    };

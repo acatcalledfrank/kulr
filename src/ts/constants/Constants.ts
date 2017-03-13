@@ -1,3 +1,12 @@
-export const HUE_PANE: string = 'hue_pane';
-export const TONE_PANE: string = 'tone_pane';
-export const RGB_STRING: string = 'rgb_string';
+export const pickyConstants: any =
+    {
+        elements:
+            {
+                TOGGLE: 'toggle',
+                SWATCH: 'colour-swatch',
+                POPUP: 'popup',
+                TONE_PANE: 'tone-pane',
+                HUE_PANE: 'hue-pane',
+                HEX_FIELD: 'hex-field'
+            }
+    };

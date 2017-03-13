@@ -2,7 +2,7 @@
  * find the closest parent of type T;
  * eg find the next <p> up the tree
  */
-export default (selector: HTMLElement, tag: string) : HTMLElement =>
+export function findNearestParentOf(selector: HTMLElement, tag: string) : HTMLElement
 {
     //  make sure tag name is upper case
 

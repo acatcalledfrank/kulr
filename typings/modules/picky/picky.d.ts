@@ -1,106 +1,26 @@
 declare module 'picky'
 {
-    export class ColourPicker
+    export interface IPickyOptions
     {
-        constructor(options: IOptions);
-
-        onUpdate: Signal;
-        hex: string;
-    }
-
-    export interface IOptions
-    {
+        id: string;
         elements:
             {
-                toggle: HTMLElement | string;
-                popup: HTMLElement | string;
-                tone_pane: HTMLElement | string;
-                hue_pane: HTMLElement | string;
-                swatches: (HTMLElement | string)[];
-                text_input: HTMLElement | string;
+                selector: HTMLElement | string;
             },
         defaultColour: string;
     }
 
-    export class State
+    export interface IInstanceDictionary
     {
-        open: boolean;
-        dragging: boolean;
+        [id: string]: IPickyInstance;
     }
 
-    export class Events
+    export interface IPickyInstance
     {
-        updateColour: Signal;
-        togglePopup: Signal;
+        // id: string;
 
-        setup() : void;
-    }
-    
-    export class Toggle
-    {
-        element: HTMLElement;
-        
-        setup() : void;
-    }
-    
-    export class Popup
-    {
-        element: HTMLElement;
-
-        setup() : void;
-    }
-    
-    export class HuePane
-    {
-        element: SVGSVGElement;
-
-        setup() : void;
-        setHue(hue: number) : void;
-    }
-    
-    export class TonePane
-    {
-        element: SVGSVGElement;
-
-        setup() : void;
-        setHue(hue: number) : void;
-        setSaturation(saturation: number) : void;
-        setLightness(lightness: number) : void;
-    }
-    
-    export class ColourMixer
-    {
-        
-    }
-    
-    export interface ISwatch
-    {
-        iid: string;
-        element: HTMLElement;
-
-        setup() : void;
-    }
-    
-    export class TextInput
-    {
-        setup() : void;
-    }
-    
-    export class ColourPalette
-    {
-        hsl: IHSL;
-        rgb: IRGB;
-
-        setup() : void;
-
-        setHue(hue: number) : void;
-        setSaturation(saturation: number) : void;
-        setLightness(lightness: number) : void;
-        setRgb(rgb: IRGB | string) : void;
-        getHsl(): IHSL;
-        getRgb(): IRGB;
-        getHexString(): string;
-        setHexString(hex: string) : void;
+        bootstrap() : void;
+        destroy() : void;
     }
     
     export interface IGradientStop
@@ -109,20 +29,6 @@ declare module 'picky'
         offset: string;
         opacity?: string;
     }
-    
-    export class PositionTracker
-    {
-        startTracking(event: MouseEvent, trackFunc: (event: MouseEvent) => void) : void;
-        stopTracking() : void;
-    }
-    
-    // export interface ICombinedColour
-    // {
-    //     hue: number;
-    //     saturation?: number;
-    //     lightness?: number;
-    //     rgb?: string;
-    // }
     
     export interface IHSL
     {

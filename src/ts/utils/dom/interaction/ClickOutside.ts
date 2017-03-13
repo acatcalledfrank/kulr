@@ -1,12 +1,12 @@
 /**
  * did a click take place outside the target element?
  * @param event
- * @param target
- * @returns {boolean}
+ * @param iid
+ * @return {boolean}
  */
 export function clickWasOutside(event: MouseEvent, iid: string) : boolean
 {
-    var parent: HTMLElement;
+    let parent: HTMLElement;
 
     //  when the user clicks within the document,
     //  check the target and parent of the click;

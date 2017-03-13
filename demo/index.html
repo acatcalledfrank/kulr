@@ -9,50 +9,64 @@
 </head>
 <body>
 
-<button id="picky-toggle"><div class="button-swatch"></div>colour picker</button>
 
-<div class="picky-popup">
+<div class="colour-picker" id="picky-first">
 
-    <div class="row">
+    <button class="colour-picker__button" data-role="toggle">
+        <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
+    </button>
 
-        <div class="picky-tone-pane"></div>
-        <div class="picky-hue-pane"></div>
+    <div class="colour-picker__popup" data-role="popup">
 
-    </div>
-
-    <div class="row">
-
-        <div class="picky-swatch"></div>
-        <input type="text" class="picky-text-input">
+        <div class="colour-picker__tone-pane" data-role="tone-pane"></div>
+        <div class="colour-picker__hue-pane" data-role="hue-pane"></div>
+        <div class="colour-picker__colour-swatch popup-swatch" data-role="colour-swatch"></div>
+        <input type="text" class="colour-picker__hex-field" data-role="hex-field">
 
     </div>
 
 </div>
 
-<script src="../build/bin/picky.js"></script>
+<div class="colour-picker" id="picky-second">
+
+    <button class="colour-picker__button" data-role="toggle">
+        <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
+    </button>
+
+    <div class="colour-picker__popup" data-role="popup">
+
+        <div class="colour-picker__tone-pane" data-role="tone-pane"></div>
+        <div class="colour-picker__hue-pane" data-role="hue-pane"></div>
+        <div class="colour-picker__colour-swatch popup-swatch" data-role="colour-swatch"></div>
+        <input type="text" class="colour-picker__hex-field" data-role="hex-field">
+
+    </div>
+
+</div>
+
+
+<script src="../build/picky.js"></script>
 
 <script>
 
-    var options =
-    {
+    var pickyOne = new Picky.createColourPicker({
+        id: 'picky-first',
         elements:
-        {
-            toggle: '#picky-toggle',
-            popup: '.picky-popup',
-            tone_pane: '.picky-tone-pane',
-            hue_pane: '.picky-hue-pane',
-            swatches: ['.picky-swatch', '.button-swatch'],
-            text_input: '.picky-text-input'
+            {
+                selector: '#picky-first'
         },
         defaultColour: 'aaaaaa'
-    };
+    });
 
-    var picky = new Picky.ColourPicker(options);
+    var pickyTwo = new Picky.createColourPicker({
+        id: 'picky-second',
+        elements:
+            {
+                selector: '#picky-second'
+        },
+        defaultColour: '00ff00'
+    });
 
-    picky.onUpdate.add(function(colour)
-    {
-        console.log(colour)
-    })
 
 </script>
 

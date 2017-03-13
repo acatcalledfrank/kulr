@@ -1,64 +1,54 @@
-import {trimString}  from "../../string/StringUtils";
-
-/**
- * find an element by class or id
- * (or identify if we've been given a jQuery object)
- * @param selector
- */
-export function findAny(selector: any) : HTMLElement | NodeList
-{
-    //  check we've been given a valid selector
-
-    if ( ! selector) return null;
-
-    //  check if we've been given an id or a class
-
-    if (~selector.indexOf('#')) return findById(selector);
-    if (~selector.indexOf('.')) return findByClass(selector);
-
-    return null;
-}
-
-
 /**
  * find the first matching element
  * @param selector
  */
-export function findOne(selector: any) : HTMLElement
+export function findOne(selector: string | HTMLElement) : HTMLElement
 {
-    var result: HTMLElement | NodeList;
+    //  if we've been given an HTML element, return it
+
+    if (selector instanceof HTMLElement) return <HTMLElement>selector;
 
     //  find the element(s) with the matching selector
 
-    result = findAny(selector);
-
-    //  if no matching element is found then return null
-
-    if ( ! result) return null;
-
-    //  if the result is a single element then return it
-
-    if (result instanceof HTMLElement) return result;
-
-    //  otherwise return the first matching instance
-
-    return <HTMLElement>(<NodeList>result).item(0);
+    return <HTMLElement>document.querySelector(<string>selector);
 }
 
 
 /**
- * find elements by class
+ * find an element with a given data-role within an element
+ * @param selector
+ * @param role
+ * @return {any}
  */
-export function findByClass(className: string) : NodeList
+export function findByRoleWithin(selector: string | HTMLElement, role: string) : HTMLElement
 {
-    return <NodeList>document.getElementsByClassName( trimString(className, 1));
+    try
+    {
+        return <HTMLElement>findOne(selector).querySelector('[data-role="' + role + '"]');
+    }
+    catch(e)
+    {
+        console.warn('no element found');
+
+        return null;
+    }
 }
 
 
 /**
- * find an element by its id
+ * find multiple elements with a given data-role within an element
+ * @param selector
+ * @param role
+ * @return {any}
  */
-export function findById(id: string) : HTMLElement
+export function findByRolesWithin(selector: string | HTMLElement, role: string) : NodeListOf<HTMLElement>
 {
-    return document.getElementById( trimString(id, 1));
+    try
+    {
+        return <NodeListOf<HTMLElement>>findOne(selector).querySelectorAll('[data-role="' + role + '"]');
+    }
+    catch(e)
+    {
+        return null;
+    }
 }

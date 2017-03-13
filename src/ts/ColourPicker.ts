@@ -1,73 +1,117 @@
-/// <reference path="../../typings/index.d.ts" />
-
-import {IOptions} from 'picky';
-import * as picky from 'picky';
-import {Popup} from "./popup/Popup";
-import {Toggle} from "./toggle/Toggle";
-import App from "./App";
-import {getUniqueId} from "./utils/UniqueId";
-import {ColourPalette} from "./utils/colour/ColourPalette";
-import {Events} from "./events/Events";
-import {State} from "./state/State";
+import {IPickyOptions} from 'picky';
+import {createBasicColourPicker} from "./elements/basic-colour-picker/BasicColourPicker";
+import {activeID} from "./state/Observables";
+import {hexToHSL, observableHex, setObservableHSL} from "./colour/ColourMixer";
 
 export class ColourPicker
 {
-    iid: string;
-    element: HTMLElement;
+    colour: string;
 
-    constructor(options: IOptions)
+    constructor(public options: IPickyOptions)
     {
-        //console.log('new picky!');
 
-        //  set up this instance
-
-        this.setup(options);
     }
 
-    
-    
+
     /**
-     * setup a new instance
+     * bootstrap the instance
+     * TODO  add alternative styles; library swatches, recently used colours, different colour wheels/formats
      */
-    setup(options: IOptions)
+    bootstrap()
     {
-        //  generate a unique ID for this instance
+        //  create a basic colour picker
 
-        this.iid = getUniqueId('picky-');
-
-        //  create class instances for our various colour picker components
-        
-        App.state = new State(this.iid, options);
-        App.events = new Events(this.iid, options);
-        App.palette = new ColourPalette(this.iid, options);
-        App.popup = new Popup(this.iid, options);
-        App.toggle = new Toggle(this.iid, options);
-        
-        //  initialise instances
-        
-        App.events.setup();
-        App.palette.setup();
-        App.toggle.setup();
-        App.popup.setup();
+        createBasicColourPicker(this.options);
 
         //  set the default colour
 
-        App.palette.setHexString(options.defaultColour || '000000');
+        this.setDefaultColour();
+
+        //  add listeners
+
+        this.addListeners();
     }
 
 
     /**
-     * shortcut to properties for external access
-     * @returns {picky.Events}
+     * set the default colour for the picker
      */
-    get onUpdate() : Signal
+    setDefaultColour()
     {
-        return App.events.updateColour;
+        //  create and populate the colour picker popup
+
+        this.colour = this.options.defaultColour;
+
+        //  briefly set the active id
+
+        activeID.next(this.options.id);
+
+        //  convert the input to HSL and update observable HSL values
+
+        setObservableHSL(hexToHSL(this.colour));
+
+        //  reset the observable id
+
+        activeID.next(null);
     }
-    get hex() : string
+
+
+    /**
+     * set the current colour for the picker
+     * @param hex
+     */
+    setColour(hex: string)
     {
-        return App.palette.getHexString();
+        //  create and populate the colour picker popup
+
+        this.colour = hex;
+
+        //  briefly set the active id
+
+        activeID.next(this.options.id);
+
+        //  convert the input to HSL and update observable HSL values
+
+        setObservableHSL(hexToHSL(this.colour));
+
+        //  reset the observable id
+
+        activeID.next(null);
     }
+
+
+    /**
+     * add interaction listeners to the pane
+     */
+    addListeners()
+    {
+        activeID.delay(100).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
+    }
+
+
+    /**
+     * activate the pane; start listening for relevant events
+     */
+    activatePane()
+    {
+        observableHex.takeUntil(activeID).subscribe(hex => this.colour = hex);
+
+        //  convert the input to HSL and update observable HSL values
+
+        setObservableHSL(hexToHSL(this.colour));
+    }
+
+
+    /**
+     * deactivate the pane
+     */
+    deactivatePane()
+    {
+        //  stop listening for mouse interactions
+
+        // svg.removeEventListener('mousedown', onTonePaneMouseDown);
+    }
+
 
 
     /**

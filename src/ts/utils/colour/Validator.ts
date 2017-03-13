@@ -5,7 +5,7 @@
  */
 export function hashString(hex: string) : string
 {
-    var characters: string[];
+    let characters: string[];
 
     //  check the first character;
     //  if it's a hash return the string unchanged
@@ -29,10 +29,11 @@ export function hashString(hex: string) : string
 /**
  * remove hash from the start of a hex string
  * @param hex
+ * @return {string}
  */
 export function dehashString(hex: string) : string
 {
-    var characters: string[];
+    let characters: string[];
 
     //  check the first character;
     //  if it's a NOT a hash return the string unchanged
@@ -60,7 +61,7 @@ export function dehashString(hex: string) : string
  */
 function isHashed(hex: string) : boolean
 {
-    var characters: string[];
+    let characters: string[];
 
     //  split string into characters
 

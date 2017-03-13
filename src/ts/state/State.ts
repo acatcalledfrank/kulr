@@ -1,11 +1,10 @@
-import {IOptions} from "picky";
+import {IPickyOptions} from "picky";
 
 export class State
 {
     open: boolean;
-    dragging: boolean;
-    
-    constructor(private iid:string, private options: IOptions)
+
+    constructor(private iid:string, private options: IPickyOptions)
     {
         
     }
