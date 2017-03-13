@@ -1,0 +1,1 @@
+/// <reference path="modules/pick-me/pick-me.d.ts" />
