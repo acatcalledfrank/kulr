@@ -20060,7 +20060,7 @@ function getHueAtCursor(event) {
     mouse_offset = event.pageY - client_rect.top;
     mouse_offset = Clamp_1.clamp(mouse_offset, 0, client_rect.height);
     hue = 1 - mouse_offset / client_rect.height;
-    Observables_1.observableHue.next(hue);
+    Observables_1.observableHue.next(hue * 360);
 }
 var onMouseUp = function onMouseUp(event) {
     event.currentTarget.removeEventListener('mousemove', getHueAtCursor);
@@ -20151,7 +20151,7 @@ function activatePane(pane) {
     });
 }
 function onHueUpdate(pane, hue) {
-    pane.style.backgroundColor = 'hsl(' + hue * 360 + ',100%,50%)';
+    pane.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
 }
 
 /***/ }),

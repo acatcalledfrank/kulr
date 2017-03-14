@@ -58,7 +58,7 @@ function getHueAtCursor(event: MouseEvent)
 
     //  return the hue
 
-    observableHue.next(hue);
+    observableHue.next(hue * 360);
 }
 
 

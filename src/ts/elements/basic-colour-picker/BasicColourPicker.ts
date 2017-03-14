@@ -54,6 +54,8 @@ function createPopup(options: IPickMeOptions)
  */
 function addListeners(options: IPickMeOptions)
 {
+    //  subscribe to the active instance id observable; we'll use this to show/hide the popup
+
     activeID.subscribe(id => toggleDisplay(options, options.id === id));
 }
 

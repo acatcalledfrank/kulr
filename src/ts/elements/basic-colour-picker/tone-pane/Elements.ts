@@ -122,5 +122,5 @@ function activatePane(pane: HTMLElement)
  */
 function onHueUpdate(pane: HTMLElement, hue: number)
 {
-    pane.style.backgroundColor = 'hsl(' + hue * 360 + ',100%,50%)';
+    pane.style.backgroundColor = 'hsl(' + hue + ',100%,50%)';
 }
