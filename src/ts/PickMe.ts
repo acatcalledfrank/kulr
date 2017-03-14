@@ -1,5 +1,6 @@
 /// <reference path="../../typings/index.d.ts" />
 
+import * as log from "loglevel";
 import {saveInstance, getInstance} from "./dictionary/Dictionary";
 import {ColourPicker} from "./ColourPicker";
 import {activeID} from "./state/Observables";
@@ -52,7 +53,14 @@ export function getColourPicker(id: string) : IPickMeInstance
  */
 export function updateColourPicker(id: string, input: string)
 {
-    getColourPicker(id).setColour(input, false);
+    try
+    {
+        getColourPicker(id).setColour(input);
+    }
+    catch(e)
+    {
+        log.warn('no colour picker instance found for id', id);
+    }
 }
 
 
