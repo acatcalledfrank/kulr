@@ -1,6 +1,6 @@
 {
   "name": "pick-me",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "A simple colour picker",
   "main": "build/pick-me.js",
   "scripts": {
