@@ -1474,10 +1474,10 @@ exports.observableHex = Observables_1.observableHue.combineLatest(Observables_1.
 function hslToHexString(h, s, l) {
     return tinycolor({ h: h, s: s, l: l }).toHexString();
 }
-function hexToHSL(hex) {
+function inputToHSL(hex) {
     return tinycolor(hex).toHsl();
 }
-exports.hexToHSL = hexToHSL;
+exports.inputToHSL = inputToHSL;
 function setObservableHSL(hsl) {
     Observables_1.observableSaturation.next(hsl.s);
     Observables_1.observableLightness.next(hsl.l);
@@ -6064,19 +6064,13 @@ var ColourPicker = function () {
     }
     ColourPicker.prototype.bootstrap = function () {
         BasicColourPicker_1.createBasicColourPicker(this.options);
-        this.setDefaultColour();
+        this.setColour(this.options.defaultColour);
         this.addListeners();
     };
-    ColourPicker.prototype.setDefaultColour = function () {
-        this.colour = this.options.defaultColour;
+    ColourPicker.prototype.setColour = function (input) {
+        this.colour = input;
         Observables_1.activeID.next(this.options.id);
-        ColourMixer_1.setObservableHSL(ColourMixer_1.hexToHSL(this.colour));
-        Observables_1.activeID.next(null);
-    };
-    ColourPicker.prototype.setColour = function (hex) {
-        this.colour = hex;
-        Observables_1.activeID.next(this.options.id);
-        ColourMixer_1.setObservableHSL(ColourMixer_1.hexToHSL(this.colour));
+        ColourMixer_1.setObservableHSL(ColourMixer_1.inputToHSL(this.colour));
         Observables_1.activeID.next(null);
     };
     ColourPicker.prototype.addListeners = function () {
@@ -6084,8 +6078,10 @@ var ColourPicker = function () {
         Observables_1.activeID.delay(100).subscribe(function (id) {
             return _this.options.id === id ? _this.activatePane() : _this.deactivatePane();
         });
-        this.observableColour = ColourMixer_1.observableHex.debounce(function () {
-            return rxjs_1.Observable.interval(500);
+        this.observableColour = ColourMixer_1.observableHex.filter(function (hex) {
+            return _this.active;
+        }).debounce(function () {
+            return rxjs_1.Observable.interval(250);
         });
     };
     ColourPicker.prototype.activatePane = function () {
@@ -6095,9 +6091,12 @@ var ColourPicker = function () {
         }).subscribe(function (hex) {
             return _this.colour = hex;
         });
-        ColourMixer_1.setObservableHSL(ColourMixer_1.hexToHSL(this.colour));
+        ColourMixer_1.setObservableHSL(ColourMixer_1.inputToHSL(this.colour));
+        this.active = true;
     };
-    ColourPicker.prototype.deactivatePane = function () {};
+    ColourPicker.prototype.deactivatePane = function () {
+        this.active = false;
+    };
     ColourPicker.prototype.destroy = function () {};
     return ColourPicker;
 }();
@@ -19935,8 +19934,8 @@ function deactivateField(field) {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tinycolor = __webpack_require__(373);
 var Observables_1 = __webpack_require__(10);
+var ColourMixer_1 = __webpack_require__(18);
 function onHexFieldFocus(event) {}
 exports.onHexFieldFocus = onHexFieldFocus;
 function onHexFieldInput(event) {
@@ -19946,7 +19945,7 @@ function onHexFieldInput(event) {
     } catch (e) {
         input = '';
     }
-    hsl = tinycolor(input).toHsl();
+    hsl = ColourMixer_1.inputToHSL(input);
     Observables_1.observableHue.next(hsl.h);
     Observables_1.observableSaturation.next(hsl.s);
     Observables_1.observableLightness.next(hsl.l);
@@ -37757,16 +37756,14 @@ module.exports = function(module) {
 
 
 Object.defineProperty(exports, "__esModule", { value: true });
-var tinycolor = __webpack_require__(373);
 var Dictionary_1 = __webpack_require__(79);
 var ColourPicker_1 = __webpack_require__(78);
 var Observables_1 = __webpack_require__(10);
-var ColourMixer_1 = __webpack_require__(18);
 function createColourPicker(options) {
     var instance;
     instance = new ColourPicker_1.ColourPicker(options);
     instance.bootstrap();
-    Dictionary_1.saveInstance(instance, '');
+    Dictionary_1.saveInstance(instance, options.id);
     return instance;
 }
 exports.createColourPicker = createColourPicker;
@@ -37775,8 +37772,7 @@ function getColourPicker(id) {
 }
 exports.getColourPicker = getColourPicker;
 function updateColourPicker(id, input) {
-    Observables_1.activeID.next(id);
-    ColourMixer_1.setObservableHSL(tinycolor(input).toHsl());
+    getColourPicker(id).setColour(input, false);
 }
 exports.updateColourPicker = updateColourPicker;
 function closeAllColourPickers() {

@@ -1,6 +1,7 @@
 import * as tinycolor from "tinycolor2";
 import {IHSL} from "pick-me";
 import {observableHue, observableSaturation, observableLightness} from "../../../state/Observables";
+import {inputToHSL} from '../../../colour/ColourMixer';
 
 
 /**
@@ -34,7 +35,7 @@ export function onHexFieldInput(event: MouseEvent)
 
     //  convert the hex string to HSL
 
-    hsl = tinycolor(input).toHsl();
+    hsl = inputToHSL(input);
 
     //  set observable H, S and L values
 

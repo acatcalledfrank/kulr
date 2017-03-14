@@ -1,13 +1,14 @@
 import {IPickMeOptions} from 'pick-me';
 import {createBasicColourPicker} from "./elements/basic-colour-picker/BasicColourPicker";
 import {activeID} from "./state/Observables";
-import {hexToHSL, observableHex, setObservableHSL} from "./colour/ColourMixer";
+import {inputToHSL, observableHex, setObservableHSL} from "./colour/ColourMixer";
 import {Observable, Subject} from '@reactivex/rxjs';
 
 export class ColourPicker
 {
     colour: string;
     observableColour: Observable<string>;
+    active: boolean;
 
     constructor(public options: IPickMeOptions)
     {
@@ -17,7 +18,7 @@ export class ColourPicker
 
     /**
      * bootstrap the instance
-     * TODO  add alternative styles; library swatches, recently used colours, different colour wheels/formats
+     * TODO  add alternative styles; library swatches, recently used colours, different colour wheels/formats, opacity
      */
     bootstrap()
     {
@@ -27,7 +28,7 @@ export class ColourPicker
 
         //  set the default colour
 
-        this.setDefaultColour();
+        this.setColour(this.options.defaultColour);
 
         //  add listeners
 
@@ -36,37 +37,14 @@ export class ColourPicker
 
 
     /**
-     * set the default colour for the picker
-     */
-    setDefaultColour()
-    {
-        //  create and populate the colour picker popup
-
-        this.colour = this.options.defaultColour;
-
-        //  briefly set the active id
-
-        activeID.next(this.options.id);
-
-        //  convert the input to HSL and update observable HSL values
-
-        setObservableHSL(hexToHSL(this.colour));
-
-        //  reset the observable id
-
-        activeID.next(null);
-    }
-
-
-    /**
      * set the current colour for the picker
-     * @param hex
+     * @param input
      */
-    setColour(hex: string)
+    setColour(input: string)
     {
         //  create and populate the colour picker popup
 
-        this.colour = hex;
+        this.colour = input;
 
         //  briefly set the active id
 
@@ -74,7 +52,7 @@ export class ColourPicker
 
         //  convert the input to HSL and update observable HSL values
 
-        setObservableHSL(hexToHSL(this.colour));
+        setObservableHSL(inputToHSL(this.colour));
 
         //  reset the observable id
 
@@ -91,10 +69,11 @@ export class ColourPicker
 
         activeID.delay(100).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
 
-        //  subscribe to the observable hex and debounce so we're not updating the external watcher every tick
+        //  subscribe to the observable hex and debounce so we're not updating the external watcher every tick;
+        //  also add a filter condition to ensure we only dispatch the output when the picker is active -
+        //  this avoids loops where the picker is externally updated
 
-        this.observableColour = observableHex.debounce(() => Observable.interval(500));
-
+        this.observableColour = observableHex.filter(hex => this.active).debounce(() => Observable.interval(250));
     }
 
 
@@ -109,7 +88,11 @@ export class ColourPicker
 
         //  convert the input to HSL and update observable HSL values
 
-        setObservableHSL(hexToHSL(this.colour));
+        setObservableHSL(inputToHSL(this.colour));
+
+        //  set active state
+
+        this.active = true;
     }
 
 
@@ -118,7 +101,9 @@ export class ColourPicker
      */
     deactivatePane()
     {
+        //  set active state
 
+        this.active = false;
     }
 
 

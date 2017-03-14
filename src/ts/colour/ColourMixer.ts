@@ -26,7 +26,7 @@ function hslToHexString(h: number, s: number, l: number) : string
  * convert a hex string to an HSL object
  * @param hex
  */
-export function hexToHSL(hex: string) : IHSL
+export function inputToHSL(hex: string) : IHSL
 {
     return tinycolor(hex).toHsl();
 }

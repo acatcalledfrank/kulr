@@ -24,6 +24,7 @@ declare module "pick-me"
             }
 
         bootstrap() : void;
+        setColour(input: string) : void;
         destroy() : void;
     }
 
