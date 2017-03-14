@@ -28,6 +28,8 @@ declare module "pick-me"
     }
 
     export function createColourPicker(colourPickerOptions: IPickMeOptions) : IPickMeInstance;
+    export function getColourPicker(id: string) : IPickMeInstance;
+    export function updateColourPicker(id: string, input: string) : void;
     export function closeAllColourPickers() : void;
 
     export interface IGradientStop
@@ -39,9 +41,9 @@ declare module "pick-me"
 
     export interface IHSL
     {
-        hue: number;
-        saturation: number;
-        lightness: number;
+        h: number;
+        s: number;
+        l: number;
     }
 
     export interface IRGB

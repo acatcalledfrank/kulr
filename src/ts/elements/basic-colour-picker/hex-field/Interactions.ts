@@ -1,6 +1,8 @@
+import * as tinycolor from "tinycolor2";
 import {IHSL} from "pick-me";
-import {hexToRgb, rgbToHsl} from "../../../colour/ColourMixer";
 import {observableHue, observableSaturation, observableLightness} from "../../../state/Observables";
+
+
 /**
  * @param event
  */
@@ -16,29 +18,29 @@ export function onHexFieldFocus(event: MouseEvent)
  */
 export function onHexFieldInput(event: MouseEvent)
 {
-    let hex: string,
+    let input: string,
         hsl: IHSL;
 
     //  get the input element from the event
 
     try
     {
-        hex = (<HTMLInputElement>event.target).value;
+        input = (<HTMLInputElement>event.target).value;
     }
     catch(e)
     {
-        hex = '';
+        input = '';
     }
 
     //  convert the hex string to HSL
 
-    hsl = rgbToHsl(hexToRgb(hex));
+    hsl = tinycolor(input).toHsl();
 
     //  set observable H, S and L values
 
-    observableHue.next(hsl.hue);
-    observableSaturation.next(hsl.saturation);
-    observableLightness.next(hsl.lightness);
+    observableHue.next(hsl.h);
+    observableSaturation.next(hsl.s);
+    observableLightness.next(hsl.l);
 }
 
 

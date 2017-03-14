@@ -1,6 +1,7 @@
 /// <reference path="../../typings/index.d.ts" />
 
-import {saveInstance} from "./dictionary/Dictionary";
+import * as tinycolor from "tinycolor2";
+import {saveInstance, getInstance} from "./dictionary/Dictionary";
 import {ColourPicker} from "./ColourPicker";
 import {activeID} from "./state/Observables";
 import {hexToHSL, setObservableHSL} from "./colour/ColourMixer";
@@ -36,21 +37,30 @@ export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
 
 
 /**
+ * retrieve an instance by id
+ * @param id
+ * @returns {IPickMeInstance}
+ */
+export function getColourPicker(id: string) : IPickMeInstance
+{
+    return getInstance(id);
+}
+
+
+/**
  * update the current colour for an instance
  * @param id
- * @param colour
+ * @param input //  rgb, hsl, hex
  */
-export function updateColourPicker(id: string, colour: string)
+export function updateColourPicker(id: string, input: string)
 {
     //  activate the instance
 
     activeID.next(id);
 
-    //TODO  detect input type and convert the input to HSL if needed
-
     //  update observable HSL values
 
-    setObservableHSL(hexToHSL(colour));
+    setObservableHSL(tinycolor(input).toHsl());
 }
 
 

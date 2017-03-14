@@ -43,7 +43,7 @@ function activateField(field: HTMLInputElement)
         //  when the observable hex value changes, update the field contents -
         //  but only if the user is not currently editing the value by hand
 
-        if (field !== document.activeElement) field.value = dehashString(hex);
+        if (field !== field.ownerDocument.activeElement) field.value = dehashString(hex);
     });
 
     //  listen for mouse interactions
