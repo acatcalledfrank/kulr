@@ -1,26 +1,33 @@
 import * as log from "loglevel";
-import {IPickMeOptions} from "../PickMe";
 import {getUniqueId} from "../utils/UniqueId";
+import {pickMeConstants} from "../constants/Constants";
+import {findByRoleWithin} from "../utils/dom/element/Find";
+import {IPickMeOptions} from "pick-me";
 
 
 /**
  * validate the options passed in by the user
  * @param options
+ * @return {boolean}
  */
-export function validateOptions(options: IPickMeOptions) : IPickMeOptions
+export function validateOptions(options: IPickMeOptions) : boolean
 {
-    if ( ! options)
+    try
     {
-        log.warn('pick-me: no options found');
+        //  test whether we can find the target element for the picker
 
-        return;
+        const element: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
+
+        //  populate some defaults in the options
+
+        options.id = options.id || getUniqueId();
+
+        //  return the target element as a boolean
+
+        return !! element;
     }
-
-    //  populate some defaults in the options
-
-    options.id = options.id || getUniqueId();
-
-    //  return the updated options object
-
-    return options;
+    catch(e)
+    {
+        log.warn('pick-me/creation error', e.message);
+    }
 }

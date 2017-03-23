@@ -30,6 +30,7 @@ export function createBasicColourPicker(options: IPickMeOptions)
 }
 
 
+
 /**
  * create the popup elements
  * @param options

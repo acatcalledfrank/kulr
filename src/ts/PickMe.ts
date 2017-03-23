@@ -4,8 +4,9 @@ import * as log from "loglevel";
 import {saveInstance, getInstance} from "./dictionary/Dictionary";
 import {ColourPicker} from "./ColourPicker";
 import {activeID} from "./state/Observables";
-import {IPickMeOptions} from 'pick-me';
-import {IPickMeInstance} from 'pick-me';
+import {validateOptions} from "./options/Options";
+import {IPickMeInstance} from "pick-me";
+import {IPickMeOptions} from "pick-me";
 
 
 /**
@@ -16,6 +17,10 @@ import {IPickMeInstance} from 'pick-me';
 export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
 {
     let instance: IPickMeInstance;
+
+    //  test the options we've been given; are they valid?
+
+    if ( ! validateOptions(options)) return;
 
     //  create a new instance
 
