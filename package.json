@@ -2,7 +2,7 @@
   "name": "pick-me",
   "version": "0.0.11",
   "description": "A simple colour picker",
-  "main": "build/lib/pick-me.js",
+  "main": "lib/PickMe.js",
   "scripts": {
     "test": "mocha -r ts-node/register src/**/*.test.ts || exit 0"
   },

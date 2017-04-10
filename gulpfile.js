@@ -9,5 +9,5 @@ var gulp = require('gulp'),
 gulp.task('default', function () {
     return gulp.src(['src/**/*.ts', '!**/*.test.ts'])
         .pipe(ts())
-        .pipe(gulp.dest('build/lib'));
+        .pipe(gulp.dest('lib'));
 });
