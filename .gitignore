@@ -2,6 +2,11 @@
 
 .idea/
 
+# build files
+
+build/lib/*
+build/bin/*
+
 # libraries
 
 node_modules/
