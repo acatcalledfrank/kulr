@@ -4,7 +4,6 @@ import {findByRolesWithin} from "../../utils/dom/element/Find";
 import {activeID} from "../../state/Observables";
 import {observableHex} from "../../colour/ColourMixer";
 import {IPickMeOptions} from "pick-me";
-import {elementAt} from "@reactivex/rxjs/dist/cjs/operator/elementAt";
 
 
 /**

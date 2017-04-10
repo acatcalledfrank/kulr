@@ -1,5 +1,5 @@
 import {activeID} from "../../../state/Observables";
-import {onHexFieldFocus, onHexFieldInput, onHexFieldBlur} from "./Interactions";
+import {onHexFieldInput} from "./Interactions";
 import {observableHex} from "../../../colour/ColourMixer";
 import {IPickMeOptions} from "pick-me";
 import {dehashString} from "../../../utils/colour/Validator";
@@ -48,9 +48,7 @@ function activateField(field: HTMLInputElement)
 
     //  listen for mouse interactions
 
-    // field.addEventListener('focus', onHexFieldFocus);
     field.addEventListener('input', onHexFieldInput);
-    // field.addEventListener('blur', onHexFieldBlur);
 }
 
 
@@ -60,7 +58,5 @@ function activateField(field: HTMLInputElement)
  */
 function deactivateField(field: HTMLInputElement)
 {
-    // field.removeEventListener('focus', onHexFieldFocus);
     field.removeEventListener('input', onHexFieldInput);
-    // field.removeEventListener('blur', onHexFieldBlur);
 }

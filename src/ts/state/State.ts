@@ -1,5 +1,4 @@
-import {IPickMeOptions} from "../PickMe";
-
+import {IPickMeOptions} from 'pick-me';
 export class State
 {
     open: boolean;

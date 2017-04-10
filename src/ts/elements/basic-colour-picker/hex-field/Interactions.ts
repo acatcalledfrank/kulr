@@ -1,4 +1,3 @@
-import * as tinycolor from "tinycolor2";
 import {IHSL} from "pick-me";
 import {observableHue, observableSaturation, observableLightness} from "../../../state/Observables";
 import {inputToHSL} from '../../../colour/ColourMixer';
