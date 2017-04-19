@@ -4,7 +4,8 @@
   "description": "A simple colour picker",
   "main": "lib/PickMe.js",
   "scripts": {
-    "test": "mocha -r ts-node/register src/**/*.test.ts || exit 0"
+    "test": "mocha -r ts-node/register src/**/*.test.ts || exit 0",
+    "prepublish": "gulp build-lib && webpack -p"
   },
   "repository": {
     "type": "git",
@@ -40,7 +41,7 @@
     "mocha": "^3.2.0",
     "tinycolor2": "^1.4.1",
     "ts-loader": "^2.0.0",
-    "ts-node": "^2.1.0",
+    "ts-node": "^3.0.2",
     "typescript": "^2.1.6",
     "typings": "^2.1.0",
     "webpack": "^2.2.1",

@@ -4,8 +4,8 @@
 
 # build files
 
-lib/*
-bin/*
+lib/
+bin/
 
 # libraries
 

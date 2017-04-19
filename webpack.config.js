@@ -20,7 +20,7 @@ module.exports =
             library: "PickMe",
             libraryTarget: "umd",
             umdNamedDefine: true,
-            filename: './build/pick-me.js'
+            filename: './bin/pick-me.js'
         },
 
         module: {

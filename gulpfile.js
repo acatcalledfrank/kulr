@@ -1,13 +1,17 @@
+"use strict";
+
 var gulp = require('gulp'),
     ts = require('gulp-typescript');
 
+//  build the project into lib format
 
-//  compile into multiple files
-
-// var tsProject = ts.createProject('tsconfig.json');
-
-gulp.task('default', function () {
+gulp.task('build-lib', function () {
     return gulp.src(['src/**/*.ts', '!**/*.test.ts'])
-        .pipe(ts())
-        .pipe(gulp.dest('lib'));
+        .pipe(ts({
+            target: 'es5',
+            module: 'commonjs',
+            rootDir: 'src/ts',
+            outDir: 'lib'
+        }))
+        .pipe(gulp.dest('.'));
 });
