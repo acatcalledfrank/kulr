@@ -6,7 +6,12 @@ var webpack = require('webpack'),
 var babelOptions =
     {
         "presets": [
-            ["es2015", { modules: false }]
+            [
+                "es2015",
+                {
+                    "modules": false
+                }
+            ]
         ]
     };
 
@@ -24,31 +29,27 @@ module.exports =
         },
 
         module: {
-            rules: [
-                {
-                    test: /\.ts(x?)$/,
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: 'babel-loader',
-                            options: babelOptions
-                        },
-                        {
-                            loader: 'ts-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.js$/,
-                    exclude: /node_modules/,
-                    use: [
-                        {
-                            loader: 'babel-loader',
-                            options: babelOptions
-                        }
-                    ]
-                }
-            ]
+            rules: [{
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader'
+                    },
+                    {
+                        loader: 'ts-loader'
+                    }
+                ]
+            }, {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: babelOptions
+                    }
+                ]
+            }]
         },
         resolve: {
             extensions: ['.ts', '.tsx', '.js']
