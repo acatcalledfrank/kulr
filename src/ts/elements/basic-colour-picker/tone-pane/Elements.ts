@@ -13,16 +13,13 @@ import {pickMeConstants} from "../../../constants/Constants";
  */
 export function populateTonePane(options: IPickMeOptions) : SVGSVGElement
 {
-    let pane: HTMLElement,
-        svg: SVGSVGElement;
-
     //  find the tone-pane element
 
-    pane = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TONE_PANE);
+    const pane: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TONE_PANE);
 
     //  create SVG element
 
-    svg = createSvg(pane);
+    const svg: SVGSVGElement = createSvg(pane);
 
     //  create an SVG rect and fill with the gradient
 

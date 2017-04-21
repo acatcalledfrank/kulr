@@ -10,11 +10,9 @@ import {IPickMeOptions} from "pick-me";
  */
 export function createToggle(options: IPickMeOptions)
 {
-    let element: HTMLElement;
-
     //  find the button element
 
-    element = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
+    const element: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
 
     //  and add listeners
 

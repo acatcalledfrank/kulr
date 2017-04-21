@@ -7,6 +7,8 @@ import {createColourSwatches} from "../swatch/ColourSwatch";
 import {activeID} from "../../state/Observables";
 import {createToggle} from "./toggle/Toggle";
 import {pickMeConstants} from "../../constants/Constants";
+import {createConfirmButton} from "../buttons/Confirm";
+import {createCancelButton} from "../buttons/Cancel";
 
 
 
@@ -27,6 +29,11 @@ export function createBasicColourPicker(options: IPickMeOptions)
     //  add listeners
 
     addListeners(options);
+
+    //  add confirm and cancel buttons
+
+    createConfirmButton(options);
+    createCancelButton(options);
 }
 
 
@@ -68,12 +75,9 @@ function addListeners(options: IPickMeOptions)
  */
 function toggleDisplay(options: IPickMeOptions, active: boolean)
 {
-    let element: HTMLElement,
-        display: string;
-
     //  find the popup element for these options
 
-    element = findByRoleWithin(options.elements.selector, pickMeConstants.elements.POPUP);
+    const element: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.POPUP);
 
     //  if the associated instance is not currently active, hide the popup and stop here
 

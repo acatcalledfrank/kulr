@@ -1,8 +1,9 @@
+import * as log from 'loglevel';
 import {IPickMeOptions} from 'pick-me';
 import {createBasicColourPicker} from "./elements/basic-colour-picker/BasicColourPicker";
 import {activeID} from "./state/Observables";
-import {inputToHSL, observableHex, setObservableHSL} from "./colour/ColourMixer";
-import {Observable, Subject} from '@reactivex/rxjs';
+import {inputToHSL, autoObservableHex, setObservableHSL, manualObservableHex} from "./colour/ColourMixer";
+import {Observable} from "rxjs/Observable";
 
 export class ColourPicker
 {
@@ -67,13 +68,24 @@ export class ColourPicker
     {
         //  subscribe to the active instance id
 
-        activeID.delay(100).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
+        activeID.delay(1).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
 
-        //  subscribe to the observable hex and debounce so we're not updating the external watcher every tick;
-        //  also add a filter condition to ensure we only dispatch the output when the picker is active -
-        //  this avoids loops where the picker is externally updated
+        //  listen for colour updates
 
-        this.observableColour = observableHex.filter(hex => this.active).debounce(() => Observable.interval(250));
+        if (this.options.actions.liveUpdate)
+        {
+            //  subscribe to the observable hex and debounce so we're not updating the external watcher every tick;
+            //  also add a filter condition to ensure we only dispatch the output when the picker is active -
+            //  this avoids loops where the picker is externally updated
+
+            this.observableColour = autoObservableHex.filter(hex => this.active).debounce(() => Observable.interval(100));
+        }
+        else
+        {
+            //  if live update is disabled then only update the final output colour when the user clicks "confirm"
+
+            this.observableColour = Observable.concat(manualObservableHex);
+        }
     }
 
 
@@ -84,7 +96,7 @@ export class ColourPicker
     {
         //  update the picker's current colour, with a short debounce
 
-        observableHex.takeUntil(activeID).debounce(() => Observable.interval(100)).subscribe(hex => this.colour = hex);
+        autoObservableHex.takeUntil(activeID).debounce(() => Observable.interval(1)).subscribe(hex => this.colour = hex);
 
         //  convert the input to HSL and update observable HSL values
 

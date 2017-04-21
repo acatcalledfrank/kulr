@@ -2,7 +2,7 @@ import {toArray} from "lodash";
 import {pickMeConstants} from "../../constants/Constants";
 import {findByRolesWithin} from "../../utils/dom/element/Find";
 import {activeID} from "../../state/Observables";
-import {observableHex} from "../../colour/ColourMixer";
+import {autoObservableHex} from "../../colour/ColourMixer";
 import {IPickMeOptions} from "pick-me";
 
 
@@ -38,5 +38,5 @@ function activateSwatch(swatch: HTMLElement)
 {
     //  subscribe to hue updates, stopping when the active id changes
 
-    observableHex.takeUntil(activeID).subscribe(hex => swatch.style.setProperty('background-color', hex));
+    autoObservableHex.takeUntil(activeID).subscribe(hex => swatch.style.setProperty('background-color', hex));
 }

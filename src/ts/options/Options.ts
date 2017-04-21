@@ -1,9 +1,25 @@
 import * as log from "loglevel";
+import {defaultsDeep} from "lodash";
 import {getUniqueId} from "../utils/UniqueId";
 import {pickMeConstants} from "../constants/Constants";
 import {findByRoleWithin} from "../utils/dom/element/Find";
 import {IPickMeOptions} from "pick-me";
 
+//  define some default options
+
+const defaultOptions: IPickMeOptions =
+    {
+        id: null,
+        elements:
+            {
+                selector: null
+            },
+        actions:
+            {
+                liveUpdate: true
+            },
+        defaultColour: '#333333'
+    };
 
 /**
  * validate the options passed in by the user
@@ -19,6 +35,10 @@ export function validateOptions(options: IPickMeOptions) : boolean
         const element: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
 
         //  populate some defaults in the options
+
+        defaultsDeep(options, defaultOptions);
+
+        //  override specific properties if they don't exist
 
         options.id = options.id || getUniqueId();
 

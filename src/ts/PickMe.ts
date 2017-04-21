@@ -10,9 +10,9 @@ import {IPickMeOptions} from "pick-me";
 
 
 /**
- * create a new instance of pick-me
+ * create a new instance
  * @param options
- * @return {IPickMeInstance}
+ * @returns {IPickMeInstance}
  */
 export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
 {

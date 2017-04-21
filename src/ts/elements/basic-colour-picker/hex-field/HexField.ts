@@ -1,6 +1,6 @@
 import {activeID} from "../../../state/Observables";
 import {onHexFieldInput} from "./Interactions";
-import {observableHex} from "../../../colour/ColourMixer";
+import {autoObservableHex} from "../../../colour/ColourMixer";
 import {IPickMeOptions} from "pick-me";
 import {dehashString} from "../../../utils/colour/Validator";
 import {pickMeConstants} from "../../../constants/Constants";
@@ -38,7 +38,7 @@ function activateField(field: HTMLInputElement)
 {
     //  subscribe to hue updates, stopping when the active id changes
 
-    observableHex.takeUntil(activeID).subscribe(hex =>
+    autoObservableHex.takeUntil(activeID).subscribe(hex =>
     {
         //  when the observable hex value changes, update the field contents -
         //  but only if the user is not currently editing the value by hand

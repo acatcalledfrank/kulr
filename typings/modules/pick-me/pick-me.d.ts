@@ -7,6 +7,10 @@ declare module "pick-me"
             {
                 selector: HTMLElement | string;
             },
+        actions?:
+            {
+                liveUpdate?: boolean;
+            }
         defaultColour: string;
     }
 
