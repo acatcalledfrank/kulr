@@ -1,6 +1,8 @@
-declare module "pick-me"
+declare module "kulr"
 {
-    export interface IPickMeOptions
+    import {Subject} from 'rxjs/Subject';
+
+    export interface IKulrOptions
     {
         id: string;
         elements:
@@ -14,14 +16,19 @@ declare module "pick-me"
         defaultColour: string;
     }
 
-    export interface IInstanceDictionary
+    export interface IInternalOptions extends IKulrOptions
     {
-        [id: string]: IPickMeInstance;
+        destroy?: Subject<boolean>;
     }
 
-    export interface IPickMeInstance
+    export interface IInstanceDictionary
     {
-        options: IPickMeOptions;
+        [id: string]: IKulrInstance;
+    }
+
+    export interface IKulrInstance
+    {
+        options: IKulrOptions;
         observableColour:
             {
                 subscribe: (callback: (hex: string) => void) => void;
@@ -32,8 +39,8 @@ declare module "pick-me"
         destroy() : void;
     }
 
-    export function createColourPicker(colourPickerOptions: IPickMeOptions) : IPickMeInstance;
-    export function getColourPicker(id: string) : IPickMeInstance;
+    export function createColourPicker(colourPickerOptions: IKulrOptions) : IKulrInstance;
+    export function getColourPicker(id: string) : IKulrInstance;
     export function updateColourPicker(id: string, input: string) : void;
     export function closeAllColourPickers() : void;
 

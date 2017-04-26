@@ -1,6 +1,6 @@
 import {createTonePane} from "./tone-pane/TonePane";
 import {createHuePane} from "./hue-pane/HuePane";
-import {IPickMeOptions} from "pick-me";
+import {IInternalOptions, IKulrOptions} from "kulr";
 import {findByRoleWithin} from "../../utils/dom/element/Find";
 import {createHexField} from "./hex-field/HexField";
 import {createColourSwatches} from "../swatch/ColourSwatch";
@@ -16,7 +16,7 @@ import {createCancelButton} from "../buttons/Cancel";
  * create a basic colour picker
  * @param options
  */
-export function createBasicColourPicker(options: IPickMeOptions)
+export function createBasicColourPicker(options: IKulrOptions)
 {
     //  populate the toggle button
 
@@ -42,7 +42,7 @@ export function createBasicColourPicker(options: IPickMeOptions)
  * create the popup elements
  * @param options
  */
-function createPopup(options: IPickMeOptions)
+function createPopup(options: IKulrOptions)
 {
     //  create popup components
 
@@ -60,11 +60,11 @@ function createPopup(options: IPickMeOptions)
  * listen for signals
  * @param options
  */
-function addListeners(options: IPickMeOptions)
+function addListeners(options: IInternalOptions)
 {
     //  subscribe to the active instance id observable; we'll use this to show/hide the popup
 
-    activeID.subscribe(id => toggleDisplay(options, options.id === id));
+    activeID.takeUntil(options.destroy).subscribe(id => toggleDisplay(options, options.id === id));
 }
 
 
@@ -73,7 +73,7 @@ function addListeners(options: IPickMeOptions)
  * @param options
  * @param active
  */
-function toggleDisplay(options: IPickMeOptions, active: boolean)
+function toggleDisplay(options: IKulrOptions, active: boolean)
 {
     //  find the popup element for these options
 

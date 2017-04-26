@@ -1,4 +1,4 @@
-import {IGradientStop} from "pick-me";
+import {IGradientStop} from "kulr";
 
 
 /**

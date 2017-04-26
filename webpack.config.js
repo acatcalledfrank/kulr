@@ -19,13 +19,13 @@ module.exports =
     {
         cache: true,
         entry: {
-            main: './src/ts/PickMe.ts'
+            main: './src/ts/Kulr.ts'
         },
         output: {
-            library: "PickMe",
+            library: "Kulr",
             libraryTarget: "umd",
             umdNamedDefine: true,
-            filename: './bin/pick-me.js'
+            filename: './bin/kulr.js'
         },
 
         module: {

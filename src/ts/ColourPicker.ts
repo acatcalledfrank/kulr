@@ -1,5 +1,5 @@
 import * as log from 'loglevel';
-import {IPickMeOptions} from 'pick-me';
+import {IInternalOptions, IKulrOptions} from 'kulr';
 import {createBasicColourPicker} from "./elements/basic-colour-picker/BasicColourPicker";
 import {activeID} from "./state/Observables";
 import {inputToHSL, autoObservableHex, setObservableHSL, manualObservableHex} from "./colour/ColourMixer";
@@ -11,7 +11,7 @@ export class ColourPicker
     observableColour: Observable<string>;
     active: boolean;
 
-    constructor(public options: IPickMeOptions)
+    constructor(public options: IInternalOptions)
     {
 
     }
@@ -68,7 +68,7 @@ export class ColourPicker
     {
         //  subscribe to the active instance id
 
-        activeID.delay(1).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
+        activeID.takeUntil(this.options.destroy).delay(1).subscribe(id => this.options.id === id ? this.activatePane() : this.deactivatePane());
 
         //  listen for colour updates
 
@@ -96,7 +96,7 @@ export class ColourPicker
     {
         //  update the picker's current colour, with a short debounce
 
-        autoObservableHex.takeUntil(activeID).debounce(() => Observable.interval(1)).subscribe(hex => this.colour = hex);
+        autoObservableHex.takeUntil(this.options.destroy).takeUntil(activeID).debounce(() => Observable.interval(1)).subscribe(hex => this.colour = hex);
 
         //  convert the input to HSL and update observable HSL values
 
@@ -125,6 +125,10 @@ export class ColourPicker
      */
     destroy()
     {
+        //  dispatch the destroy signal
+
+        this.options.destroy.next(true);
+
 
     }
 }

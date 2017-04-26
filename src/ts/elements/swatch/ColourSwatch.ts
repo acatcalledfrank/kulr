@@ -3,14 +3,14 @@ import {pickMeConstants} from "../../constants/Constants";
 import {findByRolesWithin} from "../../utils/dom/element/Find";
 import {activeID} from "../../state/Observables";
 import {autoObservableHex} from "../../colour/ColourMixer";
-import {IPickMeOptions} from "pick-me";
+import {IInternalOptions, IKulrOptions} from "kulr";
 
 
 /**
  * create and populate one or more colour-swatches to display the current colour
  * @param options
  */
-export function createColourSwatches(options: IPickMeOptions)
+export function createColourSwatches(options: IKulrOptions)
 {
     //  add listeners for each swatch
 
@@ -24,9 +24,9 @@ export function createColourSwatches(options: IPickMeOptions)
  * @param swatch
  * @param options
  */
-function addListeners(swatch: HTMLElement, options: IPickMeOptions)
+function addListeners(swatch: HTMLElement, options: IInternalOptions)
 {
-    activeID.filter(id => options.id === id).subscribe(id => activateSwatch(swatch));
+    activeID.takeUntil(options.destroy).filter(id => options.id === id).subscribe(id => activateSwatch(swatch));
 }
 
 

@@ -1,5 +1,5 @@
 import {populateTonePane} from "./Elements";
-import {IPickMeOptions} from "pick-me";
+import {IInternalOptions, IKulrOptions} from "kulr";
 import {activeID, observableHue} from "../../../state/Observables";
 import {onTonePaneMouseDown} from "./Interactions";
 
@@ -8,7 +8,7 @@ import {onTonePaneMouseDown} from "./Interactions";
  * create and populate a tone-pane element
  * @param options
  */
-export function createTonePane(options: IPickMeOptions)
+export function createTonePane(options: IKulrOptions)
 {
     //  create pane elements, returning the svg colour pane
     //  then add interaction listeners to the SVG
@@ -22,9 +22,9 @@ export function createTonePane(options: IPickMeOptions)
  * @param svg
  * @param options
  */
-function addListeners(svg: SVGSVGElement, options: IPickMeOptions)
+function addListeners(svg: SVGSVGElement, options: IInternalOptions)
 {
-    activeID.subscribe(id => options.id === id ? activatePane(svg) : deactivatePane(svg));
+    activeID.takeUntil(options.destroy).subscribe(id => options.id === id ? activatePane(svg) : deactivatePane(svg));
 }
 
 

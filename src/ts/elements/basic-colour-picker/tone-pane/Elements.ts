@@ -1,4 +1,4 @@
-import {IGradientStop, IPickMeOptions} from "pick-me";
+import {IGradientStop, IKulrOptions} from "kulr";
 import {createColourPaneSVGElement, createSvg, createSvgGradient, fillGradient, setGradientDirection} from "../../svg/SvgUtils";
 import {getUniqueId} from "../../../utils/UniqueId";
 import {activeID, observableHue} from "../../../state/Observables";
@@ -11,7 +11,7 @@ import {pickMeConstants} from "../../../constants/Constants";
  * @param options
  * @return {SVGSVGElement}
  */
-export function populateTonePane(options: IPickMeOptions) : SVGSVGElement
+export function populateTonePane(options: IKulrOptions) : SVGSVGElement
 {
     //  find the tone-pane element
 
@@ -51,7 +51,7 @@ function createGradient(svg: SVGSVGElement, fill: string, direction: string[]) :
 
     //  create a unique id for the gradient
 
-    id = getUniqueId('pick-me-svg-gradient-');
+    id = getUniqueId('kulr-svg-gradient-');
 
     //  set the colours we're going to use in the gradient
 
@@ -91,7 +91,7 @@ function createGradient(svg: SVGSVGElement, fill: string, direction: string[]) :
  * @param pane
  * @param options
  */
-function addListeners(pane: HTMLElement, options: IPickMeOptions)
+function addListeners(pane: HTMLElement, options: IKulrOptions)
 {
     activeID.subscribe(id =>
     {

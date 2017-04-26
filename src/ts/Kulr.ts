@@ -5,18 +5,18 @@ import {saveInstance, getInstance} from "./dictionary/Dictionary";
 import {ColourPicker} from "./ColourPicker";
 import {activeID} from "./state/Observables";
 import {validateOptions} from "./options/Options";
-import {IPickMeInstance} from "pick-me";
-import {IPickMeOptions} from "pick-me";
+import {IKulrInstance} from "kulr";
+import {IKulrOptions} from "kulr";
 
 
 /**
  * create a new instance
  * @param options
- * @returns {IPickMeInstance}
+ * @returns {IKulrInstance}
  */
-export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
+export function createColourPicker(options: IKulrOptions) : IKulrInstance
 {
-    let instance: IPickMeInstance;
+    let instance: IKulrInstance;
 
     //  test the options we've been given; are they valid?
 
@@ -43,9 +43,9 @@ export function createColourPicker(options: IPickMeOptions) : IPickMeInstance
 /**
  * retrieve an instance by id
  * @param id
- * @returns {IPickMeInstance}
+ * @returns {IKulrInstance}
  */
-export function getColourPicker(id: string) : IPickMeInstance
+export function getColourPicker(id: string) : IKulrInstance
 {
     return getInstance(id);
 }

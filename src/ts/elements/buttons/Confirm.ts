@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/take';
-import {IPickMeOptions} from "pick-me";
+import {IKulrOptions} from "kulr";
 import {hslToHexString, manualObservableHex} from "../../colour/ColourMixer";
 import {activeID, observableHue, observableLightness, observableSaturation} from "../../state/Observables";
 import {pickMeConstants} from "../../constants/Constants";
@@ -10,7 +10,7 @@ import {findByRoleWithin} from "../../utils/dom/element/Find";
  * create a "confirm" button that dispatches the current hex value of the picker
  * @param options
  */
-export function createConfirmButton(options: IPickMeOptions)
+export function createConfirmButton(options: IKulrOptions)
 {
     //  find the button element
 

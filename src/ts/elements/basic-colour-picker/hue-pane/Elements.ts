@@ -1,4 +1,4 @@
-import {IGradientStop, IPickMeOptions} from "pick-me";
+import {IGradientStop, IKulrOptions} from "kulr";
 import {createColourPaneSVGElement, createSvg, createSvgGradient, fillGradient, setGradientDirection} from "../../svg/SvgUtils";
 import {getUniqueId} from "../../../utils/UniqueId";
 import {pickMeConstants} from "../../../constants/Constants";
@@ -9,7 +9,7 @@ import {findByRoleWithin} from "../../../utils/dom/element/Find";
  * create and populate the hue-pane element
  * @param options
  */
-export function populateHuePane(options: IPickMeOptions) : SVGSVGElement
+export function populateHuePane(options: IKulrOptions) : SVGSVGElement
 {
     let svg: SVGSVGElement;
 
@@ -40,7 +40,7 @@ function createGradient(svg: SVGSVGElement)
 
     //  create a unique id for the gradient
 
-    id = getUniqueId('pick-me-svg-gradient-');
+    id = getUniqueId('kulr-svg-gradient-');
 
     //  set the colours we're going to use in the gradient
 

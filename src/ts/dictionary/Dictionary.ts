@@ -1,4 +1,4 @@
-import {IInstanceDictionary, IPickMeInstance} from 'pick-me';
+import {IInstanceDictionary, IKulrInstance} from 'kulr';
 
 
 var dictionary: IInstanceDictionary;
@@ -10,7 +10,7 @@ var dictionary: IInstanceDictionary;
  * @param instance
  * @param instanceID
  */
-export function saveInstance(instance: IPickMeInstance, instanceID: string)
+export function saveInstance(instance: IKulrInstance, instanceID: string)
 {
     getDictionary()[instanceID] = instance;
 }
@@ -19,7 +19,7 @@ export function saveInstance(instance: IPickMeInstance, instanceID: string)
 /**
  * retrieve an instance by ID
  * @param instanceID
- * @return {IPickMeInstance}
+ * @return {IKulrInstance}
  */
 export function getInstance(instanceID: string)
 {

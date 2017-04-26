@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 gulp.task('build-lib', function () {
     return gulp.src(['src/**/*.ts', '!**/*.test.ts'])
         .pipe(ts({
-            target: 'es5',
+            target: 'es2015',
             module: 'commonjs',
             rootDir: 'src/ts',
             outDir: 'lib'

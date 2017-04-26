@@ -1,14 +1,14 @@
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
 import {activeID} from "../../../state/Observables";
 import {pickMeConstants} from "../../../constants/Constants";
-import {IPickMeOptions} from "pick-me";
+import {IKulrOptions} from "kulr";
 
 
 /**
  * create and populate the toggle button
  * @param options
  */
-export function createToggle(options: IPickMeOptions)
+export function createToggle(options: IKulrOptions)
 {
     //  find the button element
 
@@ -29,7 +29,7 @@ export function createToggle(options: IPickMeOptions)
  * @param event
  * @param options
  */
-let onToggleClick = (event: MouseEvent, options: IPickMeOptions) =>
+let onToggleClick = (event: MouseEvent, options: IKulrOptions) =>
 {
     //  update the observable with the new active ID
 

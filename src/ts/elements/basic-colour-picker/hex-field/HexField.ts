@@ -1,7 +1,7 @@
 import {activeID} from "../../../state/Observables";
 import {onHexFieldInput} from "./Interactions";
 import {autoObservableHex} from "../../../colour/ColourMixer";
-import {IPickMeOptions} from "pick-me";
+import {IInternalOptions, IKulrOptions} from "kulr";
 import {dehashString} from "../../../utils/colour/Validator";
 import {pickMeConstants} from "../../../constants/Constants";
 import {findByRoleWithin} from "../../../utils/dom/element/Find";
@@ -11,7 +11,7 @@ import {findByRoleWithin} from "../../../utils/dom/element/Find";
  * create and populate a hex string input/output field
  * @param options
  */
-export function createHexField(options: IPickMeOptions)
+export function createHexField(options: IKulrOptions)
 {
     //  add listeners to the field
 
@@ -24,9 +24,9 @@ export function createHexField(options: IPickMeOptions)
  * @param field
  * @param options
  */
-function addListeners(field: HTMLInputElement, options: IPickMeOptions)
+function addListeners(field: HTMLInputElement, options: IInternalOptions)
 {
-    activeID.subscribe(id => options.id === id ? activateField(field) : deactivateField(field));
+    activeID.takeUntil(options.destroy).subscribe(id => options.id === id ? activateField(field) : deactivateField(field));
 }
 
 

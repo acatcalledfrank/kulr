@@ -1,6 +1,6 @@
 import * as tinycolor from "tinycolor2";
 import {observableHue, observableSaturation, observableLightness} from "../state/Observables";
-import {IHSL} from 'pick-me';
+import {IHSL} from 'kulr';
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 

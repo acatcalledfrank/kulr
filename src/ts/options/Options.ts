@@ -3,11 +3,12 @@ import {defaultsDeep} from "lodash";
 import {getUniqueId} from "../utils/UniqueId";
 import {pickMeConstants} from "../constants/Constants";
 import {findByRoleWithin} from "../utils/dom/element/Find";
-import {IPickMeOptions} from "pick-me";
+import {IInternalOptions, IKulrOptions} from "kulr";
+import {Subject} from 'rxjs/Subject';
 
 //  define some default options
 
-const defaultOptions: IPickMeOptions =
+const defaultOptions: IKulrOptions =
     {
         id: null,
         elements:
@@ -26,7 +27,7 @@ const defaultOptions: IPickMeOptions =
  * @param options
  * @return {boolean}
  */
-export function validateOptions(options: IPickMeOptions) : boolean
+export function validateOptions(options: IInternalOptions) : boolean
 {
     try
     {
@@ -42,12 +43,16 @@ export function validateOptions(options: IPickMeOptions) : boolean
 
         options.id = options.id || getUniqueId();
 
+        //  create an observable subject in the options object to help us destroy the instance
+
+        options.destroy = new Subject<boolean>();
+
         //  return the target element as a boolean
 
         return !! element;
     }
     catch(e)
     {
-        log.warn('pick-me/creation error', e.message);
+        log.warn('kulr/creation error', e.message);
     }
 }

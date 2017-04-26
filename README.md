@@ -1,6 +1,4 @@
-# pick-me
-
-Pick me, m'lord!
+# kulr
 
 A simple colour picker.
 

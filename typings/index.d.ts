@@ -1,1 +1,1 @@
-/// <reference path="modules/pick-me/pick-me.d.ts" />
+/// <reference path="modules/kulr/kulr.d.ts" />

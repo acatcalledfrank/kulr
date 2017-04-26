@@ -1,4 +1,4 @@
-import {IHSL} from "pick-me";
+import {IHSL} from "kulr";
 import {observableHue, observableSaturation, observableLightness} from "../../../state/Observables";
 import {inputToHSL} from '../../../colour/ColourMixer';
 

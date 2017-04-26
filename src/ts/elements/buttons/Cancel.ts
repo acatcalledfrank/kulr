@@ -1,5 +1,5 @@
 import 'rxjs/add/operator/take';
-import {IPickMeOptions} from "pick-me";
+import {IKulrOptions} from "kulr";
 import {inputToHSL, autoObservableHex, setObservableHSL} from "../../colour/ColourMixer";
 import {activeID} from "../../state/Observables";
 import {pickMeConstants} from "../../constants/Constants";
@@ -12,7 +12,7 @@ let savedHex: string;
  * create a "cancel" button that restores the initial colour
  * @param options
  */
-export function createCancelButton(options: IPickMeOptions)
+export function createCancelButton(options: IKulrOptions)
 {
     //  listen for relevant observable events
 
@@ -31,7 +31,7 @@ export function createCancelButton(options: IPickMeOptions)
  * add interaction listeners to the pane
  * @param options
  */
-function addListeners(options: IPickMeOptions)
+function addListeners(options: IKulrOptions)
 {
     //  when the active ID changes, grab the initial hex value and save it
 

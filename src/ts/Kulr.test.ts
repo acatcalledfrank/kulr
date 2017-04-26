@@ -1,7 +1,7 @@
 import 'jsdom-global/register';
 import * as mocha from 'mocha';
 import {expect} from 'chai';
-import {createColourPicker} from "./PickMe";
+import {createColourPicker} from "./Kulr";
 
 describe('instance creation', () =>
 {

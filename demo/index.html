@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PickMe Demo</title>
+    <title>Kulr Demo</title>
 
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
@@ -10,7 +10,7 @@
 <body>
 
 
-<div class="colour-picker" id="pick-me-first">
+<div class="colour-picker" id="kulr-first">
 
     <button class="colour-picker__button" data-role="toggle">
         <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
@@ -30,7 +30,7 @@
 
 </div>
 
-<div class="colour-picker" id="pick-me-second">
+<div class="colour-picker" id="kulr-second">
 
     <button class="colour-picker__button" data-role="toggle">
         <div data-role="colour-swatch" class="colour-picker__colour-swatch button-swatch"></div> colour
@@ -53,15 +53,15 @@
 </div>
 
 
-<script src="../bin/pick-me.js"></script>
+<script src="../bin/kulr.js"></script>
 
 <script>
 
-    var pickMeFirst = new PickMe.createColourPicker({
-        id: 'pick-me-first',
+    var firstInstance = new Kulr.createColourPicker({
+        id: 'kulr-first',
         elements:
         {
-            selector: '#pick-me-first'
+            selector: '#kulr-first'
         },
         actions:
             {
@@ -70,18 +70,18 @@
         defaultColour: 'aaaaaa'
     });
 
-    pickMeFirst.observableColour.subscribe(function(colour) { console.log('one', colour) });
+    firstInstance.observableColour.subscribe(function(colour) { console.log('one', colour) });
 
-    var pickMeSecond = new PickMe.createColourPicker({
-        id: 'pick-me-second',
+    var secondInstance = new Kulr.createColourPicker({
+        id: 'kulr-second',
         elements:
         {
-                selector: '#pick-me-second'
+                selector: '#kulr-second'
         },
         defaultColour: '00ff00'
     });
 
-    pickMeSecond.observableColour.subscribe(function(colour) { console.log('two', colour) });
+    secondInstance.observableColour.subscribe(function(colour) { console.log('two', colour) });
 
 
 </script>
