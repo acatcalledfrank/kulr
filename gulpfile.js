@@ -2,6 +2,7 @@
 
 var gulp = require('gulp'),
     ts = require('gulp-typescript');
+const babel = require('gulp-babel');
 
 //  build the project into lib format
 
@@ -12,6 +13,9 @@ gulp.task('build-lib', function () {
             module: 'commonjs',
             rootDir: 'src/ts',
             outDir: 'lib'
+        }))
+        .pipe(babel({
+            presets: ['es2015']
         }))
         .pipe(gulp.dest('.'));
 });
