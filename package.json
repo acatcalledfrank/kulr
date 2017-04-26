@@ -1,6 +1,6 @@
 {
   "name": "kulr",
-  "version": "0.0.20",
+  "version": "0.0.21",
   "description": "A simple colour picker",
   "main": "lib/Kulr.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/acatcalledfrank/kulr.git"
   },
+  "types": "./typings/modules/kulr/kulr.d.ts",
   "author": "Tom Evans",
   "license": "ISC",
   "bugs": {
