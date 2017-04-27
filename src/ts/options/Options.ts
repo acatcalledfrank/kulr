@@ -2,7 +2,7 @@ import * as log from "loglevel";
 import {defaultsDeep} from "lodash";
 import {getUniqueId} from "../utils/UniqueId";
 import {pickMeConstants} from "../constants/Constants";
-import {findByRoleWithin} from "../utils/dom/element/Find";
+import {findByRoleWithin, findOne} from "../utils/dom/element/Find";
 import {IInternalOptions, IKulrOptions} from "kulr";
 import {Subject} from 'rxjs/Subject';
 
@@ -33,7 +33,11 @@ export function validateOptions(options: IInternalOptions) : boolean
     {
         //  test whether we can find the target element for the picker
 
-        const element: HTMLElement = findByRoleWithin(options.elements.selector, pickMeConstants.elements.TOGGLE);
+        const element: HTMLElement = findOne(options.elements.selector);
+
+        //  if no element is found, return false
+
+        if ( ! element) return false;
 
         //  populate some defaults in the options
 
@@ -49,7 +53,7 @@ export function validateOptions(options: IInternalOptions) : boolean
 
         //  return the target element as a boolean
 
-        return !! element;
+        return true;
     }
     catch(e)
     {

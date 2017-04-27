@@ -1,6 +1,6 @@
 {
   "name": "kulr",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "A simple colour picker",
   "main": "lib/Kulr.js",
   "scripts": {
